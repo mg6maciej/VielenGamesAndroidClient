@@ -17,9 +17,27 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    flavorDimensions 'backend'
+    productFlavors {
+        production {
+            flavorDimension 'backend'
+            buildConfigField 'String', 'ENDPOINT', '"https://vielen-games-api.herokuapp.com"'
+        }
+        staging {
+            flavorDimension 'backend'
+            applicationId "com.elpassion.vielengames.staging"
+            buildConfigField 'String', 'ENDPOINT', '"https://vielen-games-api-staging.herokuapp.com"'
+        }
+        mock {
+            flavorDimension 'backend'
+            applicationId "com.elpassion.vielengames.mock"
+            buildConfigField 'String', 'ENDPOINT', '"mock://mock"'
+        }
+    }
 }
 
 dependencies {
+    provided 'com.squareup.dagger:dagger-compiler:1.2.1'
     provided 'pl.mg6.hrisey:hrisey:0.3.1'
     compile 'com.android.support:support-v4:19.1.0'
     compile 'com.android.support:appcompat-v7:19.1.0'
