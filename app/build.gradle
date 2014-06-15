@@ -33,6 +33,11 @@ android {
             applicationId "com.elpassion.vielengames.mock"
             buildConfigField 'String', 'ENDPOINT', '"mock://mock"'
         }
+        apiary {
+            flavorDimension 'backend'
+            applicationId "com.elpassion.vielengames.apiary"
+            buildConfigField 'String', 'ENDPOINT', '"https://vielengamesapi.apiary-mock.com/"'
+        }
     }
 }
 
