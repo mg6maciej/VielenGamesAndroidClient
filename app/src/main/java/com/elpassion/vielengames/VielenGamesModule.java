@@ -20,7 +20,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import lombok.AllArgsConstructor;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
@@ -32,11 +31,14 @@ import retrofit.converter.GsonConverter;
         },
         library = true
 )
-@AllArgsConstructor
 @SuppressWarnings("unused")
 public final class VielenGamesModule {
 
     private final Context context;
+
+    public VielenGamesModule(Context context) {
+        this.context = context;
+    }
 
     @Provides
     @Singleton
