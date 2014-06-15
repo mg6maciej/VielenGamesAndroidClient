@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 
 import com.elpassion.vielengames.api.GooglePlusAuth;
 import com.elpassion.vielengames.api.VielenGamesApi;
-import com.elpassion.vielengames.api.VielenGamesAuthApi;
 import com.elpassion.vielengames.api.VielenGamesClient;
 import com.elpassion.vielengames.event.bus.EventBus;
 import com.elpassion.vielengames.event.bus.GreenRobotEventBus;
@@ -74,17 +73,6 @@ public final class VielenGamesModule {
 
     @Provides
     @Singleton
-    public VielenGamesAuthApi provideAuthApi(Gson gson) {
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(BuildConfig.ENDPOINT)
-                .setConverter(new GsonConverter(gson))
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-                .build();
-        return restAdapter.create(VielenGamesAuthApi.class);
-    }
-
-    @Provides
-    @Singleton
     public VielenGamesApi provideApi(Gson gson, VielenGamesPrefs prefs) {
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(BuildConfig.ENDPOINT)
@@ -106,7 +94,7 @@ public final class VielenGamesModule {
 
     @Provides
     @Singleton
-    public VielenGamesClient provideClient(EventBus eventBus, VielenGamesAuthApi authApi, VielenGamesApi api) {
-        return new VielenGamesClient(eventBus, authApi, api);
+    public VielenGamesClient provideClient(EventBus eventBus, VielenGamesApi api) {
+        return new VielenGamesClient(eventBus, api);
     }
 }
