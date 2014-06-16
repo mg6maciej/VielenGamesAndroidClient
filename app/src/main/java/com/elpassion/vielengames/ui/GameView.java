@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -43,29 +42,33 @@ public class GameView extends View {
         int height = this.getHeight() / FIELD_COUNT;
         dim = (width < height) ? width : height;
 
+        drawBoard(canvas, dim);
+
+        drawPlayers(canvas, dim);
+        
+        drawWalls(canvas, dim);
+    }
+
+    private void drawBoard(Canvas canvas, int dim) {
         for (int y = 0; y < FIELD_COUNT; ++y) {
             for (int x = 0; x < FIELD_COUNT; ++x) {
                 paint.setColor(Color.BLACK);
                 canvas.drawRect(x * dim, y * dim, (x + 1) * dim, (y + 1) * dim, paint);
 
-                setPlayerColor(x, y);
+                paint.setColor(Color.WHITE);
                 canvas.drawRect(x * dim + BORDER, y * dim + BORDER, (x + 1) * dim - BORDER, (y + 1) * dim - BORDER, paint);
             }
         }
-
-        drawWalls(canvas, dim);
     }
 
-    private void setPlayerColor(int x, int y) {
-        paint.setColor(Color.WHITE);
+    private void drawPlayers(Canvas canvas, int dim) {
+        paint.setColor(Color.BLUE);
         if (gameState != null) {
             for (PawnPosition pos : gameState.getPawns()) {
                 int pawnX = PositionConverter.getX(pos.getPosition());
                 int pawnY = PositionConverter.getY(pos.getPosition());
 
-                if (pawnX == x && pawnY == y) {
-                    paint.setColor(Color.BLUE);
-                }
+                canvas.drawRect(pawnX * dim + BORDER, pawnY * dim + BORDER, (pawnX + 1) * dim - BORDER, (pawnY + 1) * dim - BORDER, paint);
             }
         }
     }
