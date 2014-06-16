@@ -49,8 +49,8 @@ public final class VielenGamesModule {
 
     @Provides
     @Singleton
-    public VielenGamesPrefs providePrefs(SharedPreferences sharedPrefs) {
-        return new VielenGamesPrefs(sharedPrefs);
+    public VielenGamesPrefs providePrefs(SharedPreferences sharedPrefs, Gson gson) {
+        return new VielenGamesPrefs(sharedPrefs, gson);
     }
 
     @Provides
@@ -89,14 +89,15 @@ public final class VielenGamesModule {
         return new RequestInterceptor() {
             @Override
             public void intercept(RequestFacade requestFacade) {
-                requestFacade.addQueryParam("token", prefs.getToken());
+                requestFacade.addHeader("X-Auth-Token", prefs.getToken());
+                requestFacade.addHeader("X-Supported-Game-Types", "kuridor");
             }
         };
     }
 
     @Provides
     @Singleton
-    public VielenGamesClient provideClient(EventBus eventBus, VielenGamesApi api) {
-        return new VielenGamesClient(eventBus, api);
+    public VielenGamesClient provideClient(EventBus eventBus, VielenGamesApi api, VielenGamesPrefs prefs) {
+        return new VielenGamesClient(eventBus, api, prefs);
     }
 }
