@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.elpassion.vielengames.api.GooglePlusAuth;
+import com.elpassion.vielengames.api.GooglePlusAuthImpl;
 import com.elpassion.vielengames.api.VielenGamesApi;
 import com.elpassion.vielengames.api.VielenGamesClient;
 import com.elpassion.vielengames.data.Game;
@@ -17,6 +18,8 @@ import com.elpassion.vielengames.ui.LauncherActivity;
 import com.elpassion.vielengames.ui.LoginActivity;
 import com.elpassion.vielengames.ui.MainActivity;
 import com.elpassion.vielengames.ui.MyGamesFragment;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.plus.Plus;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -25,6 +28,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import lombok.core.PrintAST;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
@@ -61,6 +65,8 @@ public final class VielenGamesModule {
         return new VielenGamesPrefs(sharedPrefs, gson);
     }
 
+
+
     @Provides
     @Singleton
     public EventBus provideEventBus() {
@@ -69,9 +75,21 @@ public final class VielenGamesModule {
 
     @Provides
     @Singleton
-    public GooglePlusAuth provideGooglePlusAuth() {
-        return null;
+    public GooglePlusAuth provideGooglePlusAuth(GoogleApiClient googleApiClient, EventBus eventBus) {
+        return new GooglePlusAuthImpl(googleApiClient, eventBus);
     }
+
+    @Provides
+    @Singleton
+    public GoogleApiClient provideGoogleApiClient(){
+        return  new GoogleApiClient.Builder(context)
+//                .addConnectionCallbacks(this)
+//                .addOnConnectionFailedListener(this)
+                .addApi(Plus.API)
+                .addScope(Plus.SCOPE_PLUS_LOGIN)
+                .build();
+    }
+
 
     @Provides
     @Singleton

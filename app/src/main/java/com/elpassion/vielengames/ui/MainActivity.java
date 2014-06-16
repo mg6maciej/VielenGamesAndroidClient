@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.elpassion.vielengames.R;
+import com.elpassion.vielengames.api.GooglePlusAuth;
 import com.elpassion.vielengames.api.VielenGamesClient;
 import com.elpassion.vielengames.event.CreateGameProposalEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
@@ -19,6 +20,9 @@ public final class MainActivity extends BaseActivity {
     VielenGamesClient client;
     @Inject
     EventBus eventBus;
+
+    @Inject
+    GooglePlusAuth googlePlusAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +60,9 @@ public final class MainActivity extends BaseActivity {
                 onMyGamesClick();
             }
         });
+
     }
+
 
     private void onProposalsClick() {
         replaceWithFragment(new GameProposalsFragment());
