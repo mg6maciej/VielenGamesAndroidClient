@@ -13,9 +13,10 @@ import android.view.View;
 public class GameView extends View {
 
     private static final int FIELD_COUNT = 9;
-    private static final int border = 5;
+    private static final int BORDER = 5;
 
-    Paint paint = new Paint();
+    private Paint paint = new Paint();
+
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -35,7 +36,7 @@ public class GameView extends View {
             for (int j = 0; j < FIELD_COUNT; ++j) {
                 canvas.drawRect(j * dim, i * dim, (j + 1) * dim, (i + 1) * dim, paint);
                 paint.setColor(Color.WHITE);
-                canvas.drawRect(j * dim + border, i * dim + border, (j + 1) * dim - border, (i + 1) * dim - border, paint);
+                canvas.drawRect(j * dim + BORDER, i * dim + BORDER, (j + 1) * dim - BORDER, (i + 1) * dim - BORDER, paint);
                 paint.setColor(Color.BLACK);
             }
         }
