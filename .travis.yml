@@ -14,3 +14,11 @@ before_script:
 
 script:
     - ./gradlew connectedAndroidTestProductionDebug
+
+notifications:
+  email:
+    - maciek.gorski@gmail.com
+    - siemionides@gmail.com
+    - mb921028@gmail.com
+    - pawelkobojek@gmail.com
+
