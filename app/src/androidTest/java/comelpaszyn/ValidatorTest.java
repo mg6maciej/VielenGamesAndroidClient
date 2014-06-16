@@ -23,7 +23,6 @@ public class ValidatorTest extends TestCase {
         kuridorGameState = KuridorGameState.initial();
         moves = new ArrayList<KuridorMove>();
 
-
     }
 
     public void testMoveValidation()
