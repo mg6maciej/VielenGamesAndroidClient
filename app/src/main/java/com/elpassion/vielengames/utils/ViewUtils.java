@@ -8,7 +8,7 @@ public final class ViewUtils {
     private ViewUtils() {
     }
 
-    public static <T> T findView(View parent, int viewId) {
+    public static <T extends View> T findView(View parent, int viewId) {
         return (T) parent.findViewById(viewId);
     }
 
