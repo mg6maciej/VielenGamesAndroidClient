@@ -7,12 +7,16 @@ import android.preference.PreferenceManager;
 import com.elpassion.vielengames.api.GooglePlusAuth;
 import com.elpassion.vielengames.api.VielenGamesApi;
 import com.elpassion.vielengames.api.VielenGamesClient;
+import com.elpassion.vielengames.data.Game;
 import com.elpassion.vielengames.event.bus.EventBus;
 import com.elpassion.vielengames.event.bus.GreenRobotEventBus;
+import com.elpassion.vielengames.parser.GameJsonDeserializer;
 import com.elpassion.vielengames.ui.GameActivity;
 import com.elpassion.vielengames.ui.GameProposalsFragment;
 import com.elpassion.vielengames.ui.LauncherActivity;
 import com.elpassion.vielengames.ui.LoginActivity;
+import com.elpassion.vielengames.ui.MainActivity;
+import com.elpassion.vielengames.ui.MyGamesFragment;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -27,9 +31,11 @@ import retrofit.converter.GsonConverter;
 
 @Module(
         injects = {
-                GameProposalsFragment.class,
                 LauncherActivity.class,
                 LoginActivity.class,
+                MainActivity.class,
+                GameProposalsFragment.class,
+                MyGamesFragment.class,
                 GameActivity.class
         },
         library = true
@@ -72,6 +78,7 @@ public final class VielenGamesModule {
     public Gson provideGson() {
         return new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .registerTypeAdapter(Game.class, new GameJsonDeserializer())
                 .create();
     }
 
@@ -92,6 +99,7 @@ public final class VielenGamesModule {
             @Override
             public void intercept(RequestFacade requestFacade) {
                 requestFacade.addHeader("X-Auth-Token", prefs.getToken());
+                requestFacade.addHeader("X-Client-Version", "1");
                 requestFacade.addHeader("X-Supported-Game-Types", "kuridor");
             }
         };

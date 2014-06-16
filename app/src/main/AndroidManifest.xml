@@ -20,6 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.elpassion.vielengames.ui.LoginActivity"/>
+        <activity android:name="com.elpassion.vielengames.ui.MainActivity"/>
         <activity android:name="com.elpassion.vielengames.ui.GameActivity"/>
     </application>
 

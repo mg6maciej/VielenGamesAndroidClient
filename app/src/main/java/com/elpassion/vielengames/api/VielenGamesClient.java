@@ -7,6 +7,7 @@ import com.elpassion.vielengames.data.Empty;
 import com.elpassion.vielengames.data.GameProposal;
 import com.elpassion.vielengames.data.SessionRequest;
 import com.elpassion.vielengames.data.SessionResponse;
+import com.elpassion.vielengames.data.Updates;
 import com.elpassion.vielengames.data.kuridor.KuridorGame;
 import com.elpassion.vielengames.data.kuridor.KuridorMove;
 import com.elpassion.vielengames.event.CreateGameProposalEvent;
@@ -27,7 +28,8 @@ public final class VielenGamesClient {
 
     private final EventBus eventBus;
     private final VielenGamesApi api;
-    private VielenGamesPrefs prefs;
+    private final VielenGamesPrefs prefs;
+    private Updates updates;
 
     public VielenGamesClient(EventBus eventBus, VielenGamesApi api, VielenGamesPrefs prefs) {
         this.eventBus = eventBus;
@@ -41,6 +43,7 @@ public final class VielenGamesClient {
             public void success(SessionResponse sessionResponse, Response response) {
                 prefs.setToken(sessionResponse.getAuthToken());
                 prefs.setMe(sessionResponse.getUser());
+                updates = sessionResponse.getUpdates();
                 eventBus.post(new SessionResponseEvent(sessionResponse));
             }
         });
@@ -92,6 +95,10 @@ public final class VielenGamesClient {
             public void success(Empty empty, Response response) {
             }
         });
+    }
+
+    public Updates getUpdates() {
+        return updates;
     }
 
     private abstract class DefaultCallback<T> implements Callback<T> {
