@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.elpassion.vielengames.data.kuridor.KuridorGameState;
 import com.elpassion.vielengames.data.kuridor.PawnPosition;
+import com.elpassion.vielengames.data.kuridor.PositionConverter;
 
 /**
  * Created by pawel on 16.06.14.

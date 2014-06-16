@@ -19,11 +19,11 @@ public class GameActivity extends BaseActivity {
         setContentView(R.layout.game_activity);
 
         gameView = (GameView) findViewById(R.id.game_view);
-        gameview.setGameState(KuridorGameState.initial());
+        gameView.setGameState(KuridorGameState.initial());
     }
 
     public void onEvent(UpdatesEvent event) {
-        
+
     }
 
 }

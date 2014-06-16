@@ -19,8 +19,8 @@ public class MoveValidator {
     }
 
     private static boolean validatePawnMove(KuridorGameState kuridorGameState, KuridorMove kuridorMove) {
-        int x = ((int) 'a') - ((int) kuridorMove.position.charAt(0));
-        int y = ((int) '0') - ((int) kuridorMove.position.charAt(1));
+        int x = ((int) 'a') - ((int) kuridorMove.getPosition().charAt(0));
+        int y = ((int) '0') - ((int) kuridorMove.getPosition().charAt(1));
 
         if (x < 0 || y < 0 || x >= MAP_SIZE || y >= MAP_SIZE)
             return false;
@@ -31,9 +31,9 @@ public class MoveValidator {
         return false;
     }
 
-    private static boolean blockingWall(List<WallPosition> walls, int x, int y)
-    {
-        for (WallPosition w : walls)
-            if ()
+    private static boolean blockingWall(List<WallPosition> walls, int x, int y) {
+//        for (WallPosition w : walls)
+//            if ()
+        return false;
     }
 }
