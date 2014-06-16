@@ -14,7 +14,7 @@ public final class KuridorGameState {
     List<PawnPosition> pawns;
     List<WallPosition> walls;
 
-    static KuridorGameState initial() {
+    public static KuridorGameState initial() {
 
         List<PawnPosition> newPawns = new ArrayList<PawnPosition>(2);
         newPawns.add(PawnPosition.builder().position("e1").team("team_1").build());

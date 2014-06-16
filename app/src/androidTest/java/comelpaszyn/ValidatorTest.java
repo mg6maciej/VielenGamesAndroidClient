@@ -14,12 +14,16 @@ import java.util.List;
  */
 public class ValidatorTest extends TestCase {
     KuridorGameState kuridorGameState;
+    List<KuridorMove> moves;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
 
+        kuridorGameState = KuridorGameState.initial();
         moves = new ArrayList<KuridorMove>();
+
+
     }
 
     public void testMoveValidation()
