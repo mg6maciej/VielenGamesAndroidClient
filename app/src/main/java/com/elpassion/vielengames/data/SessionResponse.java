@@ -1,7 +1,5 @@
 package com.elpassion.vielengames.data;
 
-import java.util.List;
-
 import hrisey.Parcelable;
 import lombok.Value;
 import lombok.experimental.Builder;
@@ -9,9 +7,9 @@ import lombok.experimental.Builder;
 @Parcelable
 @Value
 @Builder
-public final class GameProposal {
+public final class SessionResponse {
 
-    String id;
-    String gameType;
-    List<Player> awaitingPlayers;
+    String authToken;
+    Player user;
+    Updates updates;
 }
