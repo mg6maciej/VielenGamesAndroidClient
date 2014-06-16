@@ -83,10 +83,7 @@ public class GameView extends View {
                 float stopX = (ornt == PositionConverter.Orientation.hor) ? wallX * dim : startX + WALL_WIDTH;
                 float stopY = (ornt == PositionConverter.Orientation.hor) ? startY + WALL_WIDTH : wallY * dim;
 
-                Log.d("TAGTAG", String.format("cords = (%d, %d) start = (%f, %f), stop = (%f, %f)", wallX, wallY, startX, startY, stopX, stopY));
                 canvas.drawRect(startX, startY, stopX, stopY, paint);
-
-//                    canvas.drawRect(x * dim, y * dim, (x + 1) * dim, y * dim + WALL_WIDTH, paint);
             }
         }
     }
@@ -95,7 +92,6 @@ public class GameView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        // TODO
         float x = event.getX();
         float y = event.getY();
 
