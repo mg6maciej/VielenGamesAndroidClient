@@ -9,6 +9,7 @@ import com.elpassion.vielengames.api.VielenGamesApi;
 import com.elpassion.vielengames.api.VielenGamesClient;
 import com.elpassion.vielengames.event.bus.EventBus;
 import com.elpassion.vielengames.event.bus.GreenRobotEventBus;
+import com.elpassion.vielengames.ui.GameActivity;
 import com.elpassion.vielengames.ui.LauncherActivity;
 import com.elpassion.vielengames.ui.LoginActivity;
 import com.google.gson.FieldNamingPolicy;
@@ -26,7 +27,8 @@ import retrofit.converter.GsonConverter;
 @Module(
         injects = {
                 LauncherActivity.class,
-                LoginActivity.class
+                LoginActivity.class,
+                GameActivity.class
         },
         library = true
 )
