@@ -1,7 +1,5 @@
 package com.elpassion.vielengames.data.kuridor;
 
-import android.widget.ListPopupWindow;
-
 import com.elpassion.vielengames.data.Player;
 
 import java.util.ArrayList;
@@ -39,8 +37,8 @@ public class MoveValidator {
 
     private static boolean blockingWall(KuridorGameState kuridorGameState, Player player, int moveX, int moveY) {
         int pawnId = kuridorGameState.getPawns().get(0).getTeam() == player.getTeam() ? 0 : 1;
-        int pawnX = PositionConverter.getX(kuridorGameState.getPawns().get(pawnId).position);
-        int pawnY = PositionConverter.getY(kuridorGameState.getPawns().get(pawnId).position);
+        int pawnX = PositionConverter.getX(kuridorGameState.getPawns().get(pawnId).getPosition());
+        int pawnY = PositionConverter.getY(kuridorGameState.getPawns().get(pawnId).getPosition());
 
         List<WallPosition> blockingWalls = new ArrayList<WallPosition>(2);
         PositionConverter.Orientation orientation;
