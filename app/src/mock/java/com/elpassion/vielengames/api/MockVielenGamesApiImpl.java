@@ -1,5 +1,6 @@
 package com.elpassion.vielengames.api;
 
+import com.elpassion.vielengames.data.Empty;
 import com.elpassion.vielengames.data.GameProposal;
 import com.elpassion.vielengames.data.Player;
 import com.elpassion.vielengames.data.SessionRequest;
@@ -10,7 +11,6 @@ import com.elpassion.vielengames.data.kuridor.KuridorMove;
 import java.util.List;
 
 import retrofit.Callback;
-import retrofit.client.Response;
 
 public final class MockVielenGamesApiImpl implements VielenGamesApi {
 
@@ -35,10 +35,10 @@ public final class MockVielenGamesApiImpl implements VielenGamesApi {
     }
 
     @Override
-    public void leaveGameProposal(String proposalId, String playerId, Callback<Response> callback) {
+    public void leaveGameProposal(String proposalId, String playerId, Callback<Empty> callback) {
     }
 
     @Override
-    public void move(KuridorMove move, Callback<Response> callback) {
+    public void move(String gameId, KuridorMove move, Callback<Empty> callback) {
     }
 }

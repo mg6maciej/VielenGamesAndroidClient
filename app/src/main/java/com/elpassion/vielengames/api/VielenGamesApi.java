@@ -1,5 +1,6 @@
 package com.elpassion.vielengames.api;
 
+import com.elpassion.vielengames.data.Empty;
 import com.elpassion.vielengames.data.GameProposal;
 import com.elpassion.vielengames.data.Player;
 import com.elpassion.vielengames.data.SessionRequest;
@@ -36,8 +37,8 @@ public interface VielenGamesApi {
     void joinGameProposal(@Path("proposal_id") String proposalId, @Body Player player, Callback<GameProposal> callback);
 
     @DELETE("/game_proposals/{proposal_id}/awaiting_players/{player_id}")
-    void leaveGameProposal(@Path("proposal_id") String proposalId, @Path("player_id") String playerId, Callback<Response> callback);
+    void leaveGameProposal(@Path("proposal_id") String proposalId, @Path("player_id") String playerId, Callback<Empty> callback);
 
     @POST("/games/{game_id}/moves")
-    void move(@Body KuridorMove move, Callback<Response> callback);
+    void move(@Path("game_id") String gameId, @Body KuridorMove move, Callback<Empty> callback);
 }
