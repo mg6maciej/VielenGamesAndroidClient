@@ -18,12 +18,12 @@ public class MoveValidator {
         PositionConverter.Orientation orientation = PositionConverter.getOrientation(kuridorMove.getPosition());
 
         int opponentId = kuridorGameState.getPawns().get(0).getTeam() == player.getTeam() ? 0 : 1;
-        int opponentX = PositionConverter.getX(kuridorGameState.getPawns().get(opponentId).position);
-        int opponentY = PositionConverter.getY(kuridorGameState.getPawns().get(opponentId).position);
+        int opponentX = PositionConverter.getX(kuridorGameState.getPawns().get(opponentId).getPosition());
+        int opponentY = PositionConverter.getY(kuridorGameState.getPawns().get(opponentId).getPosition());
 
         int pawnId = kuridorGameState.getPawns().get(0).getTeam() == player.getTeam() ? 0 : 1;
-        int pawnX = PositionConverter.getX(kuridorGameState.getPawns().get(pawnId).position);
-        int pawnY = PositionConverter.getY(kuridorGameState.getPawns().get(pawnId).position);
+        int pawnX = PositionConverter.getX(kuridorGameState.getPawns().get(pawnId).getPosition());
+        int pawnY = PositionConverter.getY(kuridorGameState.getPawns().get(pawnId).getPosition());
 
         return kuridorMove.getMoveType() == KuridorMove.MoveType.pawn ?
                 validatePawnMove(kuridorGameState, moveX, moveY, pawnX, pawnY,
