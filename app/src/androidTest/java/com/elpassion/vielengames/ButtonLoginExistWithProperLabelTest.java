@@ -7,7 +7,7 @@ import com.elpassion.vielengames.ui.LoginActivity;
 /**
  * Created by michalsiemionczyk on 16/06/14.
  */
-public class ButtonLoginExistWithProperLabelTest extends BaseTestCase<LoginActivity> {
+public class ButtonLoginExistWithProperLabelTest extends VielenBaseTestCase<LoginActivity> {
 
 
     public ButtonLoginExistWithProperLabelTest() {
