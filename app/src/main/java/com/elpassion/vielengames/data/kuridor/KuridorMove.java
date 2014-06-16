@@ -8,7 +8,6 @@ import lombok.Value;
 public final class KuridorMove {
 
     public enum MoveType {
-
         wall,
         pawn
     }

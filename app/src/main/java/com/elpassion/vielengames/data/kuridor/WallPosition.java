@@ -6,6 +6,5 @@ import lombok.Value;
 @Parcelable
 @Value
 public final class WallPosition {
-
     String position;
 }
