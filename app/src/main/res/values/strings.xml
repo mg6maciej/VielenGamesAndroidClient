@@ -2,5 +2,7 @@
 <resources>
 
     <string name="app_name">Vielen Games</string>
+    <string name="button_login_text">Login via G+</string>
+    <string name="not_implemented_yet">Not implemented yet</string>
 
 </resources>
