@@ -1,17 +1,19 @@
 package com.elpassion.vielengames.ui;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.elpassion.vielengames.R;
+import com.elpassion.vielengames.data.Player;
+import com.elpassion.vielengames.data.kuridor.KuridorGame;
 import com.elpassion.vielengames.data.kuridor.KuridorGameState;
 import com.elpassion.vielengames.data.kuridor.PawnPosition;
 import com.elpassion.vielengames.data.kuridor.PositionConverter;
@@ -29,39 +31,54 @@ public class GameView extends View {
 
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-    //    private int x;
-//    private int y;
-//    private int oldX;
-//    private int oldY;
     private int clickedI = 0;
     private int clickedJ = 0;
 
     private int fieldDim;
 
-    private KuridorGameState gameState;
-    private Rect currentWall = new Rect();
-    private Point currWallStart = null;
-    private Path wallPath = null;
+    private KuridorGame game;
     private Point startPoint = null;
     private Point endPoint = null;
-
+    private Player player;
     private GestureDetector scrollDetector = new GestureDetector(this.getContext(), new ScrollDetector());
+    private MoveRequestListener listener;
+    private KuridorGameState gameState;
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public void setGameState(KuridorGameState state) {
-        gameState = state;
+    public void setGame(KuridorGame game) {
+        this.game = game;
     }
 
-    private Point fieldNumForAbsCords(int absX, int absY) {
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public void setGameState(KuridorGameState gameState) {
+        this.gameState = gameState;
+    }
+
+
+    public void setMoveListener(MoveRequestListener listener) {
+        this.listener = listener;
+    }
+
+
+    private Point getPointForWallDrawing(int absX, int absY) {
         clickedI = (int) ((absX + (float) fieldDim / 2) / fieldDim);
         clickedJ = (int) ((absY + (float) fieldDim / 2) / fieldDim);
 
         return new Point(clickedI, clickedJ);
     }
 
+    private Point fieldNumForAbsolute(int absX, int absY) {
+        clickedI = (absX / fieldDim);
+        clickedJ = (absY / fieldDim);
+
+        return new Point(clickedI, clickedJ);
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -71,12 +88,8 @@ public class GameView extends View {
         fieldDim = (width < height) ? width : height;
 
         drawBoard(canvas, fieldDim);
-        drawPlayers(canvas, fieldDim);
+        drawPawns(canvas, fieldDim);
         drawWalls(canvas, fieldDim);
-
-        if (wallPath != null) {
-            canvas.drawPath(wallPath, paint);
-        }
 
         paint.setTextSize(25);
         if (startPoint != null && endPoint != null) {
@@ -90,18 +103,19 @@ public class GameView extends View {
         for (int y = 0; y < FIELD_COUNT; ++y) {
             for (int x = 0; x < FIELD_COUNT; ++x) {
                 paint.setColor(Color.BLACK);
-                canvas.drawRect(x * dim, y * dim, (x + 1) * dim, (y + 1) * dim, paint);
+                canvas.drawBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.slider), x * dim, y * dim, paint);
+                //canvas.drawRect(x * dim, y * dim, (x + 1) * dim, (y + 1) * dim, paint);
 
                 paint.setColor(Color.WHITE);
-                canvas.drawRect(x * dim + BORDER, y * dim + BORDER, (x + 1) * dim - BORDER, (y + 1) * dim - BORDER, paint);
+                //canvas.drawRect(x * dim + BORDER, y * dim + BORDER, (x + 1) * dim - BORDER, (y + 1) * dim - BORDER, paint);
             }
         }
     }
 
-    private void drawPlayers(Canvas canvas, int dim) {
+    private void drawPawns(Canvas canvas, int dim) {
         paint.setColor(Color.BLUE);
         if (gameState != null) {
-            for (PawnPosition pos : gameState.getPawns()) {
+            for (PawnPosition pos : gameState.getPawns()) {//game.getCurrentState().getPawns()) {
                 int pawnX = PositionConverter.getX(pos.getPosition());
                 int pawnY = PositionConverter.getY(pos.getPosition());
 
@@ -113,7 +127,7 @@ public class GameView extends View {
     private void drawWalls(Canvas canvas, int dim) {
         paint.setColor(Color.RED);
         if (gameState != null) {
-            for (WallPosition wall : gameState.getWalls()) {
+            for (WallPosition wall : gameState.getWalls()) {// game.getCurrentState().getWalls()) {
                 int wallX = PositionConverter.getX(wall.getPosition());
                 int wallY = PositionConverter.getY(wall.getPosition());
 
@@ -135,14 +149,47 @@ public class GameView extends View {
         float x = event.getX();
         float y = event.getY();
 
+        // TODO - real game and game state
+        //if (game.getActivePlayer().getId() == this.player.getId()) {
         scrollDetector.onTouchEvent(event);
         this.invalidate();
+        //}
 
-        if (event.getAction() == MotionEvent.ACTION_UP) {
+        if (event.getAction() == MotionEvent.ACTION_UP && startPoint != null && endPoint != null) {
+            System.out.println(getMovePostition());
+            //listener.onRequest(game, new KuridorMove(KuridorMove.MoveType.wall, getMovePostition()));
+
+            gameState.getWalls().add(WallPosition.builder().position(getMovePostition()).build());
+
             startPoint = endPoint = null;
         }
 
         return true;
+    }
+
+    private String getMovePostition() {
+        Point wallStartPoint;
+        if (isVertical(startPoint, endPoint)) {
+            wallStartPoint = (startPoint.y > endPoint.y) ? startPoint : endPoint;
+
+            return PositionConverter.getPosition(PositionConverter.Orientation.ver, wallStartPoint.x, wallStartPoint.y - 1);
+        }
+
+        if (isHorizontal(startPoint, endPoint)) {
+            wallStartPoint = (startPoint.x > endPoint.x) ? startPoint : endPoint;
+
+            return PositionConverter.getPosition(PositionConverter.Orientation.hor, wallStartPoint.x, wallStartPoint.y - 1);
+        }
+
+        return null;
+    }
+
+    private boolean isVertical(Point startPoint, Point endPoint) {
+        return startPoint.x == endPoint.x;
+    }
+
+    private boolean isHorizontal(Point startPoint, Point endPoint) {
+        return startPoint.y == endPoint.y;
     }
 
     private class ScrollDetector implements GestureDetector.OnGestureListener {
@@ -152,7 +199,7 @@ public class GameView extends View {
             //currentWall = new Rect((int) motionEvent.getX(), (int) motionEvent.getY(), (int) motionEvent.getX(), (int) motionEvent.getY());
             int x = (int) motionEvent.getX(), y = (int) motionEvent.getY();
 
-            startPoint = fieldNumForAbsCords(x, y);
+            startPoint = getPointForWallDrawing(x, y);
             return true;
         }
 
@@ -163,7 +210,16 @@ public class GameView extends View {
 
         @Override
         public boolean onSingleTapUp(MotionEvent motionEvent) {
-            return false;
+            int x = (int) motionEvent.getX();
+            int y = (int) motionEvent.getY();
+
+            Point p = fieldNumForAbsolute(x, y);
+
+            System.out.println(PositionConverter.getPosition(PositionConverter.Orientation.none, p.x, p.y));
+            // TODO - real game
+            //listener.onRequest(game, new KuridorMove(KuridorMove.MoveType.pawn, PositionConverter.getPosition(PositionConverter.Orientation.none, p.x, p.y)));
+
+            return true;
         }
 
         @Override
@@ -171,14 +227,7 @@ public class GameView extends View {
             int x = (int) motionEvent2.getX();
             int y = (int) motionEvent2.getY();
 
-            if (motionEvent2.getAction() == MotionEvent.ACTION_UP || motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                System.out.println("ACTION_UP");
-                startPoint = endPoint = null;
-                invalidate();
-                return true;
-            }
-
-            endPoint = fieldNumForAbsCords(x, y);
+            endPoint = getPointForWallDrawing(x, y);
             if (!isValidWall(startPoint, endPoint)) {
                 endPoint = null;
             } else {
@@ -212,14 +261,6 @@ public class GameView extends View {
             return (isVertical(startPoint, endPoint) && ((Math.abs(startPoint.y - endPoint.y) >= MAX_FIELD_WIDTH - 1) && (Math.abs(startPoint.y - endPoint.y) <= MAX_FIELD_WIDTH + 1)))
                     ||
                     (isHorizontal(startPoint, endPoint) && ((Math.abs(startPoint.x - endPoint.x) >= MAX_FIELD_WIDTH - 1) && (Math.abs(startPoint.x - endPoint.x) <= MAX_FIELD_WIDTH + 1)));
-        }
-
-        private boolean isVertical(Point startPoint, Point endPoint) {
-            return startPoint.x == endPoint.x;
-        }
-
-        private boolean isHorizontal(Point startPoint, Point endPoint) {
-            return startPoint.y == endPoint.y;
         }
 
         @Override
