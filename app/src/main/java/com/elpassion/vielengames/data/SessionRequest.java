@@ -10,6 +10,5 @@ import lombok.experimental.Builder;
 public final class SessionRequest {
 
     String provider;
-    String userId;
     String providerToken;
 }

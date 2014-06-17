@@ -11,5 +11,6 @@ public final class Player {
 
     String id;
     String name;
+    String avatarUrl;
     String team;
 }
