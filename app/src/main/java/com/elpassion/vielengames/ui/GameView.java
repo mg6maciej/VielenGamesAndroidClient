@@ -126,8 +126,8 @@ public class GameView extends View {
         paint.setColor(Color.BLUE);
         if (game != null) {
             for (PawnPosition pos : game.getCurrentState().getPawns()) {
-                int pawnX = PositionConverter.getX(pos.getPosition());
-                int pawnY = PositionConverter.getY(pos.getPosition());
+                int pawnX = PositionConverter.getX(pos.getPosition().toLowerCase());
+                int pawnY = PositionConverter.getY(pos.getPosition().toLowerCase());
 
                 if (game.getActivePlayer().getId().equals(this.player.getId())) {
                     paint.setColor(getResources().getColor(R.color.green_normal));
@@ -143,8 +143,11 @@ public class GameView extends View {
         paint.setColor(Color.BLACK);
         if (game != null) {
             for (WallPosition wall : game.getCurrentState().getWalls()) {
-                int wallX = PositionConverter.getX(wall.getPosition());
-                int wallY = PositionConverter.getY(wall.getPosition());
+                if (wall == null) {
+                    continue;
+                }
+                int wallX = PositionConverter.getX(wall.getPosition().toLowerCase());
+                int wallY = PositionConverter.getY(wall.getPosition().toLowerCase());
 
                 PositionConverter.Orientation ornt = PositionConverter.getOrientation(wall.getPosition());
                 float startX = (ornt == PositionConverter.Orientation.hor) ? (wallX - 2) * dim : wallX * dim;
@@ -166,7 +169,7 @@ public class GameView extends View {
         float x = event.getX();
         float y = event.getY();
 
-        if (game.getActivePlayer().getId().equals(this.player.getId())) {
+        if (game != null && game.getActivePlayer().getId().equals(this.player.getId())) {
             scrollDetector.onTouchEvent(event);
             this.invalidate();
 
