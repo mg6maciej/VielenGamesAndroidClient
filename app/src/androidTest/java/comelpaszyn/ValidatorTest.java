@@ -25,7 +25,12 @@ public class ValidatorTest extends TestCase {
 
     }
 
-    public void testMoveValidation()
+    public void testWallMoveValidation()
+    {
+
+    }
+
+    public void testPawnMoveValidation()
     {
 
     }

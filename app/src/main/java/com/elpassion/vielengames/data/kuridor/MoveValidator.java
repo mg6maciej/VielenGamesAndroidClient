@@ -45,9 +45,32 @@ public class MoveValidator {
                 return false;
         }
 
-        //krzyżyjące się ściany
+        if (crossingWall(kuridorGameState, moveX, moveY, moveOrient))
+            return false;
 
         if (reachedOppositeSide(kuridorGameState, pawnX, pawnY, finish))
+            return true;
+
+        return false;
+    }
+
+    private static boolean crossingWall(KuridorGameState kuridorGameState, int moveX, int moveY,
+                                        PositionConverter.Orientation moveOrient) {
+        WallPosition aborted;
+        if (moveOrient == PositionConverter.Orientation.none)
+            return true;
+        else if (moveOrient == PositionConverter.Orientation.hor)
+            aborted = WallPosition.builder().
+                    position(PositionConverter.getPosition(
+                            PositionConverter.Orientation.ver, moveX + 1, moveY + 1)).
+                    build();
+        else
+            aborted = WallPosition.builder().
+                    position(PositionConverter.getPosition(
+                            PositionConverter.Orientation.hor, moveX - 1, moveY - 1)).
+                    build();
+
+        if (kuridorGameState.getWalls().contains(aborted))
             return true;
 
         return false;
@@ -58,25 +81,29 @@ public class MoveValidator {
         List<Tuple> reached = new ArrayList<Tuple>();
         List<WallPosition> walls = kuridorGameState.getWalls();
         reached.add(new Tuple(startX, startY));
+        int oldSize = reached.size() - 1;
 
-        for (Tuple t : reached)
-            if (t.y == finish)
-                return true;
+        while (oldSize != reached.size()) {
+            oldSize = reached.size();
 
-        if (reached.size() >= MAP_SIZE * MAP_SIZE)
-            return false;
+            for (Tuple t : reached)
+                if (t.y == finish)
+                    return true;
 
-        List<Tuple> newPositions = new ArrayList<Tuple>(4);
-        for (Tuple t : reached)
-        {
-            if (validatePawnMove(kuridorGameState, t.x + 1, t.y + 1, t.x, t.y, -1, -1))
-                newPositions.add(new Tuple(t.x + 1, t.y + 1));
-            if (validatePawnMove(kuridorGameState, t.x - 1, t.y - 1, t.x, t.y, -1, -1))
-                newPositions.add(new Tuple(t.x - 1, t.y - 1));
-            if (validatePawnMove(kuridorGameState, t.x + 1, t.y - 1, t.x, t.y, -1, -1))
-                newPositions.add(new Tuple(t.x + 1, t.y - 1));
-            if (validatePawnMove(kuridorGameState, t.x - 1, t.y + 1, t.x, t.y, -1, -1))
-                newPositions.add(new Tuple(t.x - 1, t.y + 1));
+            List<Tuple> newPositions = new ArrayList<Tuple>(4);
+            for (Tuple t : reached) {
+                if (validatePawnMove(kuridorGameState, t.x + 1, t.y + 1, t.x, t.y, -1, -1))
+                    newPositions.add(new Tuple(t.x + 1, t.y + 1));
+                if (validatePawnMove(kuridorGameState, t.x - 1, t.y - 1, t.x, t.y, -1, -1))
+                    newPositions.add(new Tuple(t.x - 1, t.y - 1));
+                if (validatePawnMove(kuridorGameState, t.x + 1, t.y - 1, t.x, t.y, -1, -1))
+                    newPositions.add(new Tuple(t.x + 1, t.y - 1));
+                if (validatePawnMove(kuridorGameState, t.x - 1, t.y + 1, t.x, t.y, -1, -1))
+                    newPositions.add(new Tuple(t.x - 1, t.y + 1));
+            }
+            for (Tuple t : newPositions)
+                if (!reached.contains(t))
+                    reached.add(t);
         }
 
         return false;
@@ -148,13 +175,11 @@ public class MoveValidator {
         return false;
     }
 
-    private static class Tuple
-    {
+    private static class Tuple {
         int x;
         int y;
 
-        Tuple(int x, int y)
-        {
+        Tuple(int x, int y) {
             this.x = x;
             this.y = y;
         }
