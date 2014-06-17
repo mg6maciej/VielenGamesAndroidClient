@@ -19,13 +19,15 @@ import java.util.List;
 public final class GameProposalsAdapter extends BaseAdapter {
 
     private Context context;
+    private Player me;
     private final LayoutInflater inflater;
     private final List<GameProposal> proposals;
 
-    public GameProposalsAdapter(Context context, List<GameProposal> proposals) {
+    public GameProposalsAdapter(Context context, List<GameProposal> proposals, Player me) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.proposals = proposals;
+        this.me = me;
     }
 
     @Override
@@ -50,6 +52,8 @@ public final class GameProposalsAdapter extends BaseAdapter {
         }
         GameProposal item = getItem(position);
         Player player = item.getAwaitingPlayers().get(0);
+        boolean joinVisible = !player.getId().equals(me.getId());
+        ViewUtils.setVisible(joinVisible, convertView, R.id.game_proposal_join_button);
         ViewUtils.setText(player.getName(), convertView, R.id.game_proposal_name);
         ImageView profileIcon = ViewUtils.findView(convertView, R.id.game_proposal_profile_icon);
         Picasso.with(context).load(player.getAvatarUrl()).into(profileIcon);

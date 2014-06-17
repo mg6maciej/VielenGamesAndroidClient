@@ -31,4 +31,9 @@ public final class ViewUtils {
         View view = findView(activity, viewId);
         view.setOnClickListener(listener);
     }
+
+    public static void setVisible(boolean visible, View parent, int viewId) {
+        View view = findView(parent, viewId);
+        view.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
 }
