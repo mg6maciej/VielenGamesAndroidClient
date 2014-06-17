@@ -14,20 +14,27 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Proposals"/>
+            android:background="@color/tab_background_color"
+            android:text="Proposals"
+            android:textColor="@color/tab_text_color"/>
 
-        <Button
+        <ImageButton
             android:id="@+id/main_add_proposal_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="+"/>
+            android:layout_height="match_parent"
+            android:background="@color/add_proposal_background_color"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:src="@drawable/add_proposal_icon"/>
 
         <Button
             android:id="@+id/main_my_games_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="My Games"/>
+            android:background="@color/tab_background_color"
+            android:text="My Games"
+            android:textColor="@color/tab_text_color"/>
 
     </LinearLayout>
 
@@ -38,9 +45,9 @@
         android:layout_weight="1"/>
 
     <Button
+        android:id="@+id/button_sign_out"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/button_sign_out"
         android:text="@string/sign_out"
         />
 

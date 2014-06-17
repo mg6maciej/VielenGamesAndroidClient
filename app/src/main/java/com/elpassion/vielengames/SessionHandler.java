@@ -1,5 +1,7 @@
 package com.elpassion.vielengames;
 
+import android.os.Handler;
+
 import com.elpassion.vielengames.api.VielenGamesClient;
 import com.elpassion.vielengames.data.Game;
 import com.elpassion.vielengames.data.SessionResponse;
@@ -20,6 +22,7 @@ public final class SessionHandler {
 
     private final VielenGamesClient client;
     private final EventBus eventBus;
+    private final Handler handler = new Handler();
 
     private String timestamp;
     private Set<Game> games;
@@ -55,6 +58,11 @@ public final class SessionHandler {
         timestamp = updates.getTimestamp();
         games.addAll(updates.getGames());
         eventBus.post(new GamesUpdatedEvent(games));
-        requestUpdates();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                requestUpdates();
+            }
+        }, 3000);
     }
 }
