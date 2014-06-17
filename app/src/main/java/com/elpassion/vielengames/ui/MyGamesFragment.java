@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.elpassion.vielengames.R;
@@ -11,6 +12,7 @@ import com.elpassion.vielengames.SessionHandler;
 import com.elpassion.vielengames.api.VielenGamesClient;
 import com.elpassion.vielengames.data.Game;
 import com.elpassion.vielengames.data.Updates;
+import com.elpassion.vielengames.event.GameClickEvent;
 import com.elpassion.vielengames.event.GamesUpdatedEvent;
 import com.elpassion.vielengames.event.UpdatesEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
@@ -44,6 +46,13 @@ public final class MyGamesFragment extends BaseFragment {
         listView = ViewUtils.findView(view, R.id.my_games_list);
         adapter = new GamesAdapter(getActivity());
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Game game = adapter.getItem(position);
+                eventBus.post(new GameClickEvent(game));
+            }
+        });
         updateAdapter(handler.getGames());
     }
 

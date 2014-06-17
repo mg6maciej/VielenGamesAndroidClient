@@ -1,5 +1,6 @@
 package com.elpassion.vielengames.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
@@ -9,6 +10,7 @@ import com.elpassion.vielengames.R;
 import com.elpassion.vielengames.api.GooglePlusAuth;
 import com.elpassion.vielengames.api.VielenGamesClient;
 import com.elpassion.vielengames.event.CreateGameProposalEvent;
+import com.elpassion.vielengames.event.GameClickEvent;
 import com.elpassion.vielengames.event.OnAccessTokenRevoked;
 import com.elpassion.vielengames.event.bus.EventBus;
 import com.elpassion.vielengames.utils.ViewUtils;
@@ -104,5 +106,12 @@ public final class MainActivity extends BaseActivity {
     @SuppressWarnings("unused")
     public void onEvent(CreateGameProposalEvent event) {
         Toast.makeText(this, "Created new game proposal.", Toast.LENGTH_SHORT).show();
+    }
+
+    @SuppressWarnings("unused")
+    public void onEvent(GameClickEvent event) {
+        Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra(GameActivity.GAME_ID_EXTRA, event.getGame().getId());
+        startActivity(intent);
     }
 }

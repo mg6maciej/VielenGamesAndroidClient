@@ -6,6 +6,7 @@ import com.elpassion.vielengames.R;
 import com.elpassion.vielengames.SessionHandler;
 import com.elpassion.vielengames.VielenGamesPrefs;
 import com.elpassion.vielengames.api.VielenGamesClient;
+import com.elpassion.vielengames.data.Game;
 import com.elpassion.vielengames.data.kuridor.KuridorGame;
 import com.elpassion.vielengames.data.kuridor.KuridorGameState;
 import com.elpassion.vielengames.data.kuridor.KuridorMove;
@@ -36,23 +37,18 @@ public class GameActivity extends BaseActivity implements MoveRequestListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_activity);
 
-        String gameId = "";//= getIntent().getExtras().getString(GAME_ID_EXTRA, "");
+        String gameId = getIntent().getExtras().getString(GAME_ID_EXTRA);
 
         gameView = (GameView) findViewById(R.id.game_view);
         gameView.setPlayer(prefs.getMe());
         gameView.setGameState(KuridorGameState.initial());
 
-//        for (Game game : sessionHandler.getGames()) {
-//            KuridorGame kgame = (KuridorGame) game;
-//            if (kgame.getId() == gameId) {
-//                gameView.setGame(kgame);
-//                break;
-//            }
-//        }
-    }
-
-    public void onEvent(UpdatesEvent event) {
-
+        for (Game game : sessionHandler.getGames()) {
+            if (game.getId().equals(gameId)) {
+                gameView.setGame((KuridorGame) game);
+                break;
+            }
+        }
     }
 
     @Override
