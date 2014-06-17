@@ -74,8 +74,8 @@ public class GameView extends View {
     }
 
     private Point fieldNumForAbsolute(int absX, int absY) {
-        clickedI = (absX / fieldDim);
-        clickedJ = (absY / fieldDim);
+        int clickedI = (absX / fieldDim);
+        int clickedJ = (absY / fieldDim);
 
         return new Point(clickedI, clickedJ);
     }
