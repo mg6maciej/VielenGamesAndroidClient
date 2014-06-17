@@ -124,7 +124,7 @@ public class GameView extends View {
 
     private void drawPawns(Canvas canvas, int dim) {
         paint.setColor(Color.BLUE);
-        if (game != null) {
+        if (game != null && game.getCurrentState() != null) {
             for (PawnPosition pos : game.getCurrentState().getPawns()) {
                 int pawnX = PositionConverter.getX(pos.getPosition().toLowerCase());
                 int pawnY = PositionConverter.getY(pos.getPosition().toLowerCase());
@@ -141,7 +141,7 @@ public class GameView extends View {
 
     private void drawWalls(Canvas canvas, int dim) {
         paint.setColor(Color.BLACK);
-        if (game != null) {
+        if (game != null && game.getCurrentState() != null) {
             for (WallPosition wall : game.getCurrentState().getWalls()) {
                 if (wall == null) {
                     continue;
@@ -169,7 +169,7 @@ public class GameView extends View {
         float x = event.getX();
         float y = event.getY();
 
-        if (game != null && game.getActivePlayer().getId().equals(this.player.getId())) {
+        if (game != null && game.getActivePlayer() != null && game.getActivePlayer().getId().equals(this.player.getId())) {
             scrollDetector.onTouchEvent(event);
             this.invalidate();
 
