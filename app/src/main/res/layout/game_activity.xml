@@ -1,14 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/game_background"
+              android:orientation="vertical">
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/game_background"
-    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="85dp"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/game_player_1_profile_icon"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/game_player_1_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_primary_color"
+            android:layout_toRightOf="@+id/game_player_1_profile_icon"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+    </RelativeLayout>
 
     <com.elpassion.vielengames.ui.GameView
         android:id="@+id/game_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="5dp" />
-</RelativeLayout>
+        android:layout_height="0dp"
+        android:layout_margin="5dp"
+        android:layout_weight="1"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="85dp"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/game_player_2_profile_icon"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/game_player_2_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_primary_color"
+            android:layout_toRightOf="@+id/game_player_2_profile_icon"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

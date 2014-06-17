@@ -1,6 +1,7 @@
 package com.elpassion.vielengames.ui;
 
 import android.os.Bundle;
+import android.widget.ImageView;
 
 import com.elpassion.vielengames.R;
 import com.elpassion.vielengames.SessionHandler;
@@ -11,6 +12,8 @@ import com.elpassion.vielengames.data.kuridor.KuridorGame;
 import com.elpassion.vielengames.data.kuridor.KuridorGameState;
 import com.elpassion.vielengames.data.kuridor.KuridorMove;
 import com.elpassion.vielengames.event.UpdatesEvent;
+import com.elpassion.vielengames.utils.ViewUtils;
+import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
 
@@ -43,12 +46,20 @@ public class GameActivity extends BaseActivity implements MoveRequestListener {
         gameView.setPlayer(prefs.getMe());
         gameView.setGameState(KuridorGameState.initial());
 
+        KuridorGame thisGame = null;
         for (Game game : sessionHandler.getGames()) {
             if (game.getId().equals(gameId)) {
-                gameView.setGame((KuridorGame) game);
+                thisGame = (KuridorGame) game;
+                gameView.setGame(thisGame);
                 break;
             }
         }
+        ViewUtils.setText(thisGame.getPlayers().get(0).getName(), this, R.id.game_player_1_name);
+        ViewUtils.setText(thisGame.getPlayers().get(1).getName(), this, R.id.game_player_2_name);
+        ImageView player1ProfileIcon = ViewUtils.findView(this, R.id.game_player_1_profile_icon);
+        ImageView player2ProfileIcon = ViewUtils.findView(this, R.id.game_player_2_profile_icon);
+        Picasso.with(this).load(thisGame.getPlayers().get(0).getAvatarUrl()).into(player1ProfileIcon);
+        Picasso.with(this).load(thisGame.getPlayers().get(1).getAvatarUrl()).into(player2ProfileIcon);
     }
 
     @Override

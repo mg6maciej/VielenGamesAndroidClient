@@ -22,6 +22,11 @@ public final class ViewUtils {
         view.setText(text);
     }
 
+    public static void setText(String text, Activity activity, int viewId) {
+        TextView view = findView(activity, viewId);
+        view.setText(text);
+    }
+
     public static void setOnClickListener(Activity activity, int viewId, View.OnClickListener listener) {
         View view = findView(activity, viewId);
         view.setOnClickListener(listener);
