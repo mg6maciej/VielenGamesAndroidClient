@@ -68,7 +68,6 @@ public final class LoginActivity extends BaseActivity implements View.OnClickLis
                 googlePlusAuth.resolveSignInErrors();
             }
         }
-        eventBus.post(new OnAccessTokenReceived("dsad"));
     }
 
     @SuppressWarnings("unused")
