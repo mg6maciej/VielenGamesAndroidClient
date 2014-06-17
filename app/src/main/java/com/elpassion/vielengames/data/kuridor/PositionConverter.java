@@ -49,7 +49,7 @@ public class PositionConverter {
             if (position == null || position.length() < 1)
                 return Orientation.none;
 
-            if ('h' == position.charAt(0))
+            if ('h' == position.charAt(0) && position.length() > 2)
                 return Orientation.hor;
 
             else if ('v' == position.charAt(0))
@@ -59,6 +59,6 @@ public class PositionConverter {
         }
 
         public static String getPosition(Orientation orientation, int x, int y) {
-            return orientation.toString() + (char) ((int) 'a' + x) + (char) ((int) '8' - y);
+            return (orientation.toString() + (char) ((int) 'a' + x) + (char) ((int) '9' - y));
         }
     }

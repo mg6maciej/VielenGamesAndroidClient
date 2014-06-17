@@ -17,7 +17,7 @@ public class MoveValidator {
         int moveY = PositionConverter.getY(kuridorMove.getPosition());
         PositionConverter.Orientation orientation = PositionConverter.getOrientation(kuridorMove.getPosition());
 
-        int opponentId = kuridorGameState.getPawns().get(0).getTeam() == player.getTeam() ? 0 : 1;
+        int opponentId = kuridorGameState.getPawns().get(0).getTeam() == player.getTeam() ? 1 : 0;
         int opponentX = PositionConverter.getX(kuridorGameState.getPawns().get(opponentId).getPosition());
         int opponentY = PositionConverter.getY(kuridorGameState.getPawns().get(opponentId).getPosition());
 
@@ -28,7 +28,8 @@ public class MoveValidator {
         return kuridorMove.getMoveType() == KuridorMove.MoveType.pawn ?
                 validatePawnMove(kuridorGameState, moveX, moveY, pawnX, pawnY,
                         opponentX, opponentY) :
-                validateWallMove(kuridorGameState, moveX, moveY, orientation, pawnId == 0 ? 0 : MAP_SIZE - 1, pawnX, pawnY,
+                validateWallMove(kuridorGameState, moveX, moveY, orientation,
+                        pawnId == 0 ? 0 : MAP_SIZE - 1, pawnX, pawnY,
                         opponentX, opponentY);
     }
 
@@ -38,10 +39,10 @@ public class MoveValidator {
         if (moveOrient == PositionConverter.Orientation.none)
             return false;
         else if (moveOrient == PositionConverter.Orientation.hor) {
-            if (moveX < 0 || moveX >= MAP_SIZE - 2 || moveY < 0 || moveY >= MAP_SIZE - 1)
+            if (moveX < 0 || moveX > MAP_SIZE - 2 || moveY < 0 || moveY > MAP_SIZE - 2)
                 return false;
         } else if (moveOrient == PositionConverter.Orientation.ver) {
-            if (moveX < 1 || moveX >= MAP_SIZE || moveY < 2 || moveY >= MAP_SIZE)
+            if (moveX < 1 || moveX > MAP_SIZE - 1 || moveY < 1 || moveY > MAP_SIZE - 1)
                 return false;
         }
 
@@ -73,6 +74,20 @@ public class MoveValidator {
         if (kuridorGameState.getWalls().contains(aborted))
             return true;
 
+        if (moveOrient == PositionConverter.Orientation.hor)
+            aborted = WallPosition.builder().
+                    position(PositionConverter.getPosition(
+                            PositionConverter.Orientation.hor, moveX - 1, moveY)).
+                    build();
+        else
+            aborted = WallPosition.builder().
+                    position(PositionConverter.getPosition(
+                            PositionConverter.Orientation.ver, moveX, moveY - 1)).
+                    build();
+
+        if (kuridorGameState.getWalls().contains(aborted))
+            return true;
+
         return false;
     }
 
@@ -80,8 +95,9 @@ public class MoveValidator {
                                                int startX, int startY, int finish) {
         List<Tuple> reached = new ArrayList<Tuple>();
         List<WallPosition> walls = kuridorGameState.getWalls();
+        List<Tuple> newPositions = new ArrayList<Tuple>(4);
         reached.add(new Tuple(startX, startY));
-        int oldSize = reached.size() - 1;
+        int oldSize = 0;
 
         while (oldSize != reached.size()) {
             oldSize = reached.size();
@@ -90,20 +106,23 @@ public class MoveValidator {
                 if (t.y == finish)
                     return true;
 
-            List<Tuple> newPositions = new ArrayList<Tuple>(4);
+            newPositions.clear();
             for (Tuple t : reached) {
-                if (validatePawnMove(kuridorGameState, t.x + 1, t.y + 1, t.x, t.y, -1, -1))
-                    newPositions.add(new Tuple(t.x + 1, t.y + 1));
-                if (validatePawnMove(kuridorGameState, t.x - 1, t.y - 1, t.x, t.y, -1, -1))
-                    newPositions.add(new Tuple(t.x - 1, t.y - 1));
-                if (validatePawnMove(kuridorGameState, t.x + 1, t.y - 1, t.x, t.y, -1, -1))
-                    newPositions.add(new Tuple(t.x + 1, t.y - 1));
-                if (validatePawnMove(kuridorGameState, t.x - 1, t.y + 1, t.x, t.y, -1, -1))
-                    newPositions.add(new Tuple(t.x - 1, t.y + 1));
+                if (validatePawnMove(kuridorGameState, t.x + 1, t.y, t.x, t.y, -1, -1))
+                    newPositions.add(new Tuple(t.x + 1, t.y));
+                if (validatePawnMove(kuridorGameState, t.x - 1, t.y, t.x, t.y, -1, -1))
+                    newPositions.add(new Tuple(t.x - 1, t.y));
+                if (validatePawnMove(kuridorGameState, t.x, t.y - 1, t.x, t.y, -1, -1))
+                    newPositions.add(new Tuple(t.x, t.y - 1));
+                if (validatePawnMove(kuridorGameState, t.x, t.y + 1, t.x, t.y, -1, -1))
+                    newPositions.add(new Tuple(t.x, t.y + 1));
             }
             for (Tuple t : newPositions)
                 if (!reached.contains(t))
                     reached.add(t);
+
+            if (reached.size() >= MAP_SIZE * MAP_SIZE)
+                return true;
         }
 
         return false;
@@ -115,13 +134,19 @@ public class MoveValidator {
         if (moveX < 0 || moveY < 0 || moveX >= MAP_SIZE || moveY >= MAP_SIZE)
             return false;
 
+        if (moveX == opponentX && moveY == opponentY)
+            return false;
+
         if (blockingWall(kuridorGameState, moveX, moveY, pawnX, pawnY, opponentX, opponentY))
             return false;
 
-        if (1 == (Math.abs(opponentX - moveX) + Math.abs(opponentY - moveY)) &&
-                1 == (Math.abs(opponentX - pawnX) + Math.abs(opponentY - pawnY)))
-            return validatePawnMove(kuridorGameState, moveX, moveY, opponentX, opponentY,
-                    opponentX, opponentY);
+        if (Math.abs(pawnX - moveX) > 1 || Math.abs(pawnY - moveY) > 1) {
+            if (Math.abs(opponentX - moveX) > 1 || Math.abs(opponentY - moveY) > 1)
+                return false;
+            else
+                return validatePawnMove(kuridorGameState, moveX, moveY, opponentX, opponentY,
+                        opponentX, opponentY);
+        }
 
         return true;
     }
@@ -130,12 +155,15 @@ public class MoveValidator {
                                         int pawnX, int pawnY, int opponentX, int opponentY) {
         List<WallPosition> blockingWalls = new ArrayList<WallPosition>(2);
         PositionConverter.Orientation orientation;
-        if (pawnY == moveY)
+                if (pawnY == moveY)
             orientation = PositionConverter.Orientation.ver;
         else if (pawnX == moveX)
             orientation = PositionConverter.Orientation.hor;
         else
-            return true;
+            return false;
+
+        if (kuridorGameState.getWalls().size() == 0)
+            return false;
 
         if (pawnY > moveY) {
             blockingWalls.add(WallPosition.builder().
@@ -168,7 +196,7 @@ public class MoveValidator {
         }
 
         for (WallPosition w : kuridorGameState.getWalls()) {
-            if (blockingWalls.get(0) == w || blockingWalls.get(1) == w)
+            if (blockingWalls.get(0).equals(w) || blockingWalls.get(1).equals(w))
                 return true;
         }
 
