@@ -11,7 +11,6 @@ import com.elpassion.vielengames.data.kuridor.KuridorMove;
 import java.util.List;
 
 import retrofit.Callback;
-import retrofit.client.Response;
 import retrofit.http.Body;
 import retrofit.http.DELETE;
 import retrofit.http.GET;

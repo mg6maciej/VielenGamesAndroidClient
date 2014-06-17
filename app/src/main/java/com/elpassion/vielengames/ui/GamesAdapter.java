@@ -57,7 +57,7 @@ public final class GamesAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void updateGames(List<Game> games) {
+    public void updateGames(Set<Game> games) {
         this.gameSet.addAll(games);
         this.gameList = new ArrayList<Game>(gameSet);
         notifyDataSetChanged();

@@ -3,9 +3,14 @@ package com.elpassion.vielengames;
 import android.app.Application;
 import android.content.Context;
 
+import javax.inject.Inject;
+
 import dagger.ObjectGraph;
 
 public final class VielenGamesApp extends Application {
+
+    @Inject
+    SessionHandler handler;
 
     private ObjectGraph objectGraph;
 
@@ -13,6 +18,7 @@ public final class VielenGamesApp extends Application {
     public void onCreate() {
         super.onCreate();
         initObjectGraph();
+        inject(this);
     }
 
     private void initObjectGraph() {
@@ -21,6 +27,10 @@ public final class VielenGamesApp extends Application {
 
     public static void inject(Context context, Object object) {
         VielenGamesApp app = (VielenGamesApp) context.getApplicationContext();
-        app.objectGraph.inject(object);
+        app.inject(object);
+    }
+
+    private void inject(Object object) {
+        objectGraph.inject(object);
     }
 }

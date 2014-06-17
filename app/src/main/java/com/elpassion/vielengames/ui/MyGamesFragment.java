@@ -7,11 +7,16 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.elpassion.vielengames.R;
+import com.elpassion.vielengames.SessionHandler;
 import com.elpassion.vielengames.api.VielenGamesClient;
+import com.elpassion.vielengames.data.Game;
 import com.elpassion.vielengames.data.Updates;
+import com.elpassion.vielengames.event.GamesUpdatedEvent;
 import com.elpassion.vielengames.event.UpdatesEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
 import com.elpassion.vielengames.utils.ViewUtils;
+
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -21,6 +26,8 @@ public final class MyGamesFragment extends BaseFragment {
     VielenGamesClient client;
     @Inject
     EventBus eventBus;
+    @Inject
+    SessionHandler handler;
 
     private ListView listView;
     private GamesAdapter adapter;
@@ -37,16 +44,16 @@ public final class MyGamesFragment extends BaseFragment {
         listView = ViewUtils.findView(view, R.id.my_games_list);
         adapter = new GamesAdapter(getActivity());
         listView.setAdapter(adapter);
-        updateAdapter(client.getUpdates());
+        updateAdapter(handler.getGames());
     }
 
     @SuppressWarnings("unused")
-    public void onEvent(UpdatesEvent event) {
-        updateAdapter(event.getUpdates());
+    public void onEvent(GamesUpdatedEvent event) {
+        updateAdapter(event.getGames());
     }
 
-    private void updateAdapter(Updates updates) {
-        adapter.updateGames(updates.getGames());
+    private void updateAdapter(Set<Game> games) {
+        adapter.updateGames(games);
     }
 
     @Override

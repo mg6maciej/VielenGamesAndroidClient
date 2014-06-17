@@ -15,6 +15,7 @@ import com.elpassion.vielengames.event.GetGameProposalsResponseEvent;
 import com.elpassion.vielengames.event.JoinGameProposalResponseEvent;
 import com.elpassion.vielengames.event.LeaveGameProposalResponseEvent;
 import com.elpassion.vielengames.event.SessionResponseEvent;
+import com.elpassion.vielengames.event.UpdatesEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
 
 import java.util.Collections;
@@ -29,7 +30,6 @@ public final class VielenGamesClient {
     private final EventBus eventBus;
     private final VielenGamesApi api;
     private final VielenGamesPrefs prefs;
-    private Updates updates;
 
     public VielenGamesClient(EventBus eventBus, VielenGamesApi api, VielenGamesPrefs prefs) {
         this.eventBus = eventBus;
@@ -43,8 +43,16 @@ public final class VielenGamesClient {
             public void success(SessionResponse sessionResponse, Response response) {
                 prefs.setToken(sessionResponse.getAuthToken());
                 prefs.setMe(sessionResponse.getUser());
-                updates = sessionResponse.getUpdates();
                 eventBus.post(new SessionResponseEvent(sessionResponse));
+            }
+        });
+    }
+
+    public void requestUpdates(String since) {
+        api.getSessionUpdates(since, new DefaultCallback<Updates>() {
+            @Override
+            public void success(Updates updates, Response response) {
+                eventBus.post(new UpdatesEvent(updates));
             }
         });
     }
@@ -95,10 +103,6 @@ public final class VielenGamesClient {
             public void success(Empty empty, Response response) {
             }
         });
-    }
-
-    public Updates getUpdates() {
-        return updates;
     }
 
     private abstract class DefaultCallback<T> implements Callback<T> {

@@ -35,6 +35,7 @@ import retrofit.converter.GsonConverter;
 
 @Module(
         injects = {
+                VielenGamesApp.class,
                 LauncherActivity.class,
                 LoginActivity.class,
                 MainActivity.class,
