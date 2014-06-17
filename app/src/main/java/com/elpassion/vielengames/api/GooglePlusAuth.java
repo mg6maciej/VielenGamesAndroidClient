@@ -15,7 +15,7 @@ public interface GooglePlusAuth {
     String scope2 = "https://www.googleapis.com/auth/userinfo.profile";
 
 
-    public void connect();
+    public void connect(Context context);
 
     public void disconnect();
 
@@ -29,7 +29,7 @@ public interface GooglePlusAuth {
 
     public void getToken(Context ctx);
 
-    public void requestSignUserOut();
+    public void requestSignUserOut(Context context);
 
     public boolean isConnected();
 }

@@ -9,6 +9,7 @@ import com.elpassion.vielengames.R;
 import com.elpassion.vielengames.api.GooglePlusAuth;
 import com.elpassion.vielengames.api.VielenGamesClient;
 import com.elpassion.vielengames.event.CreateGameProposalEvent;
+import com.elpassion.vielengames.event.OnAccessTokenRevoked;
 import com.elpassion.vielengames.event.bus.EventBus;
 import com.elpassion.vielengames.utils.ViewUtils;
 
@@ -71,9 +72,13 @@ public final class MainActivity extends BaseActivity {
     }
 
     private void onSignOutClick() {
-        googlePlusAuth.requestSignUserOut();
-        finish();
+        googlePlusAuth.requestSignUserOut(this);
+//        finish();
 
+    }
+
+    public void onEvent(OnAccessTokenRevoked event){
+        finish();
     }
 
 

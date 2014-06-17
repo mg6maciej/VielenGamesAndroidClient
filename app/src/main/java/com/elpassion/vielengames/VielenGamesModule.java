@@ -19,6 +19,7 @@ import com.elpassion.vielengames.ui.LoginActivity;
 import com.elpassion.vielengames.ui.MainActivity;
 import com.elpassion.vielengames.ui.MyGamesFragment;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -87,7 +88,7 @@ public final class VielenGamesModule {
 //                .addConnectionCallbacks(this)
 //                .addOnConnectionFailedListener(this)
                 .addApi(Plus.API)
-                .addScope(Plus.SCOPE_PLUS_LOGIN)
+                .addScope(Plus.SCOPE_PLUS_PROFILE)
                 .build();
     }
 

@@ -23,6 +23,8 @@ import javax.inject.Inject;
 public final class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     public static final String TAG = LoginActivity.class.getSimpleName();
+
+
     @Inject
     GooglePlusAuth googlePlusAuth;
 
@@ -41,23 +43,31 @@ public final class LoginActivity extends BaseActivity implements View.OnClickLis
         setContentView(R.layout.login_activity);
 
         findViewById(R.id.sign_in_button).setOnClickListener(this);
+
+        eventBus.register(this);
+        googlePlusAuth.connect(this);
+
     }
 
 
     @Override
     protected void onStart() {
         super.onStart();
-        googlePlusAuth.connect();
-        eventBus.register(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        googlePlusAuth.disconnect();
-        eventBus.unregister(this);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        googlePlusAuth.disconnect();
+        eventBus.unregister(this);
+
+
+    }
 
     @Override
     public void onClick(View v) {
@@ -76,10 +86,12 @@ public final class LoginActivity extends BaseActivity implements View.OnClickLis
         switch (event.getType()) {
             case USER_CONNECTED: {
                 Toast.makeText(this, getString(R.string.user_successfully_connected), Toast.LENGTH_SHORT).show();
+                Log.i(TAG, "User conncted, get TOken()");
                 googlePlusAuth.getToken(this);
                 break;
             }
             case REQUEST_START_INTENT_SENDER: {
+
                 ConnectionResult result = event.getConnectionResult();
                 try {
                     result.startResolutionForResult(this, GooglePlusAuth.RC_SIGN_IN);
@@ -116,6 +128,7 @@ public final class LoginActivity extends BaseActivity implements View.OnClickLis
         finish();
     }
 
+
     protected void onActivityResult(int requestCode, int responseCode, Intent intent) {
         if (requestCode == GooglePlusAuth.RC_SIGN_IN) {
             if (responseCode != RESULT_OK) {
@@ -124,8 +137,8 @@ public final class LoginActivity extends BaseActivity implements View.OnClickLis
             googlePlusAuth.restart();
         } else if (requestCode == GooglePlusAuth.REQUEST_AUTHORIZATION_CODE) {
             if (responseCode == RESULT_OK) {
-                Log.i(TAG, "came back from authorization");
-
+                Log.i(TAG, "came back from authorization, getToken()");
+                googlePlusAuth.getToken(this);
             }
         }
     }

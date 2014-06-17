@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.elpassion.vielengames.event.OnAccessTokenReceived;
+import com.elpassion.vielengames.event.OnAccessTokenRevoked;
 import com.elpassion.vielengames.event.OnGPlusAuthenticationResponse;
 import com.elpassion.vielengames.event.bus.EventBus;
 import com.google.android.gms.auth.GoogleAuthException;
@@ -14,6 +15,8 @@ import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
 
 import java.io.IOException;
@@ -28,6 +31,8 @@ public class GooglePlusAuthImpl implements GooglePlusAuth, ConnectionCallbacks, 
 
     private final GoogleApiClient googleApiClient;
 
+    private String currentAccessToken = "";
+
     private final EventBus eventBus;
 
     /*  A flag indicating that a PendingIntent is in progress and prevents
@@ -40,6 +45,8 @@ public class GooglePlusAuthImpl implements GooglePlusAuth, ConnectionCallbacks, 
 
     private boolean wasSignOutRequested = false;
 
+    private boolean isTokenRequestInProgress = false;
+
 
     public GooglePlusAuthImpl(GoogleApiClient googleApiClient, EventBus eventBus) {
         this.googleApiClient = googleApiClient;
@@ -51,8 +58,12 @@ public class GooglePlusAuthImpl implements GooglePlusAuth, ConnectionCallbacks, 
     }
 
     @Override
-    public void connect() {
+    public void connect(Context context) {
+        clearTokenCache(context);
+
         googleApiClient.connect();
+
+
     }
 
     @Override
@@ -95,6 +106,14 @@ public class GooglePlusAuthImpl implements GooglePlusAuth, ConnectionCallbacks, 
 
     @Override
     public void getToken(final Context context) {
+        Log.i(TAG, "get TOken called");
+
+        if (isTokenRequestInProgress) {
+            Log.i(TAG, "token request is in progress, NOT going further");
+            return;
+        }
+        isTokenRequestInProgress = true;
+
         AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... params) {
@@ -110,6 +129,7 @@ public class GooglePlusAuthImpl implements GooglePlusAuth, ConnectionCallbacks, 
                     accessToken = null;
                 } catch (UserRecoverableAuthException e) {
                     Log.e(TAG, "UserRecoverableAuthException Error on getting token : ", e);
+                    isTokenRequestInProgress = false;
                     eventBus.post(OnGPlusAuthenticationResponse.builder()
                                     .type(OnGPlusAuthenticationResponse.Type.USER_RECOVERABLE_AUTH_REQUEST)
                                     .intent(e.getIntent())
@@ -131,6 +151,8 @@ public class GooglePlusAuthImpl implements GooglePlusAuth, ConnectionCallbacks, 
             protected void onPostExecute(String token) {
                 if (token != null && !token.equals("")) {
                     Log.i(TAG, "Access token retrieved:" + token);
+                    currentAccessToken = token;
+                    isTokenRequestInProgress = false;
                     eventBus.post(new OnAccessTokenReceived(token));
 
                 }
@@ -143,15 +165,55 @@ public class GooglePlusAuthImpl implements GooglePlusAuth, ConnectionCallbacks, 
     }
 
     @Override
-    public void requestSignUserOut() {
+    public void requestSignUserOut(final Context context) {
+
 
         if (!googleApiClient.isConnected() || googleApiClient.isConnecting()) {
             wasSignOutRequested = true;
             googleApiClient.connect();
         } else {
-            signUserOut();
+            signUserOutAndRevoke();
         }
 
+    }
+
+    private void clearTokenCache(final Context context) {
+        AsyncTask<Void, Void, String> task = new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                try {
+                    Log.i(TAG, "clearing token...");
+                    GoogleAuthUtil.clearToken(context, currentAccessToken);
+                    Log.i(TAG, "clearing token successfull");
+
+                } catch (GoogleAuthException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                return "";
+            }
+        };
+
+        task.execute(null, null);
+    }
+
+    private void signUserOutAndRevoke() {
+
+
+        // Prior to disconnecting, run clearDefaultAccount().
+        Plus.AccountApi.clearDefaultAccount(googleApiClient);
+        Plus.AccountApi.revokeAccessAndDisconnect(googleApiClient)
+                .setResultCallback(new ResultCallback<Status>() {
+
+                    @Override
+                    public void onResult(Status status) {
+                        Log.i(TAG, "signUseOut and revoke:" + status);
+
+                        eventBus.post(new OnAccessTokenRevoked());
+                    }
+                });
     }
 
     private void signUserOut() {
@@ -177,7 +239,7 @@ public class GooglePlusAuthImpl implements GooglePlusAuth, ConnectionCallbacks, 
         mSignInClicked = false;
 
         if (wasSignOutRequested) {
-            signUserOut();
+            signUserOutAndRevoke();
         } else {
             eventBus.post(
                     OnGPlusAuthenticationResponse.builder()
@@ -185,10 +247,7 @@ public class GooglePlusAuthImpl implements GooglePlusAuth, ConnectionCallbacks, 
                             .type(OnGPlusAuthenticationResponse.Type.USER_CONNECTED)
                             .build()
             );
-
         }
-
-
     }
 
     @Override
