@@ -14,6 +14,7 @@ import com.elpassion.vielengames.R;
 import com.elpassion.vielengames.data.Player;
 import com.elpassion.vielengames.data.kuridor.KuridorGame;
 import com.elpassion.vielengames.data.kuridor.KuridorGameState;
+import com.elpassion.vielengames.data.kuridor.KuridorMove;
 import com.elpassion.vielengames.data.kuridor.PawnPosition;
 import com.elpassion.vielengames.data.kuridor.PositionConverter;
 import com.elpassion.vielengames.data.kuridor.WallPosition;
@@ -170,7 +171,10 @@ public class GameView extends View {
 
         if (event.getAction() == MotionEvent.ACTION_UP && startPoint != null && endPoint != null) {
             System.out.println(getMovePostition());
-            //listener.onRequest(game, new KuridorMove(KuridorMove.MoveType.wall, getMovePostition()));
+            KuridorMove move = new KuridorMove(KuridorMove.MoveType.wall, getMovePostition());
+            //if(MoveValidator.validateMove(game.getCurrentState(), player, move)) {
+            // listener.onRequest(game, new KuridorMove(KuridorMove.MoveType.wall, getMovePostition()));
+            //}
 
             gameState.getWalls().add(WallPosition.builder().position(getMovePostition()).build());
 
@@ -229,9 +233,11 @@ public class GameView extends View {
             Point p = fieldNumForAbsolute(x, y);
 
             System.out.println(PositionConverter.getPosition(PositionConverter.Orientation.none, p.x, p.y));
+            KuridorMove move = new KuridorMove(KuridorMove.MoveType.pawn, PositionConverter.getPosition(PositionConverter.Orientation.none, p.x, p.y));
+            //if (MoveValidator.validateMove(game.getCurrentState(), player, move)) {
             // TODO - real game
             //listener.onRequest(game, new KuridorMove(KuridorMove.MoveType.pawn, PositionConverter.getPosition(PositionConverter.Orientation.none, p.x, p.y)));
-
+            //}
             return true;
         }
 
