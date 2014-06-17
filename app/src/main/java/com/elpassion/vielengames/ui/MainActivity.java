@@ -3,6 +3,9 @@ package com.elpassion.vielengames.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -63,26 +66,37 @@ public final class MainActivity extends BaseActivity {
                 onMyGamesClick();
             }
         });
-
-        ViewUtils.setOnClickListener(this, R.id.button_sign_out, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onSignOutClick();
-            }
-        });
-
     }
 
     private void onSignOutClick() {
         googlePlusAuth.requestSignUserOut(this);
-//        finish();
 
     }
 
-    public void onEvent(OnAccessTokenRevoked event){
+    public void onEvent(OnAccessTokenRevoked event) {
         finish();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_sign_out:
+                onSignOutClick();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+
+    }
 
     private void onProposalsClick() {
         replaceWithFragment(new GameProposalsFragment());

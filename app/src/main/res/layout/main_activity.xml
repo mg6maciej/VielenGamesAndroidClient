@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
             android:layout_weight="1"
             android:background="@color/tab_background_color"
             android:text="Proposals"
-            android:textColor="@color/tab_text_color"/>
+            android:textColor="@color/tab_text_color" />
 
         <ImageButton
             android:id="@+id/main_add_proposal_button"
@@ -25,7 +25,7 @@
             android:background="@color/add_proposal_background_color"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:src="@drawable/add_proposal_icon"/>
+            android:src="@drawable/add_proposal_icon" />
 
         <Button
             android:id="@+id/main_my_games_button"
@@ -34,7 +34,7 @@
             android:layout_weight="1"
             android:background="@color/tab_background_color"
             android:text="My Games"
-            android:textColor="@color/tab_text_color"/>
+            android:textColor="@color/tab_text_color" />
 
     </LinearLayout>
 
@@ -42,13 +42,7 @@
         android:id="@+id/main_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
-    <Button
-        android:id="@+id/button_sign_out"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sign_out"
-        />
 
 </LinearLayout>
