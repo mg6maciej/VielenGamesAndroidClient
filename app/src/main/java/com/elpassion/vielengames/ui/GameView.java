@@ -24,7 +24,7 @@ import com.elpassion.vielengames.data.kuridor.WallPosition;
 public class GameView extends View {
 
     private static final int FIELD_COUNT = 9;
-    private static final int DOT_RADIUS = 5;
+    private static final int DOT_RADIUS = 4;
     //    private static final int BORDER = 4;
     private static final int WALL_WIDTH = DOT_RADIUS * 2;
     private static final int MAX_WALL_WIDTH = 2;
@@ -34,9 +34,6 @@ public class GameView extends View {
     private int START_Y = DOT_RADIUS * 5;
 
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-
-    private int clickedI = 0;
-    private int clickedJ = 0;
 
     private int fieldDim;
     private int pawnRadius;
@@ -70,8 +67,8 @@ public class GameView extends View {
     }
 
     private Point getPointForWallDrawing(int absX, int absY) {
-        clickedI = (int) ((absX + (float) fieldDim / 2) / fieldDim);
-        clickedJ = (int) ((absY + (float) fieldDim / 2) / fieldDim);
+        int clickedI = (int) ((absX + (float) fieldDim / 2) / fieldDim);
+        int clickedJ = (int) ((absY + (float) fieldDim / 2) / fieldDim);
 
         return new Point(clickedI, clickedJ);
     }
@@ -105,12 +102,22 @@ public class GameView extends View {
     }
 
     private void drawBoard(Canvas canvas, int dim) {
-        for (int y = 0; y < FIELD_COUNT + 1; ++y) {
+        paint.setColor(getResources().getColor(R.color.gray_dot));
+        for (int y = 1; y < FIELD_COUNT; ++y) {
             for (int x = 0; x < FIELD_COUNT + 1; ++x) {
-                paint.setColor(Color.BLACK);
                 canvas.drawCircle(START_X + x * dim, START_Y + y * dim, DOT_RADIUS, paint);
             }
         }
+
+        paint.setColor(getResources().getColor(R.color.green_normal));
+        for (int x = 0; x < FIELD_COUNT + 1; ++x) {
+            canvas.drawCircle(START_X + x * dim, START_Y, DOT_RADIUS, paint);
+        }
+        paint.setColor(getResources().getColor(R.color.blue_normal));
+        for (int x = 0; x < FIELD_COUNT + 1; ++x) {
+            canvas.drawCircle(START_X + x * dim, START_Y + FIELD_COUNT * dim, DOT_RADIUS, paint);
+        }
+
     }
 
     private void drawPawns(Canvas canvas, int dim) {
