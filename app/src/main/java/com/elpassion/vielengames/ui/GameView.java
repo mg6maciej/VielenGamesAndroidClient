@@ -56,8 +56,8 @@ public class GameView extends View {
     }
 
     private Point fieldNumForAbsCords(int absX, int absY) {
-        clickedI = absX / fieldDim;
-        clickedJ = absY / fieldDim;
+        clickedI = (int) ((absX + (float) fieldDim / 2) / fieldDim);
+        clickedJ = (int) ((absY + (float) fieldDim / 2) / fieldDim);
 
         return new Point(clickedI, clickedJ);
     }
