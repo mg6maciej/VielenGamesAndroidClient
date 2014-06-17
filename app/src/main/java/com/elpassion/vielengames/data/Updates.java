@@ -11,6 +11,6 @@ import lombok.experimental.Builder;
 @Builder
 public final class Updates {
 
-    String timestamp;
+    String until;
     List<Game> games;
 }

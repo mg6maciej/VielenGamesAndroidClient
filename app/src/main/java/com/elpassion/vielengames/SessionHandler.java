@@ -55,7 +55,7 @@ public final class SessionHandler {
     }
 
     private void storeUpdates(Updates updates) {
-        timestamp = updates.getTimestamp();
+        timestamp = updates.getUntil();
         games.addAll(updates.getGames());
         eventBus.post(new GamesUpdatedEvent(games));
         handler.postDelayed(new Runnable() {
