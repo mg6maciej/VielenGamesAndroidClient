@@ -1,7 +1,6 @@
 package com.elpassion.vielengames.ui;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -25,9 +24,14 @@ import com.elpassion.vielengames.data.kuridor.WallPosition;
 public class GameView extends View {
 
     private static final int FIELD_COUNT = 9;
-    private static final int BORDER = 5;
-    private static final int WALL_WIDTH = 15;
-    private static final int MAX_FIELD_WIDTH = 2;
+    private static final int DOT_RADIUS = 5;
+    //    private static final int BORDER = 4;
+    private static final int WALL_WIDTH = DOT_RADIUS * 2;
+    private static final int MAX_WALL_WIDTH = 2;
+    private static final int PAWN_RADIUS_GAP = 6;
+
+    private int START_X = DOT_RADIUS * 5;
+    private int START_Y = DOT_RADIUS * 5;
 
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
@@ -35,6 +39,7 @@ public class GameView extends View {
     private int clickedJ = 0;
 
     private int fieldDim;
+    private int pawnRadius;
 
     private KuridorGame game;
     private Point startPoint = null;
@@ -60,11 +65,9 @@ public class GameView extends View {
         this.gameState = gameState;
     }
 
-
     public void setMoveListener(MoveRequestListener listener) {
         this.listener = listener;
     }
-
 
     private Point getPointForWallDrawing(int absX, int absY) {
         clickedI = (int) ((absX + (float) fieldDim / 2) / fieldDim);
@@ -83,31 +86,29 @@ public class GameView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        int width = this.getWidth() / FIELD_COUNT;
-        int height = this.getHeight() / FIELD_COUNT;
+        int width = (this.getWidth() - START_X) / FIELD_COUNT;
+        int height = (this.getHeight() - START_Y) / FIELD_COUNT;
         fieldDim = (width < height) ? width : height;
+        pawnRadius = fieldDim / 2 - PAWN_RADIUS_GAP;
+
 
         drawBoard(canvas, fieldDim);
         drawPawns(canvas, fieldDim);
         drawWalls(canvas, fieldDim);
 
-        paint.setTextSize(25);
+//        paint.setTextSize(25);
         if (startPoint != null && endPoint != null) {
-            canvas.drawText(String.format("start(%d, %d) - end(%d, %d)", startPoint.x, startPoint.y, endPoint.x, endPoint.y), 50, 50, paint);
-            paint.setStrokeWidth(20);
-            canvas.drawLine(startPoint.x * fieldDim, startPoint.y * fieldDim, endPoint.x * fieldDim, endPoint.y * fieldDim, paint);
+//            canvas.drawText(String.format("start(%d, %d) - end(%d, %d)", startPoint.x, startPoint.y, endPoint.x, endPoint.y), 50, 50, paint);
+            paint.setStrokeWidth(WALL_WIDTH);
+            canvas.drawLine(START_X + startPoint.x * fieldDim, START_Y + startPoint.y * fieldDim, START_X + endPoint.x * fieldDim, START_Y + endPoint.y * fieldDim, paint);
         }
     }
 
     private void drawBoard(Canvas canvas, int dim) {
-        for (int y = 0; y < FIELD_COUNT; ++y) {
-            for (int x = 0; x < FIELD_COUNT; ++x) {
+        for (int y = 0; y < FIELD_COUNT + 1; ++y) {
+            for (int x = 0; x < FIELD_COUNT + 1; ++x) {
                 paint.setColor(Color.BLACK);
-                canvas.drawBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.slider), x * dim, y * dim, paint);
-                //canvas.drawRect(x * dim, y * dim, (x + 1) * dim, (y + 1) * dim, paint);
-
-                paint.setColor(Color.WHITE);
-                //canvas.drawRect(x * dim + BORDER, y * dim + BORDER, (x + 1) * dim - BORDER, (y + 1) * dim - BORDER, paint);
+                canvas.drawCircle(START_X + x * dim, START_Y + y * dim, DOT_RADIUS, paint);
             }
         }
     }
@@ -119,13 +120,15 @@ public class GameView extends View {
                 int pawnX = PositionConverter.getX(pos.getPosition());
                 int pawnY = PositionConverter.getY(pos.getPosition());
 
-                canvas.drawRect(pawnX * dim + BORDER, pawnY * dim + BORDER, (pawnX + 1) * dim - BORDER, (pawnY + 1) * dim - BORDER, paint);
+                paint.setColor(getResources().getColor(R.color.green_normal));
+                canvas.drawCircle(START_X + pawnX * dim + dim / 2, START_Y + pawnY * dim + dim / 2, pawnRadius, paint);
+//                canvas.drawRect(pawnX * dim + BORDER, pawnY * dim + BORDER, (pawnX + 1) * dim - BORDER, (pawnY + 1) * dim - BORDER, paint);
             }
         }
     }
 
     private void drawWalls(Canvas canvas, int dim) {
-        paint.setColor(Color.RED);
+        paint.setColor(Color.BLACK);
         if (gameState != null) {
             for (WallPosition wall : gameState.getWalls()) {// game.getCurrentState().getWalls()) {
                 int wallX = PositionConverter.getX(wall.getPosition());
@@ -134,10 +137,13 @@ public class GameView extends View {
                 PositionConverter.Orientation ornt = PositionConverter.getOrientation(wall.getPosition());
                 float startX = (ornt == PositionConverter.Orientation.hor) ? (wallX - 2) * dim : wallX * dim;
                 float startY = (ornt == PositionConverter.Orientation.hor) ? wallY * dim : (wallY - 2) * dim;
-                float stopX = (ornt == PositionConverter.Orientation.hor) ? wallX * dim : startX + WALL_WIDTH;
-                float stopY = (ornt == PositionConverter.Orientation.hor) ? startY + WALL_WIDTH : wallY * dim;
+                float stopX = (ornt == PositionConverter.Orientation.hor) ? wallX * dim : startX;
+                float stopY = (ornt == PositionConverter.Orientation.hor) ? startY : wallY * dim;
 
-                canvas.drawRect(startX, startY, stopX, stopY, paint);
+                //canvas.drawRect(startX, startY, stopX, stopY, paint);
+
+                paint.setStrokeWidth(WALL_WIDTH);
+                canvas.drawLine(START_X + startX, START_Y + startY, START_X + stopX, START_Y + stopY, paint);
             }
         }
     }
@@ -239,18 +245,18 @@ public class GameView extends View {
         private void alighEndPoint(Point startPoint, Point endPoint) {
             if (isHorizontal(startPoint, endPoint)) {
                 if (endPoint.x < startPoint.x) {
-                    endPoint.x = startPoint.x - MAX_FIELD_WIDTH;
+                    endPoint.x = startPoint.x - MAX_WALL_WIDTH;
                 } else {
-                    endPoint.x = startPoint.x + MAX_FIELD_WIDTH;
+                    endPoint.x = startPoint.x + MAX_WALL_WIDTH;
                 }
                 return;
             }
 
             if (isVertical(startPoint, endPoint)) {
                 if (endPoint.y < startPoint.y) {
-                    endPoint.y = startPoint.y - MAX_FIELD_WIDTH;
+                    endPoint.y = startPoint.y - MAX_WALL_WIDTH;
                 } else {
-                    endPoint.y = startPoint.y + MAX_FIELD_WIDTH;
+                    endPoint.y = startPoint.y + MAX_WALL_WIDTH;
                 }
                 return;
             }
@@ -258,9 +264,9 @@ public class GameView extends View {
 
         private boolean isValidWall(Point startPoint, Point endPoint) {
 
-            return (isVertical(startPoint, endPoint) && ((Math.abs(startPoint.y - endPoint.y) >= MAX_FIELD_WIDTH - 1) && (Math.abs(startPoint.y - endPoint.y) <= MAX_FIELD_WIDTH + 1)))
+            return (isVertical(startPoint, endPoint) && ((Math.abs(startPoint.y - endPoint.y) >= MAX_WALL_WIDTH - 1) && (Math.abs(startPoint.y - endPoint.y) <= MAX_WALL_WIDTH + 1)))
                     ||
-                    (isHorizontal(startPoint, endPoint) && ((Math.abs(startPoint.x - endPoint.x) >= MAX_FIELD_WIDTH - 1) && (Math.abs(startPoint.x - endPoint.x) <= MAX_FIELD_WIDTH + 1)));
+                    (isHorizontal(startPoint, endPoint) && ((Math.abs(startPoint.x - endPoint.x) >= MAX_WALL_WIDTH - 1) && (Math.abs(startPoint.x - endPoint.x) <= MAX_WALL_WIDTH + 1)));
         }
 
         @Override
