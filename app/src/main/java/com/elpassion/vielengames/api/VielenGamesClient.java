@@ -27,6 +27,8 @@ import retrofit.client.Response;
 
 public final class VielenGamesClient {
 
+    public static final String TAG = VielenGamesClient.class.getSimpleName();
+
     private final EventBus eventBus;
     private final VielenGamesApi api;
     private final VielenGamesPrefs prefs;
@@ -71,6 +73,7 @@ public final class VielenGamesClient {
                 .gameType(gameType)
                 .awaitingPlayers(Collections.singletonList(prefs.getMe()))
                 .build();
+
         api.createGameProposal(proposal, new DefaultCallback<GameProposal>() {
             @Override
             public void success(GameProposal proposal, Response response) {

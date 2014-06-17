@@ -14,6 +14,7 @@ import com.elpassion.vielengames.api.GooglePlusAuth;
 import com.elpassion.vielengames.api.VielenGamesClient;
 import com.elpassion.vielengames.event.CreateGameProposalEvent;
 import com.elpassion.vielengames.event.GameClickEvent;
+import com.elpassion.vielengames.event.LeaveGameProposalResponseEvent;
 import com.elpassion.vielengames.event.OnAccessTokenRevoked;
 import com.elpassion.vielengames.event.bus.EventBus;
 import com.elpassion.vielengames.utils.ViewUtils;
@@ -128,6 +129,10 @@ public final class MainActivity extends BaseActivity {
         replaceProposalsFragment();
     }
 
+    @SuppressWarnings("unused")
+    public void onEvent(LeaveGameProposalResponseEvent event) {
+        replaceProposalsFragment();
+    }
     @SuppressWarnings("unused")
     public void onEvent(GameClickEvent event) {
         Intent intent = new Intent(this, GameActivity.class);

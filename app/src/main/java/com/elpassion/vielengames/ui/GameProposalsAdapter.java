@@ -1,12 +1,12 @@
 package com.elpassion.vielengames.ui;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 
 import com.elpassion.vielengames.R;
 import com.elpassion.vielengames.api.VielenGamesClient;
@@ -19,6 +19,7 @@ import java.util.List;
 
 public final class GameProposalsAdapter extends BaseAdapter {
 
+    public static final String TAG = GameProposalsAdapter.class.getSimpleName();
     private Context context;
     private VielenGamesClient client;
     private Player me;
@@ -54,18 +55,41 @@ public final class GameProposalsAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.game_proposal_item, parent, false);
         }
         final GameProposal item = getItem(position);
+
         Player player = item.getAwaitingPlayers().get(0);
-        boolean joinVisible = !player.getId().equals(me.getId());
-        ViewUtils.setVisible(joinVisible, convertView, R.id.game_proposal_join_button);
-        ViewUtils.setOnClickListener(convertView, R.id.game_proposal_join_button, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                client.joinGameProposal(item);
-            }
-        });
+        boolean isMyGame = player.getId().equals(me.getId());
+
+        View.OnClickListener buttonListener = isMyGame ? getDeleteGameButtonListener(item) : getJoinGameButtonListener(item);
+        int buttonBackGroundColor = isMyGame ? android.R.color.holo_red_dark : R.color.green_normal;
+        String buttonLabelText = isMyGame ? context.getString(R.string.button_delete_label) : context.getString(R.string.button_join_label);
+
+        ViewUtils.setOnClickListener(convertView, R.id.game_proposal_join_button, buttonListener);
+        ViewUtils.setBackgroundColor(context.getResources().getColor(buttonBackGroundColor), convertView, R.id.game_proposal_join_button);
+        ViewUtils.setText(buttonLabelText, convertView, R.id.game_proposal_join_button);
+
         ViewUtils.setText(player.getName(), convertView, R.id.game_proposal_name);
         ImageView profileIcon = ViewUtils.findView(convertView, R.id.game_proposal_profile_icon);
         Picasso.with(context).load(player.getAvatarUrl()).into(profileIcon);
         return convertView;
     }
+
+    private View.OnClickListener getJoinGameButtonListener(final GameProposal item) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                client.joinGameProposal(item);
+            }
+        };
+    }
+
+    private View.OnClickListener getDeleteGameButtonListener(final GameProposal item) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                client.leaveGameProposal(item);
+            }
+        };
+    }
+
+
 }

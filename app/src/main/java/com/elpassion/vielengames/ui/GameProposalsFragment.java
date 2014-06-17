@@ -1,6 +1,7 @@
 package com.elpassion.vielengames.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import javax.inject.Inject;
 
 public final class GameProposalsFragment extends BaseFragment {
 
+    public static final String TAG = GameProposalsFragment.class.getSimpleName();
     @Inject
     VielenGamesClient client;
     @Inject
