@@ -55,7 +55,7 @@ public final class GameProposalsFragment extends BaseFragment {
     }
 
     private void updateListView() {
-        listView.setAdapter(new GameProposalsAdapter(getActivity(), proposals, prefs.getMe()));
+        listView.setAdapter(new GameProposalsAdapter(getActivity(), proposals, prefs.getMe(), client));
     }
 
     @Override
