@@ -99,8 +99,13 @@ public final class MainActivity extends BaseActivity {
     }
 
     private void onProposalsClick() {
+        replaceProposalsFragment();
+    }
+
+    private void replaceProposalsFragment(){
         replaceWithFragment(new GameProposalsFragment());
     }
+
 
     private void onAddProposalClick() {
         client.createGameProposal("kuridor");
@@ -120,6 +125,7 @@ public final class MainActivity extends BaseActivity {
     @SuppressWarnings("unused")
     public void onEvent(CreateGameProposalEvent event) {
         Toast.makeText(this, "Created new game proposal.", Toast.LENGTH_SHORT).show();
+        replaceProposalsFragment();
     }
 
     @SuppressWarnings("unused")
