@@ -4,7 +4,11 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -21,10 +25,27 @@ public class GameView extends View {
     private static final int FIELD_COUNT = 9;
     private static final int BORDER = 5;
     private static final int WALL_WIDTH = 15;
+    private static final int MAX_FIELD_WIDTH = 2;
 
-    private Paint paint = new Paint();
+    private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+    //    private int x;
+//    private int y;
+//    private int oldX;
+//    private int oldY;
+    private int clickedI = 0;
+    private int clickedJ = 0;
+
+    private int fieldDim;
 
     private KuridorGameState gameState;
+    private Rect currentWall = new Rect();
+    private Point currWallStart = null;
+    private Path wallPath = null;
+    private Point startPoint = null;
+    private Point endPoint = null;
+
+    private GestureDetector scrollDetector = new GestureDetector(this.getContext(), new ScrollDetector());
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -34,19 +55,35 @@ public class GameView extends View {
         gameState = state;
     }
 
+    private Point fieldNumForAbsCords(int absX, int absY) {
+        clickedI = absX / fieldDim;
+        clickedJ = absY / fieldDim;
+
+        return new Point(clickedI, clickedJ);
+    }
+
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        int dim;
         int width = this.getWidth() / FIELD_COUNT;
         int height = this.getHeight() / FIELD_COUNT;
-        dim = (width < height) ? width : height;
+        fieldDim = (width < height) ? width : height;
 
-        drawBoard(canvas, dim);
+        drawBoard(canvas, fieldDim);
+        drawPlayers(canvas, fieldDim);
+        drawWalls(canvas, fieldDim);
 
-        drawPlayers(canvas, dim);
-        
-        drawWalls(canvas, dim);
+        if (wallPath != null) {
+            canvas.drawPath(wallPath, paint);
+        }
+
+        paint.setTextSize(25);
+        if (startPoint != null && endPoint != null) {
+            canvas.drawText(String.format("start(%d, %d) - end(%d, %d)", startPoint.x, startPoint.y, endPoint.x, endPoint.y), 50, 50, paint);
+            paint.setStrokeWidth(20);
+            canvas.drawLine(startPoint.x * fieldDim, startPoint.y * fieldDim, endPoint.x * fieldDim, endPoint.y * fieldDim, paint);
+        }
     }
 
     private void drawBoard(Canvas canvas, int dim) {
@@ -98,7 +135,101 @@ public class GameView extends View {
         float x = event.getX();
         float y = event.getY();
 
+        scrollDetector.onTouchEvent(event);
+        this.invalidate();
+
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            startPoint = endPoint = null;
+        }
 
         return true;
+    }
+
+    private class ScrollDetector implements GestureDetector.OnGestureListener {
+
+        @Override
+        public boolean onDown(MotionEvent motionEvent) {
+            //currentWall = new Rect((int) motionEvent.getX(), (int) motionEvent.getY(), (int) motionEvent.getX(), (int) motionEvent.getY());
+            int x = (int) motionEvent.getX(), y = (int) motionEvent.getY();
+
+            startPoint = fieldNumForAbsCords(x, y);
+            return true;
+        }
+
+        @Override
+        public void onShowPress(MotionEvent motionEvent) {
+
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent motionEvent) {
+            return false;
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent2, float v, float v2) {
+            int x = (int) motionEvent2.getX();
+            int y = (int) motionEvent2.getY();
+
+            if (motionEvent2.getAction() == MotionEvent.ACTION_UP || motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                System.out.println("ACTION_UP");
+                startPoint = endPoint = null;
+                invalidate();
+                return true;
+            }
+
+            endPoint = fieldNumForAbsCords(x, y);
+            if (!isValidWall(startPoint, endPoint)) {
+                endPoint = null;
+            } else {
+                alighEndPoint(startPoint, endPoint);
+            }
+            return true;
+        }
+
+        private void alighEndPoint(Point startPoint, Point endPoint) {
+            if (isHorizontal(startPoint, endPoint)) {
+                if (endPoint.x < startPoint.x) {
+                    endPoint.x = startPoint.x - MAX_FIELD_WIDTH;
+                } else {
+                    endPoint.x = startPoint.x + MAX_FIELD_WIDTH;
+                }
+                return;
+            }
+
+            if (isVertical(startPoint, endPoint)) {
+                if (endPoint.y < startPoint.y) {
+                    endPoint.y = startPoint.y - MAX_FIELD_WIDTH;
+                } else {
+                    endPoint.y = startPoint.y + MAX_FIELD_WIDTH;
+                }
+                return;
+            }
+        }
+
+        private boolean isValidWall(Point startPoint, Point endPoint) {
+
+            return (isVertical(startPoint, endPoint) && ((Math.abs(startPoint.y - endPoint.y) >= MAX_FIELD_WIDTH - 1) && (Math.abs(startPoint.y - endPoint.y) <= MAX_FIELD_WIDTH + 1)))
+                    ||
+                    (isHorizontal(startPoint, endPoint) && ((Math.abs(startPoint.x - endPoint.x) >= MAX_FIELD_WIDTH - 1) && (Math.abs(startPoint.x - endPoint.x) <= MAX_FIELD_WIDTH + 1)));
+        }
+
+        private boolean isVertical(Point startPoint, Point endPoint) {
+            return startPoint.x == endPoint.x;
+        }
+
+        private boolean isHorizontal(Point startPoint, Point endPoint) {
+            return startPoint.y == endPoint.y;
+        }
+
+        @Override
+        public void onLongPress(MotionEvent motionEvent) {
+
+        }
+
+        @Override
+        public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent2, float v, float v2) {
+            return false;
+        }
     }
 }
