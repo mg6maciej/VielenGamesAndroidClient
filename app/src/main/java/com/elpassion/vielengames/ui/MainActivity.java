@@ -61,6 +61,19 @@ public final class MainActivity extends BaseActivity {
             }
         });
 
+        ViewUtils.setOnClickListener(this, R.id.button_sign_out, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSignOutClick();
+            }
+        });
+
+    }
+
+    private void onSignOutClick() {
+        googlePlusAuth.requestSignUserOut();
+        finish();
+
     }
 
 

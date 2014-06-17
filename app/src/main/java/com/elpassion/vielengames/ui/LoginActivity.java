@@ -88,22 +88,32 @@ public final class LoginActivity extends BaseActivity implements View.OnClickLis
                 }
                 break;
             }
+            case USER_RECOVERABLE_AUTH_REQUEST: {
+                startActivityForResult(event.getIntent(), GooglePlusAuth.REQUEST_AUTHORIZATION_CODE);
+
+            }
         }
 
     }
 
     @SuppressWarnings("unused")
     public void onEvent(OnAccessTokenReceived event) {
+        Log.i(TAG, "onAccessTOkenReceived:" + event.getToken());
+
+
         SessionRequest sessionRequest = SessionRequest.builder()
                 .provider("google")
                 .providerToken(event.getToken())
                 .build();
         client.createSession(sessionRequest);
+
+
     }
 
     @SuppressWarnings("unused")
     public void onEvent(SessionResponseEvent event) {
         startMainActivity();
+        finish();
     }
 
     protected void onActivityResult(int requestCode, int responseCode, Intent intent) {
@@ -112,6 +122,11 @@ public final class LoginActivity extends BaseActivity implements View.OnClickLis
                 googlePlusAuth.setSignInButtonClicked(false);
             }
             googlePlusAuth.restart();
+        } else if (requestCode == GooglePlusAuth.REQUEST_AUTHORIZATION_CODE) {
+            if (responseCode == RESULT_OK) {
+                Log.i(TAG, "came back from authorization");
+
+            }
         }
     }
 

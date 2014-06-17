@@ -7,6 +7,9 @@ public interface GooglePlusAuth {
     /* Request code used to invoke sign in user interactions. */
     int RC_SIGN_IN = 0;
 
+    int REQUEST_AUTHORIZATION_CODE = 1;
+
+
     String scope1 = "https://www.googleapis.com/auth/userinfo.email";
 
     String scope2 = "https://www.googleapis.com/auth/userinfo.profile";
@@ -26,7 +29,7 @@ public interface GooglePlusAuth {
 
     public void getToken(Context ctx);
 
-    public void signUserOut();
+    public void requestSignUserOut();
 
     public boolean isConnected();
 }

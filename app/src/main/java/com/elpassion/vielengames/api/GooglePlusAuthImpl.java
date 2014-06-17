@@ -38,6 +38,8 @@ public class GooglePlusAuthImpl implements GooglePlusAuth, ConnectionCallbacks, 
 
     private ConnectionResult mConnectionResult;
 
+    private boolean wasSignOutRequested = false;
+
 
     public GooglePlusAuthImpl(GoogleApiClient googleApiClient, EventBus eventBus) {
         this.googleApiClient = googleApiClient;
@@ -108,6 +110,11 @@ public class GooglePlusAuthImpl implements GooglePlusAuth, ConnectionCallbacks, 
                     accessToken = null;
                 } catch (UserRecoverableAuthException e) {
                     Log.e(TAG, "UserRecoverableAuthException Error on getting token : ", e);
+                    eventBus.post(OnGPlusAuthenticationResponse.builder()
+                                    .type(OnGPlusAuthenticationResponse.Type.USER_RECOVERABLE_AUTH_REQUEST)
+                                    .intent(e.getIntent())
+                                    .build()
+                    );
                     accessToken = null;
                 } catch (GoogleAuthException authEx) {
                     Log.e(TAG, "GoogleAuth Error on getting token: ", authEx);
@@ -122,8 +129,11 @@ public class GooglePlusAuthImpl implements GooglePlusAuth, ConnectionCallbacks, 
 
             @Override
             protected void onPostExecute(String token) {
-                eventBus.post(new OnAccessTokenReceived(token));
-                Log.i(TAG, "Access token retrieved:" + token);
+                if (token != null && !token.equals("")) {
+                    Log.i(TAG, "Access token retrieved:" + token);
+                    eventBus.post(new OnAccessTokenReceived(token));
+
+                }
             }
         };
 
@@ -133,13 +143,28 @@ public class GooglePlusAuthImpl implements GooglePlusAuth, ConnectionCallbacks, 
     }
 
     @Override
-    public void signUserOut() {
+    public void requestSignUserOut() {
+
+        if (!googleApiClient.isConnected() || googleApiClient.isConnecting()) {
+            wasSignOutRequested = true;
+            googleApiClient.connect();
+        } else {
+            signUserOut();
+        }
+
+    }
+
+    private void signUserOut() {
+        Log.i(TAG, "performing 'safe' signUserOUt");
         Plus.AccountApi.clearDefaultAccount(googleApiClient);
 
         if (googleApiClient.isConnected()) {
             googleApiClient.disconnect();
         }
+
+        wasSignOutRequested = false;
     }
+
 
     @Override
     public boolean isConnected() {
@@ -151,12 +176,19 @@ public class GooglePlusAuthImpl implements GooglePlusAuth, ConnectionCallbacks, 
         Log.i(TAG, "onConnected");
         mSignInClicked = false;
 
-        eventBus.post(
-                OnGPlusAuthenticationResponse.builder()
-                        .bundle(bundle)
-                        .type(OnGPlusAuthenticationResponse.Type.USER_CONNECTED)
-                        .build()
-        );
+        if (wasSignOutRequested) {
+            signUserOut();
+        } else {
+            eventBus.post(
+                    OnGPlusAuthenticationResponse.builder()
+                            .bundle(bundle)
+                            .type(OnGPlusAuthenticationResponse.Type.USER_CONNECTED)
+                            .build()
+            );
+
+        }
+
+
     }
 
     @Override
