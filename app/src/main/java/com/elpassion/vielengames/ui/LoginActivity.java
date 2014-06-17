@@ -10,8 +10,10 @@ import android.widget.Toast;
 import com.elpassion.vielengames.R;
 import com.elpassion.vielengames.api.GooglePlusAuth;
 import com.elpassion.vielengames.api.VielenGamesClient;
+import com.elpassion.vielengames.data.SessionRequest;
 import com.elpassion.vielengames.event.OnAccessTokenReceived;
 import com.elpassion.vielengames.event.OnGPlusAuthenticationResponse;
+import com.elpassion.vielengames.event.SessionResponseEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -66,6 +68,7 @@ public final class LoginActivity extends BaseActivity implements View.OnClickLis
                 googlePlusAuth.resolveSignInErrors();
             }
         }
+        eventBus.post(new OnAccessTokenReceived("dsad"));
     }
 
     @SuppressWarnings("unused")
@@ -92,9 +95,17 @@ public final class LoginActivity extends BaseActivity implements View.OnClickLis
 
     @SuppressWarnings("unused")
     public void onEvent(OnAccessTokenReceived event) {
-        startMainActivity();
+        SessionRequest sessionRequest = SessionRequest.builder()
+                .provider("google")
+                .providerToken(event.getToken())
+                .build();
+        client.createSession(sessionRequest);
     }
 
+    @SuppressWarnings("unused")
+    public void onEvent(SessionResponseEvent event) {
+        startMainActivity();
+    }
 
     protected void onActivityResult(int requestCode, int responseCode, Intent intent) {
         if (requestCode == GooglePlusAuth.RC_SIGN_IN) {
