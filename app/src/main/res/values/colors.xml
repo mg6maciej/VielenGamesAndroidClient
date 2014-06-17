@@ -2,6 +2,7 @@
 <resources>
     
     <color name="login_background">@android:color/black</color>
+    <color name="game_background">@android:color/white</color>
     <color name="green_normal">#2fd386</color>
     <color name="green_pressed">#2fd386</color>
     <color name="tab_text_color">#e1e1e1</color>
