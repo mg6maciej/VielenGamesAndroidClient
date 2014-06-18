@@ -8,12 +8,15 @@ import com.elpassion.vielengames.SessionHandler;
 import com.elpassion.vielengames.VielenGamesPrefs;
 import com.elpassion.vielengames.api.VielenGamesClient;
 import com.elpassion.vielengames.data.Game;
+import com.elpassion.vielengames.data.Player;
 import com.elpassion.vielengames.data.kuridor.KuridorGame;
 import com.elpassion.vielengames.data.kuridor.KuridorGameState;
 import com.elpassion.vielengames.data.kuridor.KuridorMove;
 import com.elpassion.vielengames.event.UpdatesEvent;
 import com.elpassion.vielengames.utils.ViewUtils;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -54,12 +57,17 @@ public class GameActivity extends BaseActivity implements MoveRequestListener {
                 break;
             }
         }
-        ViewUtils.setText(thisGame.getPlayers().get(0).getName(), this, R.id.game_player_1_name);
-        ViewUtils.setText(thisGame.getPlayers().get(1).getName(), this, R.id.game_player_2_name);
-        ImageView player1ProfileIcon = ViewUtils.findView(this, R.id.game_player_1_profile_icon);
-        ImageView player2ProfileIcon = ViewUtils.findView(this, R.id.game_player_2_profile_icon);
-        Picasso.with(this).load(thisGame.getPlayers().get(0).getAvatarUrl()).into(player1ProfileIcon);
-        Picasso.with(this).load(thisGame.getPlayers().get(1).getAvatarUrl()).into(player2ProfileIcon);
+        List<Player> players = thisGame.getPlayers();
+        updateViews(players.get(0), R.id.game_player_1_name, R.id.game_player_1_profile_icon);
+        updateViews(players.get(1), R.id.game_player_2_name, R.id.game_player_2_profile_icon);
+    }
+
+    private void updateViews(Player player, int nameViewId, int profileIconViewId) {
+        if (player != null) {
+            ViewUtils.setText(player.getName(), this, nameViewId);
+            ImageView iconView = ViewUtils.findView(this, profileIconViewId);
+            Picasso.with(this).load(player.getAvatarUrl()).into(iconView);
+        }
     }
 
     @Override
