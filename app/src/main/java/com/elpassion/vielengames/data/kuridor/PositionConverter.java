@@ -8,22 +8,19 @@ import android.graphics.drawable.GradientDrawable;
 public class PositionConverter {
 
     public enum Orientation {
-        hor,
-        ver,
-        none;
+        hor("h"),
+        ver("v"),
+        none("");
+
+        private final String str;
+
+        private Orientation(String str) {
+            this.str = str;
+        }
 
         @Override
         public String toString() {
-            switch (this) {
-                case hor:
-                    return "h";
-                case ver:
-                    return "v";
-                case none:
-                    return "";
-                default:
-                    throw new IllegalArgumentException();
-            }
+            return str;
         }
     }
 
