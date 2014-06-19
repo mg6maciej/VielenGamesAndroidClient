@@ -1,5 +1,7 @@
 package com.elpassion.vielengames.data.kuridor;
 
+import android.graphics.Point;
+
 import com.elpassion.vielengames.data.Player;
 
 import java.util.ArrayList;
@@ -93,31 +95,31 @@ public class MoveValidator {
 
     private static boolean reachedOppositeSide(KuridorGameState kuridorGameState,
                                                int startX, int startY, int finish) {
-        List<Tuple> reached = new ArrayList<Tuple>();
+        List<Point> reached = new ArrayList<Point>();
         List<WallPosition> walls = kuridorGameState.getWalls();
-        List<Tuple> newPositions = new ArrayList<Tuple>(4);
-        reached.add(new Tuple(startX, startY));
+        List<Point> newPositions = new ArrayList<Point>(4);
+        reached.add(new Point(startX, startY));
         int oldSize = 0;
 
         while (oldSize != reached.size()) {
             oldSize = reached.size();
 
-            for (Tuple t : reached)
+            for (Point t : reached)
                 if (t.y == finish)
                     return true;
 
             newPositions.clear();
-            for (Tuple t : reached) {
+            for (Point t : reached) {
                 if (validatePawnMove(kuridorGameState, t.x + 1, t.y, t.x, t.y, -1, -1))
-                    newPositions.add(new Tuple(t.x + 1, t.y));
+                    newPositions.add(new Point(t.x + 1, t.y));
                 if (validatePawnMove(kuridorGameState, t.x - 1, t.y, t.x, t.y, -1, -1))
-                    newPositions.add(new Tuple(t.x - 1, t.y));
+                    newPositions.add(new Point(t.x - 1, t.y));
                 if (validatePawnMove(kuridorGameState, t.x, t.y - 1, t.x, t.y, -1, -1))
-                    newPositions.add(new Tuple(t.x, t.y - 1));
+                    newPositions.add(new Point(t.x, t.y - 1));
                 if (validatePawnMove(kuridorGameState, t.x, t.y + 1, t.x, t.y, -1, -1))
-                    newPositions.add(new Tuple(t.x, t.y + 1));
+                    newPositions.add(new Point(t.x, t.y + 1));
             }
-            for (Tuple t : newPositions)
+            for (Point t : newPositions)
                 if (!reached.contains(t))
                     reached.add(t);
 
@@ -201,28 +203,5 @@ public class MoveValidator {
         }
 
         return false;
-    }
-
-    private static class Tuple {
-        int x;
-        int y;
-
-        Tuple(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            Tuple tuple = (Tuple) o;
-
-            if (x != tuple.x) return false;
-            if (y != tuple.y) return false;
-
-            return true;
-        }
     }
 }
