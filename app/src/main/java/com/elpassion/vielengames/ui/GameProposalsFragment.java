@@ -22,7 +22,6 @@ import hrisey.InstanceState;
 
 public final class GameProposalsFragment extends BaseFragment {
 
-    public static final String TAG = GameProposalsFragment.class.getSimpleName();
     @Inject
     VielenGamesClient client;
     @Inject
