@@ -19,7 +19,6 @@ import com.elpassion.vielengames.ui.LoginActivity;
 import com.elpassion.vielengames.ui.MainActivity;
 import com.elpassion.vielengames.ui.MyGamesFragment;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -29,7 +28,6 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import lombok.core.PrintAST;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
@@ -68,7 +66,6 @@ public final class VielenGamesModule {
     }
 
 
-
     @Provides
     @Singleton
     public EventBus provideEventBus() {
@@ -83,15 +80,12 @@ public final class VielenGamesModule {
 
     @Provides
     @Singleton
-    public GoogleApiClient provideGoogleApiClient(){
-        return  new GoogleApiClient.Builder(context)
-//                .addConnectionCallbacks(this)
-//                .addOnConnectionFailedListener(this)
+    public GoogleApiClient provideGoogleApiClient() {
+        return new GoogleApiClient.Builder(context)
                 .addApi(Plus.API)
                 .addScope(Plus.SCOPE_PLUS_PROFILE)
                 .build();
     }
-
 
     @Provides
     @Singleton
