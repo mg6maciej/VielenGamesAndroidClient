@@ -151,8 +151,6 @@ public class GameView extends View {
                 float stopX = horizontal ? wallX * dim : startX;
                 float stopY = horizontal ? startY : wallY * dim;
 
-                //canvas.drawRect(startX, startY, stopX, stopY, paint);
-
                 paint.setStrokeWidth(WALL_WIDTH);
                 canvas.drawLine(START_X + startX, START_Y + startY, START_X + stopX, START_Y + stopY, paint);
             }
