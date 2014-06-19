@@ -130,4 +130,10 @@ public final class VielenGamesModule {
     public VielenGamesClient provideClient(EventBus eventBus, VielenGamesApi api, VielenGamesPrefs prefs) {
         return new VielenGamesClient(eventBus, api, prefs);
     }
+
+    @Provides
+    @Singleton
+    public ForegroundNotifier provideForegroundNotifier(EventBus eventBus) {
+        return new ForegroundNotifier(eventBus);
+    }
 }

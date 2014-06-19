@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.elpassion.vielengames.ForegroundNotifier;
 import com.elpassion.vielengames.R;
 import com.elpassion.vielengames.api.GooglePlusAuth;
 import com.elpassion.vielengames.api.VielenGamesClient;
@@ -27,6 +28,8 @@ public final class MainActivity extends BaseActivity {
     VielenGamesClient client;
     @Inject
     EventBus eventBus;
+    @Inject
+    ForegroundNotifier notifier;
 
     @Inject
     GooglePlusAuth googlePlusAuth;
@@ -138,5 +141,17 @@ public final class MainActivity extends BaseActivity {
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra(GameActivity.GAME_ID_EXTRA, event.getGame().getId());
         startActivity(intent);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        notifier.onActivityStarted();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        notifier.onActivityStopped();
     }
 }

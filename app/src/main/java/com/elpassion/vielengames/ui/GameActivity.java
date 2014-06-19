@@ -3,6 +3,7 @@ package com.elpassion.vielengames.ui;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import com.elpassion.vielengames.ForegroundNotifier;
 import com.elpassion.vielengames.R;
 import com.elpassion.vielengames.SessionHandler;
 import com.elpassion.vielengames.VielenGamesPrefs;
@@ -32,6 +33,8 @@ public class GameActivity extends BaseActivity implements MoveRequestListener {
 
     @Inject
     VielenGamesPrefs prefs;
+    @Inject
+    ForegroundNotifier notifier;
 
     @Inject
     SessionHandler sessionHandler;
@@ -73,5 +76,17 @@ public class GameActivity extends BaseActivity implements MoveRequestListener {
     @Override
     public void onRequest(KuridorGame game, KuridorMove move) {
         gameClient.move(game, move);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        notifier.onActivityStarted();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        notifier.onActivityStopped();
     }
 }
