@@ -45,7 +45,6 @@ public class GameView extends View {
     private Player player;
     private GestureDetector scrollDetector = new GestureDetector(this.getContext(), new ScrollDetector());
     private MoveRequestListener listener;
-    private KuridorGameState gameState;
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -57,10 +56,6 @@ public class GameView extends View {
 
     public void setPlayer(Player player) {
         this.player = player;
-    }
-
-    public void setGameState(KuridorGameState gameState) {
-        this.gameState = gameState;
     }
 
     public void setMoveListener(MoveRequestListener listener) {
@@ -129,7 +124,7 @@ public class GameView extends View {
                 int pawnX = PositionConverter.getX(pos.getPosition().toLowerCase());
                 int pawnY = PositionConverter.getY(pos.getPosition().toLowerCase());
 
-                if (game.getActivePlayer().getId().equals(this.player.getId())) {
+                if ("team_1".equals(pos.getTeam())) {
                     paint.setColor(getResources().getColor(R.color.green_normal));
                 } else {
                     paint.setColor(getResources().getColor(R.color.blue_normal));

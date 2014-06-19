@@ -49,13 +49,13 @@ public class GameActivity extends BaseActivity implements MoveRequestListener {
 
         gameView = (GameView) findViewById(R.id.game_view);
         gameView.setPlayer(prefs.getMe());
-        gameView.setGameState(KuridorGameState.initial());
 
         KuridorGame thisGame = model.getGameById(gameId);
         if (thisGame != null) {
             List<Player> players = thisGame.getPlayers();
             updateViews(thisGame, players.get(0), R.id.game_player_1_name, R.id.game_player_1_profile_icon, R.id.game_player_1_active);
             updateViews(thisGame, players.get(1), R.id.game_player_2_name, R.id.game_player_2_profile_icon, R.id.game_player_2_active);
+            gameView.setGame(thisGame);
         }
     }
 
