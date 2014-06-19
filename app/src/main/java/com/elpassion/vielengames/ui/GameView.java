@@ -52,6 +52,7 @@ public class GameView extends View {
 
     public void setGame(KuridorGame game) {
         this.game = game;
+        invalidate();
     }
 
     public void setPlayer(Player player) {

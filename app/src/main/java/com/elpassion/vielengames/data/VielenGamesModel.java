@@ -5,6 +5,7 @@ import com.elpassion.vielengames.event.SessionStartedResponseEvent;
 import com.elpassion.vielengames.event.SessionUpdatesResponseEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,7 +17,7 @@ import javax.inject.Singleton;
 public final class VielenGamesModel {
 
     private final EventBus eventBus;
-    private Set<Game> games;
+    private List<Game> games = new ArrayList<Game>();
 
     @Inject
     public VielenGamesModel(EventBus eventBus) {
@@ -24,7 +25,7 @@ public final class VielenGamesModel {
         eventBus.register(this);
     }
 
-    public Set<Game> getMyGames() {
+    public List<Game> getMyGames() {
         return games;
     }
 
@@ -39,7 +40,7 @@ public final class VielenGamesModel {
 
     @SuppressWarnings("unused")
     public void onEvent(SessionStartedResponseEvent event) {
-        this.games = null;
+        this.games = new ArrayList<Game>();
         syncState(event.getSessionResponse().getUpdates());
     }
 
@@ -53,10 +54,14 @@ public final class VielenGamesModel {
     }
 
     private void syncGames(List<Game> games) {
-        if (this.games == null) {
-            this.games = new HashSet<Game>();
+        for (Game game : games) {
+            int index = this.games.indexOf(game);
+            if (index != -1) {
+                this.games.set(index, game);
+            } else {
+                this.games.add(game);
+            }
         }
-        this.games.addAll(games);
         eventBus.post(new GamesUpdatedEvent());
     }
 }

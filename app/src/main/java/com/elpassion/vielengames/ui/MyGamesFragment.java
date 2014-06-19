@@ -15,7 +15,7 @@ import com.elpassion.vielengames.event.GamesUpdatedEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
 import com.elpassion.vielengames.utils.ViewUtils;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -56,7 +56,7 @@ public final class MyGamesFragment extends BaseFragment {
         updateAdapter(model.getMyGames());
     }
 
-    private void updateAdapter(Set<Game> games) {
+    private void updateAdapter(List<Game> games) {
         adapter.updateGames(games);
     }
 

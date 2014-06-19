@@ -5,15 +5,14 @@ import android.widget.ImageView;
 
 import com.elpassion.vielengames.ForegroundNotifier;
 import com.elpassion.vielengames.R;
-import com.elpassion.vielengames.SessionUpdatesHandler;
 import com.elpassion.vielengames.VielenGamesPrefs;
 import com.elpassion.vielengames.api.VielenGamesClient;
-import com.elpassion.vielengames.data.Game;
 import com.elpassion.vielengames.data.Player;
 import com.elpassion.vielengames.data.VielenGamesModel;
 import com.elpassion.vielengames.data.kuridor.KuridorGame;
-import com.elpassion.vielengames.data.kuridor.KuridorGameState;
 import com.elpassion.vielengames.data.kuridor.KuridorMove;
+import com.elpassion.vielengames.event.GamesUpdatedEvent;
+import com.elpassion.vielengames.event.bus.EventBus;
 import com.elpassion.vielengames.utils.ViewUtils;
 import com.squareup.picasso.Picasso;
 
@@ -30,7 +29,8 @@ public class GameActivity extends BaseActivity implements MoveRequestListener {
 
     @Inject
     VielenGamesClient gameClient;
-
+    @Inject
+    EventBus eventBus;
     @Inject
     VielenGamesPrefs prefs;
     @Inject
@@ -44,12 +44,28 @@ public class GameActivity extends BaseActivity implements MoveRequestListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_activity);
+        eventBus.register(this);
 
-        String gameId = getIntent().getExtras().getString(GAME_ID_EXTRA);
 
         gameView = (GameView) findViewById(R.id.game_view);
         gameView.setPlayer(prefs.getMe());
 
+        updateGameView();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        eventBus.unregister(this);
+    }
+
+    @SuppressWarnings("unused")
+    public void onEvent(GamesUpdatedEvent event) {
+        updateGameView();
+    }
+
+    private void updateGameView() {
+        String gameId = getIntent().getExtras().getString(GAME_ID_EXTRA);
         KuridorGame thisGame = model.getGameById(gameId);
         if (thisGame != null) {
             List<Player> players = thisGame.getPlayers();

@@ -13,30 +13,26 @@ import com.elpassion.vielengames.data.kuridor.KuridorGame;
 import com.elpassion.vielengames.utils.ViewUtils;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 public final class GamesAdapter extends BaseAdapter {
 
     private final LayoutInflater inflater;
-    private final Set<Game> gameSet;
-    private List<Game> gameList;
+    private List<Game> games;
 
     public GamesAdapter(Context context) {
         this.inflater = LayoutInflater.from(context);
-        this.gameSet = new LinkedHashSet<Game>();
-        this.gameList = new ArrayList<Game>();
+        this.games = new ArrayList<Game>();
     }
 
     @Override
     public int getCount() {
-        return gameSet.size();
+        return games.size();
     }
 
     @Override
     public Game getItem(int position) {
-        return gameList.get(position);
+        return games.get(position);
     }
 
     @Override
@@ -57,9 +53,8 @@ public final class GamesAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void updateGames(Set<Game> games) {
-        this.gameSet.addAll(games);
-        this.gameList = new ArrayList<Game>(gameSet);
+    public void updateGames(List<Game> games) {
+        this.games = new ArrayList<Game>(games);
         notifyDataSetChanged();
     }
 }
