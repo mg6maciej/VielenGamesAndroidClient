@@ -1,18 +1,15 @@
 package com.elpassion.vielengames;
 
 import android.os.Handler;
+import android.util.Log;
 
 import com.elpassion.vielengames.api.VielenGamesClient;
-import com.elpassion.vielengames.data.Game;
 import com.elpassion.vielengames.data.SessionResponse;
 import com.elpassion.vielengames.data.Updates;
-import com.elpassion.vielengames.event.GamesUpdatedEvent;
+import com.elpassion.vielengames.event.AppForegroundEvent;
 import com.elpassion.vielengames.event.SessionStartedResponseEvent;
 import com.elpassion.vielengames.event.SessionUpdatesResponseEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -22,47 +19,53 @@ public final class SessionUpdatesHandler {
 
     private final VielenGamesClient client;
     private final EventBus eventBus;
-    private final Handler handler = new Handler();
+    private ForegroundNotifier notifier;
 
-    private String timestamp;
-    private Set<Game> games;
+    private final Handler handler = new Handler();
+    private final Runnable requestUpdatesRunnable = new Runnable() {
+        @Override
+        public void run() {
+            client.requestUpdates(lastUpdateTimestamp);
+        }
+    };
+    private boolean requestingUpdates;
+
+    private String lastUpdateTimestamp;
 
     @Inject
-    public SessionUpdatesHandler(VielenGamesClient client, EventBus eventBus) {
+    public SessionUpdatesHandler(VielenGamesClient client, EventBus eventBus, ForegroundNotifier notifier) {
         this.client = client;
         this.eventBus = eventBus;
+        this.notifier = notifier;
         this.eventBus.register(this);
-    }
-
-    public Set<Game> getGames() {
-        return games;
     }
 
     @SuppressWarnings("unused")
     public void onEvent(SessionStartedResponseEvent event) {
-        SessionResponse sessionResponse = event.getSessionResponse();
-        this.games = new HashSet<Game>();
-        storeUpdates(sessionResponse.getUpdates());
-    }
-
-    private void requestUpdates() {
-        client.requestUpdates(timestamp);
+        updateTimestamp(event.getSessionResponse().getUpdates());
+        requestUpdates(false);
     }
 
     @SuppressWarnings("unused")
     public void onEvent(SessionUpdatesResponseEvent event) {
-        storeUpdates(event.getUpdates());
+        requestingUpdates = false;
+        updateTimestamp(event.getUpdates());
+        requestUpdates(false);
     }
 
-    private void storeUpdates(Updates updates) {
-        timestamp = updates.getUntil();
-        games.addAll(updates.getGames());
-        eventBus.post(new GamesUpdatedEvent(games));
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                requestUpdates();
-            }
-        }, 10000);
+    @SuppressWarnings("unused")
+    public void onEvent(AppForegroundEvent event) {
+        requestUpdates(true);
+    }
+
+    private void updateTimestamp(Updates updates) {
+        lastUpdateTimestamp = updates.getUntil();
+    }
+
+    private void requestUpdates(boolean immediate) {
+        if (!requestingUpdates && notifier.isInForeground()) {
+            requestingUpdates = true;
+            handler.postDelayed(requestUpdatesRunnable, immediate ? 0 : 10000);
+        }
     }
 }

@@ -10,6 +10,7 @@ import com.elpassion.vielengames.VielenGamesPrefs;
 import com.elpassion.vielengames.api.VielenGamesClient;
 import com.elpassion.vielengames.data.Game;
 import com.elpassion.vielengames.data.Player;
+import com.elpassion.vielengames.data.VielenGamesModel;
 import com.elpassion.vielengames.data.kuridor.KuridorGame;
 import com.elpassion.vielengames.data.kuridor.KuridorGameState;
 import com.elpassion.vielengames.data.kuridor.KuridorMove;
@@ -34,9 +35,8 @@ public class GameActivity extends BaseActivity implements MoveRequestListener {
     VielenGamesPrefs prefs;
     @Inject
     ForegroundNotifier notifier;
-
     @Inject
-    SessionUpdatesHandler sessionUpdatesHandler;
+    VielenGamesModel model;
 
     public static final String GAME_ID_EXTRA = "com.elpassion.vielengames.EXTRA_GAME_ID";
 
@@ -51,17 +51,12 @@ public class GameActivity extends BaseActivity implements MoveRequestListener {
         gameView.setPlayer(prefs.getMe());
         gameView.setGameState(KuridorGameState.initial());
 
-        KuridorGame thisGame = null;
-        for (Game game : sessionUpdatesHandler.getGames()) {
-            if (game.getId().equals(gameId)) {
-                thisGame = (KuridorGame) game;
-                gameView.setGame(thisGame);
-                break;
-            }
+        KuridorGame thisGame = model.getGameById(gameId);
+        if (thisGame != null) {
+            List<Player> players = thisGame.getPlayers();
+            updateViews(players.get(0), R.id.game_player_1_name, R.id.game_player_1_profile_icon);
+            updateViews(players.get(1), R.id.game_player_2_name, R.id.game_player_2_profile_icon);
         }
-        List<Player> players = thisGame.getPlayers();
-        updateViews(players.get(0), R.id.game_player_1_name, R.id.game_player_1_profile_icon);
-        updateViews(players.get(1), R.id.game_player_2_name, R.id.game_player_2_profile_icon);
     }
 
     private void updateViews(Player player, int nameViewId, int profileIconViewId) {

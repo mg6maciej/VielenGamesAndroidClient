@@ -8,6 +8,4 @@ import lombok.Value;
 
 @Value
 public final class GamesUpdatedEvent {
-
-    Set<Game> games;
 }

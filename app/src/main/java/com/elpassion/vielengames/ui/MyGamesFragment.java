@@ -8,9 +8,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.elpassion.vielengames.R;
-import com.elpassion.vielengames.SessionUpdatesHandler;
-import com.elpassion.vielengames.api.VielenGamesClient;
 import com.elpassion.vielengames.data.Game;
+import com.elpassion.vielengames.data.VielenGamesModel;
 import com.elpassion.vielengames.event.GameClickEvent;
 import com.elpassion.vielengames.event.GamesUpdatedEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
@@ -23,14 +22,12 @@ import javax.inject.Inject;
 public final class MyGamesFragment extends BaseFragment {
 
     @Inject
-    VielenGamesClient client;
-    @Inject
     EventBus eventBus;
     @Inject
-    SessionUpdatesHandler handler;
+    VielenGamesModel model;
 
-    private ListView listView;
     private GamesAdapter adapter;
+    private ListView listView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,8 +38,9 @@ public final class MyGamesFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         eventBus.register(this);
-        listView = ViewUtils.findView(view, R.id.my_games_list);
         adapter = new GamesAdapter(getActivity());
+        updateAdapter(model.getMyGames());
+        listView = ViewUtils.findView(view, R.id.my_games_list);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -51,12 +49,11 @@ public final class MyGamesFragment extends BaseFragment {
                 eventBus.post(new GameClickEvent(game));
             }
         });
-        updateAdapter(handler.getGames());
     }
 
     @SuppressWarnings("unused")
     public void onEvent(GamesUpdatedEvent event) {
-        updateAdapter(event.getGames());
+        updateAdapter(model.getMyGames());
     }
 
     private void updateAdapter(Set<Game> games) {
@@ -67,6 +64,7 @@ public final class MyGamesFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         eventBus.unregister(this);
+        adapter = null;
         listView = null;
     }
 }
