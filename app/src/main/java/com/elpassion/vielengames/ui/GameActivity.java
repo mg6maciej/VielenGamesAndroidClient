@@ -54,16 +54,18 @@ public class GameActivity extends BaseActivity implements MoveRequestListener {
         KuridorGame thisGame = model.getGameById(gameId);
         if (thisGame != null) {
             List<Player> players = thisGame.getPlayers();
-            updateViews(players.get(0), R.id.game_player_1_name, R.id.game_player_1_profile_icon);
-            updateViews(players.get(1), R.id.game_player_2_name, R.id.game_player_2_profile_icon);
+            updateViews(thisGame, players.get(0), R.id.game_player_1_name, R.id.game_player_1_profile_icon, R.id.game_player_1_active);
+            updateViews(thisGame, players.get(1), R.id.game_player_2_name, R.id.game_player_2_profile_icon, R.id.game_player_2_active);
         }
     }
 
-    private void updateViews(Player player, int nameViewId, int profileIconViewId) {
+    private void updateViews(KuridorGame game, Player player, int nameViewId, int profileIconViewId, int activeViewId) {
         if (player != null) {
             ViewUtils.setText(player.getName(), this, nameViewId);
             ImageView iconView = ViewUtils.findView(this, profileIconViewId);
             Picasso.with(this).load(player.getAvatarUrl()).into(iconView);
+            boolean active = player.equals(game.getActivePlayer());
+            ViewUtils.setVisible(active, this, activeViewId);
         }
     }
 

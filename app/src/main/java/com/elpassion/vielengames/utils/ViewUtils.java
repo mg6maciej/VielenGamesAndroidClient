@@ -42,6 +42,11 @@ public final class ViewUtils {
         view.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
+    public static void setVisible(boolean visible, Activity activity, int viewId) {
+        View view = findView(activity, viewId);
+        view.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
     public static void setBackgroundColor(int backgroundColor, View parent, int viewId){
         View view = findView(parent, viewId);
         view.setBackgroundColor(backgroundColor);
