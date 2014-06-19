@@ -63,6 +63,6 @@ public final class SessionUpdatesHandler {
             public void run() {
                 requestUpdates();
             }
-        }, 3000);
+        }, 10000);
     }
 }
