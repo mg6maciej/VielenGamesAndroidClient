@@ -5,7 +5,7 @@ import com.elpassion.vielengames.data.SessionResponse;
 import lombok.Value;
 
 @Value
-public final class SessionResponseEvent {
+public final class SessionStartedResponseEvent {
 
     SessionResponse sessionResponse;
 }

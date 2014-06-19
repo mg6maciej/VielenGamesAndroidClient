@@ -7,8 +7,8 @@ import com.elpassion.vielengames.data.Game;
 import com.elpassion.vielengames.data.SessionResponse;
 import com.elpassion.vielengames.data.Updates;
 import com.elpassion.vielengames.event.GamesUpdatedEvent;
-import com.elpassion.vielengames.event.SessionResponseEvent;
-import com.elpassion.vielengames.event.UpdatesEvent;
+import com.elpassion.vielengames.event.SessionStartedResponseEvent;
+import com.elpassion.vielengames.event.SessionUpdatesResponseEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
 
 import java.util.HashSet;
@@ -39,7 +39,7 @@ public final class SessionUpdatesHandler {
     }
 
     @SuppressWarnings("unused")
-    public void onEvent(SessionResponseEvent event) {
+    public void onEvent(SessionStartedResponseEvent event) {
         SessionResponse sessionResponse = event.getSessionResponse();
         this.games = new HashSet<Game>();
         storeUpdates(sessionResponse.getUpdates());
@@ -50,7 +50,7 @@ public final class SessionUpdatesHandler {
     }
 
     @SuppressWarnings("unused")
-    public void onEvent(UpdatesEvent event) {
+    public void onEvent(SessionUpdatesResponseEvent event) {
         storeUpdates(event.getUpdates());
     }
 

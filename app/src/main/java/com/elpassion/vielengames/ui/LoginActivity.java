@@ -14,7 +14,7 @@ import com.elpassion.vielengames.api.VielenGamesClient;
 import com.elpassion.vielengames.data.SessionRequest;
 import com.elpassion.vielengames.event.OnAccessTokenReceived;
 import com.elpassion.vielengames.event.OnGPlusAuthenticationResponse;
-import com.elpassion.vielengames.event.SessionResponseEvent;
+import com.elpassion.vielengames.event.SessionStartedResponseEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
@@ -132,7 +132,7 @@ public final class LoginActivity extends BaseActivity implements View.OnClickLis
     }
 
     @SuppressWarnings("unused")
-    public void onEvent(SessionResponseEvent event) {
+    public void onEvent(SessionStartedResponseEvent event) {
         startMainActivity();
         finish();
     }

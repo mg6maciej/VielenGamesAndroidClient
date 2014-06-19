@@ -8,6 +8,6 @@ import lombok.Value;
  * Created by pawel on 16.06.14.
  */
 @Value
-public class UpdatesEvent {
+public class SessionUpdatesResponseEvent {
     Updates updates;
 }

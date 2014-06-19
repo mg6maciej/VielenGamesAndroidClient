@@ -14,8 +14,8 @@ import com.elpassion.vielengames.event.CreateGameProposalEvent;
 import com.elpassion.vielengames.event.GetGameProposalsResponseEvent;
 import com.elpassion.vielengames.event.JoinGameProposalResponseEvent;
 import com.elpassion.vielengames.event.LeaveGameProposalResponseEvent;
-import com.elpassion.vielengames.event.SessionResponseEvent;
-import com.elpassion.vielengames.event.UpdatesEvent;
+import com.elpassion.vielengames.event.SessionStartedResponseEvent;
+import com.elpassion.vielengames.event.SessionUpdatesResponseEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
 
 import java.util.Collections;
@@ -45,7 +45,7 @@ public final class VielenGamesClient {
             public void success(SessionResponse sessionResponse, Response response) {
                 prefs.setToken(sessionResponse.getAuthToken());
                 prefs.setMe(sessionResponse.getUser());
-                eventBus.post(new SessionResponseEvent(sessionResponse));
+                eventBus.post(new SessionStartedResponseEvent(sessionResponse));
             }
         });
     }
@@ -54,7 +54,7 @@ public final class VielenGamesClient {
         api.getSessionUpdates(since, new DefaultCallback<Updates>() {
             @Override
             public void success(Updates updates, Response response) {
-                eventBus.post(new UpdatesEvent(updates));
+                eventBus.post(new SessionUpdatesResponseEvent(updates));
             }
         });
     }
