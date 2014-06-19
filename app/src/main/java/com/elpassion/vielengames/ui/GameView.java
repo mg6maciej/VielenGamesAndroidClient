@@ -145,10 +145,11 @@ public class GameView extends View {
                 int wallY = PositionConverter.getY(wall.getPosition().toLowerCase());
 
                 PositionConverter.Orientation ornt = PositionConverter.getOrientation(wall.getPosition());
-                float startX = (ornt == PositionConverter.Orientation.hor) ? (wallX - 2) * dim : wallX * dim;
-                float startY = (ornt == PositionConverter.Orientation.hor) ? wallY * dim : (wallY - 2) * dim;
-                float stopX = (ornt == PositionConverter.Orientation.hor) ? wallX * dim : startX;
-                float stopY = (ornt == PositionConverter.Orientation.hor) ? startY : wallY * dim;
+                boolean horizontal = ornt == PositionConverter.Orientation.hor;
+                float startX = horizontal ? (wallX - 2) * dim : wallX * dim;
+                float startY = horizontal ? wallY * dim : (wallY - 2) * dim;
+                float stopX = horizontal ? wallX * dim : startX;
+                float stopY = horizontal ? startY : wallY * dim;
 
                 //canvas.drawRect(startX, startY, stopX, stopY, paint);
 
