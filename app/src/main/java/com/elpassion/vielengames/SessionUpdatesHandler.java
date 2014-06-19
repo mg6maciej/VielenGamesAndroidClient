@@ -18,7 +18,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public final class SessionHandler {
+public final class SessionUpdatesHandler {
 
     private final VielenGamesClient client;
     private final EventBus eventBus;
@@ -28,7 +28,7 @@ public final class SessionHandler {
     private Set<Game> games;
 
     @Inject
-    public SessionHandler(VielenGamesClient client, EventBus eventBus) {
+    public SessionUpdatesHandler(VielenGamesClient client, EventBus eventBus) {
         this.client = client;
         this.eventBus = eventBus;
         this.eventBus.register(this);

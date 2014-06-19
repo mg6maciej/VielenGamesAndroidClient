@@ -8,13 +8,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.elpassion.vielengames.R;
-import com.elpassion.vielengames.SessionHandler;
+import com.elpassion.vielengames.SessionUpdatesHandler;
 import com.elpassion.vielengames.api.VielenGamesClient;
 import com.elpassion.vielengames.data.Game;
-import com.elpassion.vielengames.data.Updates;
 import com.elpassion.vielengames.event.GameClickEvent;
 import com.elpassion.vielengames.event.GamesUpdatedEvent;
-import com.elpassion.vielengames.event.UpdatesEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
 import com.elpassion.vielengames.utils.ViewUtils;
 
@@ -29,7 +27,7 @@ public final class MyGamesFragment extends BaseFragment {
     @Inject
     EventBus eventBus;
     @Inject
-    SessionHandler handler;
+    SessionUpdatesHandler handler;
 
     private ListView listView;
     private GamesAdapter adapter;

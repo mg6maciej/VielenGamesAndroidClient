@@ -10,7 +10,7 @@ import dagger.ObjectGraph;
 public final class VielenGamesApp extends Application {
 
     @Inject
-    SessionHandler handler;
+    SessionUpdatesHandler handler;
 
     private ObjectGraph objectGraph;
 

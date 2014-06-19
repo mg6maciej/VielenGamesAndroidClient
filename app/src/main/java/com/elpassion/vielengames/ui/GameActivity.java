@@ -5,7 +5,7 @@ import android.widget.ImageView;
 
 import com.elpassion.vielengames.ForegroundNotifier;
 import com.elpassion.vielengames.R;
-import com.elpassion.vielengames.SessionHandler;
+import com.elpassion.vielengames.SessionUpdatesHandler;
 import com.elpassion.vielengames.VielenGamesPrefs;
 import com.elpassion.vielengames.api.VielenGamesClient;
 import com.elpassion.vielengames.data.Game;
@@ -13,7 +13,6 @@ import com.elpassion.vielengames.data.Player;
 import com.elpassion.vielengames.data.kuridor.KuridorGame;
 import com.elpassion.vielengames.data.kuridor.KuridorGameState;
 import com.elpassion.vielengames.data.kuridor.KuridorMove;
-import com.elpassion.vielengames.event.UpdatesEvent;
 import com.elpassion.vielengames.utils.ViewUtils;
 import com.squareup.picasso.Picasso;
 
@@ -37,7 +36,7 @@ public class GameActivity extends BaseActivity implements MoveRequestListener {
     ForegroundNotifier notifier;
 
     @Inject
-    SessionHandler sessionHandler;
+    SessionUpdatesHandler sessionUpdatesHandler;
 
     public static final String GAME_ID_EXTRA = "com.elpassion.vielengames.EXTRA_GAME_ID";
 
@@ -53,7 +52,7 @@ public class GameActivity extends BaseActivity implements MoveRequestListener {
         gameView.setGameState(KuridorGameState.initial());
 
         KuridorGame thisGame = null;
-        for (Game game : sessionHandler.getGames()) {
+        for (Game game : sessionUpdatesHandler.getGames()) {
             if (game.getId().equals(gameId)) {
                 thisGame = (KuridorGame) game;
                 gameView.setGame(thisGame);
