@@ -43,6 +43,7 @@ public final class GameProposalsFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         eventBus.register(this);
         listView = ViewUtils.findView(view, R.id.game_proposals_list);
+        listView.setEmptyView(ViewUtils.findView(view, R.id.game_proposals_loading_indicator));
         if (proposals == null) {
             client.requestGameProposals();
         } else {
