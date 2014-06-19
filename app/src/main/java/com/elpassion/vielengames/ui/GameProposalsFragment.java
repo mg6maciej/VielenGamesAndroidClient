@@ -1,7 +1,6 @@
 package com.elpassion.vielengames.ui;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +14,11 @@ import com.elpassion.vielengames.event.GetGameProposalsResponseEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
 import com.elpassion.vielengames.utils.ViewUtils;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
+
+import hrisey.InstanceState;
 
 public final class GameProposalsFragment extends BaseFragment {
 
@@ -31,7 +32,8 @@ public final class GameProposalsFragment extends BaseFragment {
 
     private ListView listView;
 
-    private List<GameProposal> proposals;
+    @InstanceState
+    private ArrayList<GameProposal> proposals;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,7 +55,7 @@ public final class GameProposalsFragment extends BaseFragment {
 
     @SuppressWarnings("unused")
     public void onEvent(GetGameProposalsResponseEvent event) {
-        proposals = event.getGameProposals();
+        proposals = new ArrayList<GameProposal>(event.getGameProposals());
         updateListView();
     }
 
