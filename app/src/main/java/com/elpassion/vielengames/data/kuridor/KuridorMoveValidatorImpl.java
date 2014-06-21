@@ -143,6 +143,15 @@ final class KuridorMoveValidatorImpl {
     }
 
     private static boolean isWallMoveValid(KuridorGameState state, KuridorMove move) {
-        return !state.getWalls().contains(move.getPosition());
+        Collection<String> walls = state.getWalls();
+        String position = move.getPosition();
+        if (walls.contains(position)) {
+            return false;
+        }
+        String otherWayPosition = position.substring(0, 2) + (position.charAt(2) == 'h' ? 'v' : 'h');
+        if (walls.contains(otherWayPosition)) {
+            return false;
+        }
+        return true;
     }
 }

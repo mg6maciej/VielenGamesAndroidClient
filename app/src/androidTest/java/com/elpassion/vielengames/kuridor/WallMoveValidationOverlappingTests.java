@@ -15,6 +15,14 @@ public final class WallMoveValidationOverlappingTests extends WallMoveValidation
         assertNotValid("g6v");
     }
 
+    public void testWallsCannotCross() {
+        testedState = withSomeWalls;
+        assertNotValid("a1h");
+        assertNotValid("c3v");
+        assertNotValid("c4v");
+        assertNotValid("g6h");
+    }
+
     private KuridorGameState withSomeWalls = KuridorGameState.builder()
             .team1(KuridorGameTeamState.builder().pawnPosition("e1").wallsLeft(10).build())
             .team2(KuridorGameTeamState.builder().pawnPosition("e9").wallsLeft(10).build())
