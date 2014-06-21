@@ -8,10 +8,12 @@ import java.util.Collections;
 import hrisey.Parcelable;
 import lombok.Value;
 import lombok.experimental.Builder;
+import lombok.experimental.Wither;
 
 @Parcelable
 @Builder
 @Value
+@Wither
 public final class KuridorGameState {
 
     @SerializedName("team_1")

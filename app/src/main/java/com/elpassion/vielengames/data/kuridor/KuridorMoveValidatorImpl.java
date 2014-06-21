@@ -1,6 +1,11 @@
 package com.elpassion.vielengames.data.kuridor;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 final class KuridorMoveValidatorImpl {
@@ -168,6 +173,96 @@ final class KuridorMoveValidatorImpl {
                 return false;
             }
         }
+        List<String> newWalls = new ArrayList<String>(state.getWalls());
+        newWalls.add(move.getPosition());
+        KuridorGameState newState = state.withWalls(newWalls);
+        if (!hasAccessToLine(newState, newState.getTeam1().getPawnPosition(), '9')) {
+            return false;
+        }
+        if (!hasAccessToLine(newState, newState.getTeam2().getPawnPosition(), '1')) {
+            return false;
+        }
         return true;
+    }
+
+    private static boolean hasAccessToLine(KuridorGameState state, String pawnPosition, char lineId) {
+        Set<String> allAccessiblePositions = new HashSet<String>();
+        Set<String> newAccessiblePositions = Collections.singleton(pawnPosition);
+        while (newAccessiblePositions.size() > 0) {
+            for (String newPosition : newAccessiblePositions) {
+                if (newPosition.charAt(1) == lineId) {
+                    return true;
+                }
+            }
+            Set<String> newerAccessiblePositions = getAllNeighbours(state, newAccessiblePositions);
+            newerAccessiblePositions.removeAll(allAccessiblePositions);
+            allAccessiblePositions.addAll(newAccessiblePositions);
+            newAccessiblePositions = newerAccessiblePositions;
+        }
+        return false;
+    }
+
+    private static Set<String> getAllNeighbours(KuridorGameState state, Set<String> positions) {
+        Set<String> neighbours = new HashSet<String>();
+        for (String position : positions) {
+            if (position.charAt(1) != '9') {
+                boolean blocked = false;
+                String potentialNeighbour = "" + position.charAt(0) + (char) (position.charAt(1) + 1);
+                String[] blockingWalls = getBlockingWalls(position, potentialNeighbour);
+                for (String blockingWall : blockingWalls) {
+                    if (state.getWalls().contains(blockingWall)) {
+                        blocked = true;
+                        break;
+                    }
+                }
+                if (!blocked) {
+                    neighbours.add(potentialNeighbour);
+                }
+            }
+            if (position.charAt(1) != '1') {
+                boolean blocked = false;
+                String potentialNeighbour = "" + position.charAt(0) + (char) (position.charAt(1) - 1);
+                String[] blockingWalls = getBlockingWalls(position, potentialNeighbour);
+                for (String blockingWall : blockingWalls) {
+                    if (state.getWalls().contains(blockingWall)) {
+                        blocked = true;
+                        break;
+                    }
+                }
+                if (!blocked) {
+                    neighbours.add(potentialNeighbour);
+                }
+            }
+            if (position.charAt(0) != 'i') {
+                boolean blocked = false;
+                String potentialNeighbour = "" + (char) (position.charAt(0) + 1) + position.charAt(1);
+                String[] blockingWalls = getBlockingWalls(position, potentialNeighbour);
+                for (String blockingWall : blockingWalls) {
+                    if (state.getWalls().contains(blockingWall)) {
+                        blocked = true;
+                        break;
+                    }
+                }
+                if (!blocked) {
+                    neighbours.add(potentialNeighbour);
+                }
+            }
+            if (position.charAt(0) != 'a') {
+                boolean blocked = false;
+                String potentialNeighbour = "" + (char) (position.charAt(0) - 1) + position.charAt(1);
+                String[] blockingWalls = getBlockingWalls(position, potentialNeighbour);
+                for (String blockingWall : blockingWalls) {
+                    if (state.getWalls().contains(blockingWall)) {
+                        blocked = true;
+                        break;
+                    }
+                }
+                if (!blocked) {
+                    neighbours.add(potentialNeighbour);
+                }
+            }
+        }
+        neighbours.removeAll(positions);
+        return neighbours;
     }
 }
