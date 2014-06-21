@@ -21,6 +21,16 @@ public final class KuridorGameState {
     List<String> walls;
     String activeTeam;
 
+    public String getActiveTeamPawnPosition() {
+        return "team_1".equals(activeTeam)
+                ? team1.getPawnPosition()
+                : team2.getPawnPosition();
+    }
+
+    public boolean isMoveValid(KuridorMove move) {
+        return KuridorMoveValidatorImpl.isMoveValid(this, move);
+    }
+
     public static KuridorGameState initial() {
         return KuridorGameState.builder()
                 .team1(KuridorGameTeamState.builder().pawnPosition("e1").wallsLeft(10).build())
