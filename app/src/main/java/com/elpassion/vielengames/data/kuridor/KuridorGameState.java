@@ -27,6 +27,12 @@ public final class KuridorGameState {
                 : team2.getPawnPosition();
     }
 
+    public int getActiveTeamWallsLeft() {
+        return "team_1".equals(activeTeam)
+                ? team1.getWallsLeft()
+                : team2.getWallsLeft();
+    }
+
     public Collection<String> getInactiveTeamsPawnPositions() {
         return "team_1".equals(activeTeam)
                 ? Collections.singleton(team2.getPawnPosition())
