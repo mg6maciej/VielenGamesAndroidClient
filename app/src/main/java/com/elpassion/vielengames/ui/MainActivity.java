@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.elpassion.vielengames.ForegroundNotifier;
@@ -41,6 +42,16 @@ public final class MainActivity extends BaseActivity {
         setButtonListeners();
         if (savedInstanceState == null) {
             replaceWithFragment(new GameProposalsFragment());
+            Button proposals = ViewUtils.findView(this, R.id.main_proposals_button);
+            proposals.setTextColor(getResources().getColor(R.color.tab_text_color_selected));
+        } else {
+            if (getSupportFragmentManager().findFragmentById(R.id.main_fragment_container) instanceof GameProposalsFragment) {
+                Button proposals = ViewUtils.findView(this, R.id.main_proposals_button);
+                proposals.setTextColor(getResources().getColor(R.color.tab_text_color_selected));
+            } else {
+                Button myGames = ViewUtils.findView(this, R.id.main_my_games_button);
+                myGames.setTextColor(getResources().getColor(R.color.tab_text_color_selected));
+            }
         }
         eventBus.register(this);
     }
@@ -108,8 +119,11 @@ public final class MainActivity extends BaseActivity {
 
     private void replaceProposalsFragment(){
         replaceWithFragment(new GameProposalsFragment());
+        Button proposals = ViewUtils.findView(this, R.id.main_proposals_button);
+        proposals.setTextColor(getResources().getColor(R.color.tab_text_color_selected));
+        Button myGames = ViewUtils.findView(this, R.id.main_my_games_button);
+        myGames.setTextColor(getResources().getColor(R.color.tab_text_color));
     }
-
 
     private void onAddProposalClick() {
         client.createGameProposal("kuridor");
@@ -117,6 +131,10 @@ public final class MainActivity extends BaseActivity {
 
     private void onMyGamesClick() {
         replaceWithFragment(new MyGamesFragment());
+        Button proposals = ViewUtils.findView(this, R.id.main_proposals_button);
+        proposals.setTextColor(getResources().getColor(R.color.tab_text_color));
+        Button myGames = ViewUtils.findView(this, R.id.main_my_games_button);
+        myGames.setTextColor(getResources().getColor(R.color.tab_text_color_selected));
     }
 
     private void replaceWithFragment(BaseFragment fragment) {

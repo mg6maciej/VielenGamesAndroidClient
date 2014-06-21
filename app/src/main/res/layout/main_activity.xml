@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/tab_background_color"
-            android:text="Proposals"
+            android:text="PROPOSALS"
             android:textColor="@color/tab_text_color" />
 
         <ImageButton
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/tab_background_color"
-            android:text="My Games"
+            android:text="MY GAMES"
             android:textColor="@color/tab_text_color" />
 
     </LinearLayout>
