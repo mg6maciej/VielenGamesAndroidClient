@@ -107,12 +107,21 @@ public final class PawnMoveValidationTests extends TestCase {
         assertNotValid("d5");
     }
 
+    public void testJumpingOnOpponentsHeadIsNotValid() {
+        testedState = withOpponentToNorth;
+        assertNotValid("e6");
+    }
+
     private KuridorGameTeamState centered = KuridorGameTeamState.builder()
             .pawnPosition("e5")
             .wallsLeft(10)
             .build();
     private KuridorGameTeamState secondStarting = KuridorGameTeamState.builder()
             .pawnPosition("e9")
+            .wallsLeft(10)
+            .build();
+    private KuridorGameTeamState nextToCenter = KuridorGameTeamState.builder()
+            .pawnPosition("e6")
             .wallsLeft(10)
             .build();
 
@@ -174,6 +183,12 @@ public final class PawnMoveValidationTests extends TestCase {
             .team1(centered)
             .team2(secondStarting)
             .walls(Arrays.asList("d4v"))
+            .activeTeam("team_1")
+            .build();
+    private KuridorGameState withOpponentToNorth = KuridorGameState.builder()
+            .team1(centered)
+            .team2(nextToCenter)
+            .walls(Collections.<String>emptyList())
             .activeTeam("team_1")
             .build();
 

@@ -1,6 +1,6 @@
 package com.elpassion.vielengames.data.kuridor;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.regex.Pattern;
 
 final class KuridorMoveValidatorImpl {
@@ -20,6 +20,9 @@ final class KuridorMoveValidatorImpl {
     }
 
     private static boolean isPawnMoveValid(KuridorGameState state, KuridorMove move) {
+        if (state.getInactiveTeamsPawnPositions().contains(move.getPosition())) {
+            return false;
+        }
         String activePawnPosition = state.getActiveTeamPawnPosition();
         int distance = distanceBetweenPositions(activePawnPosition, move.getPosition());
         if (distance == 1) {
@@ -47,7 +50,7 @@ final class KuridorMoveValidatorImpl {
                         "" + move.getPosition().charAt(0) + (char) (move.getPosition().charAt(1) - 1) + "v"
                 };
             }
-            List<String> walls = state.getWalls();
+            Collection<String> walls = state.getWalls();
             for (String blockingWall : blockingWalls) {
                 if (walls.contains(blockingWall)) {
                     return false;

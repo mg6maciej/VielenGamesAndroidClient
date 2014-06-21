@@ -2,8 +2,8 @@ package com.elpassion.vielengames.data.kuridor;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 import hrisey.Parcelable;
 import lombok.Value;
@@ -18,13 +18,19 @@ public final class KuridorGameState {
     KuridorGameTeamState team1;
     @SerializedName("team_2")
     KuridorGameTeamState team2;
-    List<String> walls;
+    Collection<String> walls;
     String activeTeam;
 
     public String getActiveTeamPawnPosition() {
         return "team_1".equals(activeTeam)
                 ? team1.getPawnPosition()
                 : team2.getPawnPosition();
+    }
+
+    public Collection<String> getInactiveTeamsPawnPositions() {
+        return "team_1".equals(activeTeam)
+                ? Collections.singleton(team2.getPawnPosition())
+                : Collections.singleton(team1.getPawnPosition());
     }
 
     public boolean isMoveValid(KuridorMove move) {
