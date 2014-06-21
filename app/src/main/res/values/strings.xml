@@ -3,10 +3,9 @@
 
     <string name="app_name">Vielen Games</string>
     <string name="button_login_text">Login via G+</string>
-    <string name="not_implemented_yet">Not implemented yet</string>
     <string name="sign_out">Sign out</string>
-    <string name="user_successfully_connected">User succesfully connected!</string>
-    <string name="button_join_label">Join</string>
-    <string name="button_delete_label">Delete</string>
+    <string name="user_successfully_connected">User successfully connected!</string>
+    <string name="button_join_label">JOIN</string>
+    <string name="button_delete_label">DELETE</string>
 
 </resources>

@@ -37,7 +37,6 @@
         android:layout_below="@+id/game_item_player_1_name"
         android:layout_marginTop="5dp"
         android:text="Turn:"
-        android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/text_tertiary_color"/>
 
     <TextView
@@ -48,7 +47,6 @@
         android:layout_alignBaseline="@+id/game_item_turn_label"
         android:layout_toRightOf="@+id/game_item_turn_label"
         android:layout_marginLeft="5dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/text_secondary_color"/>
 
 </RelativeLayout>

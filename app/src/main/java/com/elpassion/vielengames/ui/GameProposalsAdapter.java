@@ -63,9 +63,9 @@ public final class GameProposalsAdapter extends BaseAdapter {
         int buttonBackGroundColor = isMyGame ? android.R.color.holo_red_dark : R.color.green_normal;
         String buttonLabelText = isMyGame ? context.getString(R.string.button_delete_label) : context.getString(R.string.button_join_label);
 
-        ViewUtils.setOnClickListener(convertView, R.id.game_proposal_join_button, buttonListener);
-        ViewUtils.setBackgroundColor(context.getResources().getColor(buttonBackGroundColor), convertView, R.id.game_proposal_join_button);
-        ViewUtils.setText(buttonLabelText, convertView, R.id.game_proposal_join_button);
+        ViewUtils.setOnClickListener(convertView, R.id.game_proposal_action_button, buttonListener);
+        ViewUtils.setBackgroundColor(context.getResources().getColor(buttonBackGroundColor), convertView, R.id.game_proposal_action_button);
+        ViewUtils.setText(buttonLabelText, convertView, R.id.game_proposal_action_button);
 
         ViewUtils.setText(player.getName(), convertView, R.id.game_proposal_name);
         ImageView profileIcon = ViewUtils.findView(convertView, R.id.game_proposal_profile_icon);

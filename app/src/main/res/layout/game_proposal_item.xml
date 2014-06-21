@@ -1,54 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:padding="20dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_vertical"
+              android:orientation="horizontal"
+              android:padding="10dp">
 
     <ImageView
         android:id="@+id/game_proposal_profile_icon"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginRight="10dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:scaleType="centerCrop"/>
 
-    <TextView
-        android:id="@+id/game_proposal_owner_label"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/game_proposal_profile_icon"
-        android:text="Owner:"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/text_tertiary_color"/>
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/game_proposal_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/game_proposal_owner_label"
-        android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@+id/game_proposal_owner_label"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/text_primary_color"/>
+        <TextView
+            android:id="@+id/game_proposal_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/text_primary_color"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/game_proposal_owner_label"
-        android:layout_marginTop="5dp"
-        android:layout_toRightOf="@+id/game_proposal_profile_icon"
-        android:text="Today"
-        android:textColor="@color/text_secondary_color"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/game_proposal_name"
+            android:layout_marginTop="5dp"
+            android:text="Today"
+            android:textColor="@color/text_secondary_color"/>
+
+    </RelativeLayout>
 
     <Button
-        android:id="@+id/game_proposal_join_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:background="@color/green_normal"
-        android:text="@string/button_join_label"
-        android:textColor="#FFFFFF"/>
+        android:id="@+id/game_proposal_action_button"
+        android:layout_width="60dp"
+        android:layout_height="35dp"
+        android:padding="0dp"
+        android:textAppearance="?android:textAppearanceSmall"
+        android:textColor="#ffffff"/>
 
-
-</RelativeLayout>
+</LinearLayout>
