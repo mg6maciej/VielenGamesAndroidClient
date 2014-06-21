@@ -53,44 +53,15 @@ final class KuridorMoveValidatorImpl {
             } else if (directionX == -2) {
                 expectedOpponentPawns = new String[]{"" + (char) (activePawnPosition.charAt(0) - 1) + activePawnPosition.charAt(1)};
                 straight = true;
-            } else if (directionY == 1 && directionX == -1) {
-                expectedOpponentPawns = new String[]{
-                        "" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) + 1),
-                        "" + (char) (activePawnPosition.charAt(0) - 1) + activePawnPosition.charAt(1)
-                };
-                twoSquares = new String[]{
-                        "" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) + 2),
-                        "" + (char) (activePawnPosition.charAt(0) - 2) + activePawnPosition.charAt(1)
-                };
-            } else if (directionY == 1 && directionX == 1) {
-                expectedOpponentPawns = new String[]{
-                        "" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) + 1),
-                        "" + (char) (activePawnPosition.charAt(0) + 1) + activePawnPosition.charAt(1)
-                };
-                twoSquares = new String[]{
-                        "" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) + 2),
-                        "" + (char) (activePawnPosition.charAt(0) + 2) + activePawnPosition.charAt(1)
-                };
-            } else if (directionY == -1 && directionX == -1) {
-                expectedOpponentPawns = new String[]{
-                        "" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) - 1),
-                        "" + (char) (activePawnPosition.charAt(0) - 1) + activePawnPosition.charAt(1)
-                };
-                twoSquares = new String[]{
-                        "" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) - 2),
-                        "" + (char) (activePawnPosition.charAt(0) - 2) + activePawnPosition.charAt(1)
-                };
-            } else if (directionY == -1 && directionX == 1) {
-                expectedOpponentPawns = new String[]{
-                        "" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) - 1),
-                        "" + (char) (activePawnPosition.charAt(0) + 1) + activePawnPosition.charAt(1)
-                };
-                twoSquares = new String[]{
-                        "" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) - 2),
-                        "" + (char) (activePawnPosition.charAt(0) + 2) + activePawnPosition.charAt(1)
-                };
             } else {
-                throw new IllegalStateException();
+                expectedOpponentPawns = new String[]{
+                        "" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) + directionY),
+                        "" + (char) (activePawnPosition.charAt(0) + directionX) + activePawnPosition.charAt(1)
+                };
+                twoSquares = new String[]{
+                        "" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) + 2 * directionY),
+                        "" + (char) (activePawnPosition.charAt(0) + 2 * directionX) + activePawnPosition.charAt(1)
+                };
             }
             outer:
             for (int i = 0; i < expectedOpponentPawns.length; i++) {
