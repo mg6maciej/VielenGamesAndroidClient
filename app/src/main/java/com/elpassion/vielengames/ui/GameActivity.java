@@ -70,19 +70,23 @@ public class GameActivity extends BaseActivity implements MoveRequestListener {
         KuridorGame thisGame = model.getGameById(gameId);
         if (thisGame != null) {
             List<Player> players = thisGame.getPlayers();
-            updateViews(thisGame, players.get(0), R.id.game_player_1_name, R.id.game_player_1_profile_icon, R.id.game_player_1_active);
-            updateViews(thisGame, players.get(1), R.id.game_player_2_name, R.id.game_player_2_profile_icon, R.id.game_player_2_active);
+            updateViews(thisGame, players.get(0), R.id.game_player_1_name, R.id.game_player_1_profile_icon, R.id.game_player_1_active, R.id.game_player_1_walls_left);
+            updateViews(thisGame, players.get(1), R.id.game_player_2_name, R.id.game_player_2_profile_icon, R.id.game_player_2_active, R.id.game_player_2_walls_left);
             gameView.setGame(thisGame);
         }
     }
 
-    private void updateViews(KuridorGame game, Player player, int nameViewId, int profileIconViewId, int activeViewId) {
+    private void updateViews(KuridorGame game, Player player, int nameViewId, int profileIconViewId, int activeViewId, int wallsLeftId) {
         if (player != null) {
             ViewUtils.setText(player.getName(), this, nameViewId);
             ImageView iconView = ViewUtils.findView(this, profileIconViewId);
             Picasso.with(this).load(player.getAvatarUrl()).into(iconView);
             boolean active = player.getTeam().equals(game.getCurrentState().getActiveTeam());
             ViewUtils.setVisible(active, this, activeViewId);
+            int wallsLeft = "team_1".equals(player.getTeam())
+                    ? game.getCurrentState().getTeam1().getWallsLeft()
+                    : game.getCurrentState().getTeam2().getWallsLeft();
+            ViewUtils.setText(String.valueOf(wallsLeft), this, wallsLeftId);
         }
     }
 
