@@ -112,6 +112,26 @@ public final class PawnMoveValidationTests extends TestCase {
         assertNotValid("e6");
     }
 
+    public void testJumpingNorthOverOpponentIsValid() {
+        testedState = withOpponentToNorth;
+        assertValid("e7");
+    }
+
+    public void testJumpingSouthOverOpponentIsValid() {
+        testedState = withOpponentToSouth;
+        assertValid("e3");
+    }
+
+    public void testJumpingEastOverOpponentIsValid() {
+        testedState = withOpponentToEast;
+        assertValid("g5");
+    }
+
+    public void testJumpingWestOverOpponentIsValid() {
+        testedState = withOpponentToWest;
+        assertValid("c5");
+    }
+
     private KuridorGameTeamState centered = KuridorGameTeamState.builder()
             .pawnPosition("e5")
             .wallsLeft(10)
@@ -120,8 +140,20 @@ public final class PawnMoveValidationTests extends TestCase {
             .pawnPosition("e9")
             .wallsLeft(10)
             .build();
-    private KuridorGameTeamState nextToCenter = KuridorGameTeamState.builder()
+    private KuridorGameTeamState northFromCenter = KuridorGameTeamState.builder()
             .pawnPosition("e6")
+            .wallsLeft(10)
+            .build();
+    private KuridorGameTeamState southFromCenter = KuridorGameTeamState.builder()
+            .pawnPosition("e4")
+            .wallsLeft(10)
+            .build();
+    private KuridorGameTeamState eastFromCenter = KuridorGameTeamState.builder()
+            .pawnPosition("f5")
+            .wallsLeft(10)
+            .build();
+    private KuridorGameTeamState westFromCenter = KuridorGameTeamState.builder()
+            .pawnPosition("d5")
             .wallsLeft(10)
             .build();
 
@@ -187,7 +219,25 @@ public final class PawnMoveValidationTests extends TestCase {
             .build();
     private KuridorGameState withOpponentToNorth = KuridorGameState.builder()
             .team1(centered)
-            .team2(nextToCenter)
+            .team2(northFromCenter)
+            .walls(Collections.<String>emptyList())
+            .activeTeam("team_1")
+            .build();
+    private KuridorGameState withOpponentToSouth = KuridorGameState.builder()
+            .team1(centered)
+            .team2(southFromCenter)
+            .walls(Collections.<String>emptyList())
+            .activeTeam("team_1")
+            .build();
+    private KuridorGameState withOpponentToEast = KuridorGameState.builder()
+            .team1(centered)
+            .team2(eastFromCenter)
+            .walls(Collections.<String>emptyList())
+            .activeTeam("team_1")
+            .build();
+    private KuridorGameState withOpponentToWest = KuridorGameState.builder()
+            .team1(centered)
+            .team2(westFromCenter)
             .walls(Collections.<String>emptyList())
             .activeTeam("team_1")
             .build();
