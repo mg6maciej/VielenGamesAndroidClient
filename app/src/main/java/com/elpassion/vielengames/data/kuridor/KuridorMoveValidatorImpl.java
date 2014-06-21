@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 final class KuridorMoveValidatorImpl {
 
     private static final Pattern PAWN_MOVE_PATTERN = Pattern.compile("[a-i][1-9]");
+    private static final Pattern WALL_MOVE_PATTERN = Pattern.compile("[a-h][1-8][hv]");
 
     private KuridorMoveValidatorImpl() {
     }
@@ -14,6 +15,10 @@ final class KuridorMoveValidatorImpl {
         if (move.getMoveType() == KuridorMove.MoveType.pawn) {
             if (PAWN_MOVE_PATTERN.matcher(move.getPosition()).matches()) {
                 return isPawnMoveValid(state, move);
+            }
+        } else if (move.getMoveType() == KuridorMove.MoveType.wall) {
+            if (WALL_MOVE_PATTERN.matcher(move.getPosition()).matches()) {
+                return true;
             }
         }
         return false;
