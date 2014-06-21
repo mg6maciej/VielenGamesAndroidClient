@@ -1,6 +1,9 @@
 package com.elpassion.vielengames.ui;
 
 import android.content.Context;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +20,14 @@ import java.util.List;
 
 public final class GamesAdapter extends BaseAdapter {
 
+    private Context context;
+    private Player me;
     private final LayoutInflater inflater;
     private List<Game> games;
 
-    public GamesAdapter(Context context) {
+    public GamesAdapter(Context context, Player me) {
+        this.context = context;
+        this.me = me;
         this.inflater = LayoutInflater.from(context);
         this.games = new ArrayList<Game>();
     }
@@ -46,11 +53,25 @@ public final class GamesAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.game_item, parent, false);
         }
         KuridorGame item = (KuridorGame) getItem(position);
-        Player player1 = item.getPlayers().get(0);
-        Player player2 = item.getPlayers().get(1);
-        ViewUtils.setText(player1.getName(), convertView, R.id.game_item_player_1_name);
-        ViewUtils.setText(player2.getName(), convertView, R.id.game_item_player_2_name);
+        CharSequence text = formatPlayerNames(item);
+        ViewUtils.setText(text, convertView, R.id.game_item_player_names);
         return convertView;
+    }
+
+    private CharSequence formatPlayerNames(KuridorGame item) {
+        List<Player> players = item.getPlayers();
+        Player team1Player = "team_1".equals(players.get(0).getTeam()) ? players.get(0) : players.get(1);
+        Player team2Player = "team_2".equals(players.get(0).getTeam()) ? players.get(0) : players.get(1);
+        String name1 = me.equals(team1Player) ? "You" : team1Player.getName();
+        String name2 = me.equals(team2Player) ? "You" : team2Player.getName();
+        SpannableString spannableString = new SpannableString(name1 + " vs " + name2);
+        int greenTextColor = context.getResources().getColor(R.color.text_green_color);
+        spannableString.setSpan(
+                new ForegroundColorSpan(greenTextColor),
+                name1.length(),
+                name1.length() + 4,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spannableString;
     }
 
     public void updateGames(List<Game> games) {

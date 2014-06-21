@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.elpassion.vielengames.R;
+import com.elpassion.vielengames.VielenGamesPrefs;
 import com.elpassion.vielengames.data.Game;
 import com.elpassion.vielengames.data.VielenGamesModel;
 import com.elpassion.vielengames.event.GameClickEvent;
@@ -25,6 +26,8 @@ public final class MyGamesFragment extends BaseFragment {
     EventBus eventBus;
     @Inject
     VielenGamesModel model;
+    @Inject
+    VielenGamesPrefs prefs;
 
     private GamesAdapter adapter;
     private ListView listView;
@@ -38,7 +41,7 @@ public final class MyGamesFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         eventBus.register(this);
-        adapter = new GamesAdapter(getActivity());
+        adapter = new GamesAdapter(getActivity(), prefs.getMe());
         updateAdapter(model.getMyGames());
         listView = ViewUtils.findView(view, R.id.my_games_list);
         listView.setAdapter(adapter);

@@ -17,12 +17,12 @@ public final class ViewUtils {
         return (T) activity.findViewById(viewId);
     }
 
-    public static void setText(String text, View parent, int viewId) {
+    public static void setText(CharSequence text, View parent, int viewId) {
         TextView view = findView(parent, viewId);
         view.setText(text);
     }
 
-    public static void setText(String text, Activity activity, int viewId) {
+    public static void setText(CharSequence text, Activity activity, int viewId) {
         TextView view = findView(activity, viewId);
         view.setText(text);
     }
