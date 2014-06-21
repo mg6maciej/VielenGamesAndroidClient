@@ -38,34 +38,91 @@ final class KuridorMoveValidatorImpl {
         } else if (distance == 2) {
             int directionX = move.getPosition().charAt(0) - activePawnPosition.charAt(0);
             int directionY = move.getPosition().charAt(1) - activePawnPosition.charAt(1);
-            String expectedOpponentPawn;
+            String[] expectedOpponentPawns;
+            String[] twoSquares = new String[]{move.getPosition()};
+            boolean straight = false;
             if (directionY == 2) {
-                expectedOpponentPawn = "" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) + 1);
+                expectedOpponentPawns = new String[]{"" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) + 1)};
+                straight = true;
             } else if (directionY == -2) {
-                expectedOpponentPawn = "" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) - 1);
+                expectedOpponentPawns = new String[]{"" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) - 1)};
+                straight = true;
             } else if (directionX == 2) {
-                expectedOpponentPawn = "" + (char) (activePawnPosition.charAt(0) + 1) + activePawnPosition.charAt(1);
+                expectedOpponentPawns = new String[]{"" + (char) (activePawnPosition.charAt(0) + 1) + activePawnPosition.charAt(1)};
+                straight = true;
             } else if (directionX == -2) {
-                expectedOpponentPawn = "" + (char) (activePawnPosition.charAt(0) - 1) + activePawnPosition.charAt(1);
+                expectedOpponentPawns = new String[]{"" + (char) (activePawnPosition.charAt(0) - 1) + activePawnPosition.charAt(1)};
+                straight = true;
+            } else if (directionY == 1 && directionX == -1) {
+                expectedOpponentPawns = new String[]{
+                        "" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) + 1),
+                        "" + (char) (activePawnPosition.charAt(0) - 1) + activePawnPosition.charAt(1)
+                };
+                twoSquares = new String[]{
+                        "" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) + 2),
+                        "" + (char) (activePawnPosition.charAt(0) - 2) + activePawnPosition.charAt(1)
+                };
+            } else if (directionY == 1 && directionX == 1) {
+                expectedOpponentPawns = new String[]{
+                        "" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) + 1),
+                        "" + (char) (activePawnPosition.charAt(0) + 1) + activePawnPosition.charAt(1)
+                };
+                twoSquares = new String[]{
+                        "" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) + 2),
+                        "" + (char) (activePawnPosition.charAt(0) + 2) + activePawnPosition.charAt(1)
+                };
+            } else if (directionY == -1 && directionX == -1) {
+                expectedOpponentPawns = new String[]{
+                        "" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) - 1),
+                        "" + (char) (activePawnPosition.charAt(0) - 1) + activePawnPosition.charAt(1)
+                };
+                twoSquares = new String[]{
+                        "" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) - 2),
+                        "" + (char) (activePawnPosition.charAt(0) - 2) + activePawnPosition.charAt(1)
+                };
+            } else if (directionY == -1 && directionX == 1) {
+                expectedOpponentPawns = new String[]{
+                        "" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) - 1),
+                        "" + (char) (activePawnPosition.charAt(0) + 1) + activePawnPosition.charAt(1)
+                };
+                twoSquares = new String[]{
+                        "" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) - 2),
+                        "" + (char) (activePawnPosition.charAt(0) + 2) + activePawnPosition.charAt(1)
+                };
             } else {
-                expectedOpponentPawn = null;
+                throw new IllegalStateException();
             }
-            if (expectedOpponentPawn != null) {
+            outer:
+            for (int i = 0; i < expectedOpponentPawns.length; i++) {
+                String expectedOpponentPawn = expectedOpponentPawns[i];
+                String twoSquaresForPawn = twoSquares[i];
                 Collection<String> walls = state.getWalls();
                 String[] blockingWalls = getBlockingWalls(expectedOpponentPawn, activePawnPosition);
                 for (String blockingWall : blockingWalls) {
                     if (walls.contains(blockingWall)) {
-                        return false;
+                        continue outer;
                     }
                 }
-                blockingWalls = getBlockingWalls(move.getPosition(), expectedOpponentPawn);
+                boolean wallBehind = false;
+                blockingWalls = getBlockingWalls(twoSquaresForPawn, expectedOpponentPawn);
                 for (String blockingWall : blockingWalls) {
                     if (walls.contains(blockingWall)) {
-                        return false;
+                        wallBehind = true;
+                        break;
+                    }
+                }
+                if (straight) {
+                    if (!wallBehind) {
+                        if (otherPawns.contains(expectedOpponentPawn)) {
+                            return true;
+                        }
+                    }
+                } else {
+                    if (wallBehind) {
+                        return true;
                     }
                 }
             }
-            return otherPawns.contains(expectedOpponentPawn);
         }
         return false;
     }
