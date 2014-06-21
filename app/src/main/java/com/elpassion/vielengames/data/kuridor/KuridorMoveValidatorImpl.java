@@ -205,10 +205,11 @@ final class KuridorMoveValidatorImpl {
     private static Set<String> getAllNeighbours(KuridorGameState state, Set<String> positions) {
         Set<String> neighbours = new HashSet<String>();
         char[] limits = {'9', '1', 'i', 'a'};
+        int[] limitsIndices = {1, 1, 0, 0};
         int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
         for (String position : positions) {
             for (int i = 0; i < limits.length; i++) {
-                if (position.charAt(1) != limits[i]) {
+                if (position.charAt(limitsIndices[i]) != limits[i]) {
                     boolean blocked = false;
                     String potentialNeighbour = "" + (char) (position.charAt(0) + directions[i][0]) + (char) (position.charAt(1) + directions[i][1]);
                     String[] blockingWalls = getBlockingWalls(position, potentialNeighbour);
