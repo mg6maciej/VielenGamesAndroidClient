@@ -40,19 +40,15 @@ final class KuridorMoveValidatorImpl {
             int directionY = move.getPosition().charAt(1) - activePawnPosition.charAt(1);
             String[] expectedOpponentPawns;
             String[] twoSquares = new String[]{move.getPosition()};
-            boolean straight = false;
+            boolean straight = true;
             if (directionY == 2) {
                 expectedOpponentPawns = new String[]{"" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) + 1)};
-                straight = true;
             } else if (directionY == -2) {
                 expectedOpponentPawns = new String[]{"" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) - 1)};
-                straight = true;
             } else if (directionX == 2) {
                 expectedOpponentPawns = new String[]{"" + (char) (activePawnPosition.charAt(0) + 1) + activePawnPosition.charAt(1)};
-                straight = true;
             } else if (directionX == -2) {
                 expectedOpponentPawns = new String[]{"" + (char) (activePawnPosition.charAt(0) - 1) + activePawnPosition.charAt(1)};
-                straight = true;
             } else {
                 expectedOpponentPawns = new String[]{
                         "" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) + directionY),
@@ -62,6 +58,7 @@ final class KuridorMoveValidatorImpl {
                         "" + activePawnPosition.charAt(0) + (char) (activePawnPosition.charAt(1) + 2 * directionY),
                         "" + (char) (activePawnPosition.charAt(0) + 2 * directionX) + activePawnPosition.charAt(1)
                 };
+                straight = false;
             }
             outer:
             for (int i = 0; i < expectedOpponentPawns.length; i++) {
