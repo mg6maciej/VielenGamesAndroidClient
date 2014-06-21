@@ -119,6 +119,12 @@ final class KuridorMoveValidatorImpl {
                     }
                 } else {
                     if (wallBehind) {
+                        blockingWalls = getBlockingWalls(expectedOpponentPawn, move.getPosition());
+                        for (String blockingWall : blockingWalls) {
+                            if (walls.contains(blockingWall)) {
+                                continue outer;
+                            }
+                        }
                         return true;
                     }
                 }
