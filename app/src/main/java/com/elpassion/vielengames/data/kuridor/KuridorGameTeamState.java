@@ -5,8 +5,10 @@ import lombok.Value;
 import lombok.experimental.Builder;
 
 @Parcelable
-@Builder
 @Value
-public final class WallPosition {
-    String position;
+@Builder
+public final class KuridorGameTeamState {
+
+    String pawnPosition;
+    int wallsLeft;
 }

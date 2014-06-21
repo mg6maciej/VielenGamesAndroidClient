@@ -49,6 +49,7 @@ public class GameActivity extends BaseActivity implements MoveRequestListener {
 
         gameView = (GameView) findViewById(R.id.game_view);
         gameView.setPlayer(prefs.getMe());
+        gameView.setMoveListener(this);
 
         updateGameView();
     }
@@ -80,7 +81,7 @@ public class GameActivity extends BaseActivity implements MoveRequestListener {
             ViewUtils.setText(player.getName(), this, nameViewId);
             ImageView iconView = ViewUtils.findView(this, profileIconViewId);
             Picasso.with(this).load(player.getAvatarUrl()).into(iconView);
-            boolean active = player.equals(game.getActivePlayer());
+            boolean active = player.getTeam().equals(game.getCurrentState().getActiveTeam());
             ViewUtils.setVisible(active, this, activeViewId);
         }
     }

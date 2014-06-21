@@ -13,16 +13,10 @@ import android.view.View;
 import com.elpassion.vielengames.R;
 import com.elpassion.vielengames.data.Player;
 import com.elpassion.vielengames.data.kuridor.KuridorGame;
-import com.elpassion.vielengames.data.kuridor.KuridorGameState;
+import com.elpassion.vielengames.data.kuridor.KuridorGameTeamState;
 import com.elpassion.vielengames.data.kuridor.KuridorMove;
-import com.elpassion.vielengames.data.kuridor.MoveValidator;
-import com.elpassion.vielengames.data.kuridor.PawnPosition;
 import com.elpassion.vielengames.data.kuridor.PositionConverter;
-import com.elpassion.vielengames.data.kuridor.WallPosition;
 
-/**
- * Created by pawel on 16.06.14.
- */
 public class GameView extends View {
 
     private static final int FIELD_COUNT = 9;
@@ -121,15 +115,18 @@ public class GameView extends View {
     private void drawPawns(Canvas canvas, int dim) {
         paint.setColor(Color.BLUE);
         if (game != null && game.getCurrentState() != null) {
-            for (PawnPosition pos : game.getCurrentState().getPawns()) {
-                int pawnX = PositionConverter.getX(pos.getPosition().toLowerCase());
-                int pawnY = PositionConverter.getY(pos.getPosition().toLowerCase());
-
-                if ("team_1".equals(pos.getTeam())) {
-                    paint.setColor(getResources().getColor(R.color.green_normal));
-                } else {
-                    paint.setColor(getResources().getColor(R.color.blue_normal));
-                }
+            {
+                KuridorGameTeamState team1 = game.getCurrentState().getTeam1();
+                int pawnX = PositionConverter.getX(team1.getPawnPosition().toLowerCase());
+                int pawnY = PositionConverter.getY(team1.getPawnPosition().toLowerCase());
+                paint.setColor(getResources().getColor(R.color.green_normal));
+                canvas.drawCircle(START_X + pawnX * dim + dim / 2, START_Y + pawnY * dim + dim / 2, pawnRadius, paint);
+            }
+            {
+                KuridorGameTeamState team2 = game.getCurrentState().getTeam2();
+                int pawnX = PositionConverter.getX(team2.getPawnPosition().toLowerCase());
+                int pawnY = PositionConverter.getY(team2.getPawnPosition().toLowerCase());
+                paint.setColor(getResources().getColor(R.color.blue_normal));
                 canvas.drawCircle(START_X + pawnX * dim + dim / 2, START_Y + pawnY * dim + dim / 2, pawnRadius, paint);
             }
         }
@@ -138,14 +135,14 @@ public class GameView extends View {
     private void drawWalls(Canvas canvas, int dim) {
         paint.setColor(Color.BLACK);
         if (game != null && game.getCurrentState() != null) {
-            for (WallPosition wall : game.getCurrentState().getWalls()) {
+            for (String wall : game.getCurrentState().getWalls()) {
                 if (wall == null) {
                     continue;
                 }
-                int wallX = PositionConverter.getX(wall.getPosition().toLowerCase());
-                int wallY = PositionConverter.getY(wall.getPosition().toLowerCase());
+                int wallX = PositionConverter.getX(wall.toLowerCase());
+                int wallY = PositionConverter.getY(wall.toLowerCase());
 
-                PositionConverter.Orientation ornt = PositionConverter.getOrientation(wall.getPosition());
+                PositionConverter.Orientation ornt = PositionConverter.getOrientation(wall);
                 boolean horizontal = ornt == PositionConverter.Orientation.hor;
                 float startX = horizontal ? (wallX - 2) * dim : wallX * dim;
                 float startY = horizontal ? wallY * dim : (wallY - 2) * dim;
@@ -160,30 +157,26 @@ public class GameView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
-        float x = event.getX();
-        float y = event.getY();
-
-        if (game != null && game.getActivePlayer() != null && game.getActivePlayer().getId().equals(this.player.getId())) {
+        if (game != null && loggedOnPlayerIsActive()) {
             scrollDetector.onTouchEvent(event);
             this.invalidate();
 
             if (event.getAction() == MotionEvent.ACTION_UP && wallStartPoint != null && wallEndPoint != null) {
-                System.out.println(getMovePostition());
-                KuridorMove move = new KuridorMove(KuridorMove.MoveType.wall, getMovePostition());
-                if (MoveValidator.validateMove(game.getCurrentState(), player, move)) {
-                    listener.onRequest(game, new KuridorMove(KuridorMove.MoveType.wall, getMovePostition()));
-                }
-
-                //gameState.getWalls().add(WallPosition.builder().position(getMovePostition()).build());
-
+                System.out.println(getMovePosition());
+                listener.onRequest(game, new KuridorMove(KuridorMove.MoveType.wall, getMovePosition()));
                 wallStartPoint = wallEndPoint = null;
             }
         }
         return true;
     }
 
-    private String getMovePostition() {
+    private boolean loggedOnPlayerIsActive() {
+        String activeTeam = game.getCurrentState().getActiveTeam();
+        int playerIndexInGame = game.getPlayers().indexOf(player);
+        return playerIndexInGame != -1 && game.getPlayers().get(playerIndexInGame).getTeam().equals(activeTeam);
+    }
+
+    private String getMovePosition() {
         Point wallStartPoint;
         if (isVertical(this.wallStartPoint, wallEndPoint)) {
             wallStartPoint = (this.wallStartPoint.y > wallEndPoint.y) ? this.wallStartPoint : wallEndPoint;
@@ -232,10 +225,7 @@ public class GameView extends View {
             Point p = fieldNumForAbsolute(x, y);
 
             System.out.println(PositionConverter.getPosition(PositionConverter.Orientation.none, p.x, p.y));
-            KuridorMove move = new KuridorMove(KuridorMove.MoveType.pawn, PositionConverter.getPosition(PositionConverter.Orientation.none, p.x, p.y));
-            if (MoveValidator.validateMove(game.getCurrentState(), player, move)) {
-                listener.onRequest(game, new KuridorMove(KuridorMove.MoveType.pawn, PositionConverter.getPosition(PositionConverter.Orientation.none, p.x, p.y)));
-            }
+            listener.onRequest(game, new KuridorMove(KuridorMove.MoveType.pawn, PositionConverter.getPosition(PositionConverter.Orientation.none, p.x, p.y)));
             return true;
         }
 
@@ -260,16 +250,12 @@ public class GameView extends View {
                 } else {
                     endPoint.x = startPoint.x + MAX_WALL_WIDTH;
                 }
-                return;
-            }
-
-            if (isVertical(startPoint, endPoint)) {
+            } else if (isVertical(startPoint, endPoint)) {
                 if (endPoint.y < startPoint.y) {
                     endPoint.y = startPoint.y - MAX_WALL_WIDTH;
                 } else {
                     endPoint.y = startPoint.y + MAX_WALL_WIDTH;
                 }
-                return;
             }
         }
 

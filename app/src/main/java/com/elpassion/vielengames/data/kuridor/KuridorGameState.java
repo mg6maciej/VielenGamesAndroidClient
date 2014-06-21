@@ -1,6 +1,8 @@
 package com.elpassion.vielengames.data.kuridor;
 
-import java.util.ArrayList;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.Collections;
 import java.util.List;
 
 import hrisey.Parcelable;
@@ -11,17 +13,20 @@ import lombok.experimental.Builder;
 @Builder
 @Value
 public final class KuridorGameState {
-    List<PawnPosition> pawns;
-    List<WallPosition> walls;
+
+    @SerializedName("team_1")
+    KuridorGameTeamState team1;
+    @SerializedName("team_2")
+    KuridorGameTeamState team2;
+    List<String> walls;
+    String activeTeam;
 
     public static KuridorGameState initial() {
-
-        List<PawnPosition> newPawns = new ArrayList<PawnPosition>(2);
-        newPawns.add(PawnPosition.builder().position("e1").team("team_1").build());
-        newPawns.add(PawnPosition.builder().position("e9").team("team_2").build());
-
-        return KuridorGameState.builder().
-                pawns(newPawns).
-                walls(new ArrayList<WallPosition>()).build();
+        return KuridorGameState.builder()
+                .team1(KuridorGameTeamState.builder().pawnPosition("e1").wallsLeft(10).build())
+                .team2(KuridorGameTeamState.builder().pawnPosition("e9").wallsLeft(10).build())
+                .walls(Collections.<String>emptyList())
+                .activeTeam("team_1")
+                .build();
     }
 }

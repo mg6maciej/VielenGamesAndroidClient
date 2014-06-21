@@ -18,7 +18,6 @@ public final class KuridorGame implements Game {
 
     String id;
     Player winner;
-    Player activePlayer;
     List<Player> players;
     List<KuridorMove> moves;
     KuridorGameState currentState;
