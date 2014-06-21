@@ -18,7 +18,7 @@ final class KuridorMoveValidatorImpl {
             }
         } else if (move.getMoveType() == KuridorMove.MoveType.wall) {
             if (WALL_MOVE_PATTERN.matcher(move.getPosition()).matches()) {
-                return true;
+                return isWallMoveValid(state, move);
             }
         }
         return false;
@@ -142,4 +142,7 @@ final class KuridorMoveValidatorImpl {
                 + Math.abs(position1.charAt(1) - position2.charAt(1));
     }
 
+    private static boolean isWallMoveValid(KuridorGameState state, KuridorMove move) {
+        return !state.getWalls().contains(move.getPosition());
+    }
 }
