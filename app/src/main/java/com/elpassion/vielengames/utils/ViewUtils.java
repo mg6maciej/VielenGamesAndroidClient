@@ -1,7 +1,9 @@
 package com.elpassion.vielengames.utils;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public final class ViewUtils {
@@ -51,5 +53,10 @@ public final class ViewUtils {
         View view = findView(parent, viewId);
         view.setBackgroundColor(backgroundColor);
 
+    }
+
+    public static void setImage(Bitmap bitmap, View parent, int viewId) {
+        ImageView imageView = findView(parent, viewId);
+        imageView.setImageBitmap(bitmap);
     }
 }
