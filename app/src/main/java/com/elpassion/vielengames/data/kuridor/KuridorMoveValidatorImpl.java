@@ -204,61 +204,23 @@ final class KuridorMoveValidatorImpl {
 
     private static Set<String> getAllNeighbours(KuridorGameState state, Set<String> positions) {
         Set<String> neighbours = new HashSet<String>();
+        char[] limits = {'9', '1', 'i', 'a'};
+        int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
         for (String position : positions) {
-            if (position.charAt(1) != '9') {
-                boolean blocked = false;
-                String potentialNeighbour = "" + position.charAt(0) + (char) (position.charAt(1) + 1);
-                String[] blockingWalls = getBlockingWalls(position, potentialNeighbour);
-                for (String blockingWall : blockingWalls) {
-                    if (state.getWalls().contains(blockingWall)) {
-                        blocked = true;
-                        break;
+            for (int i = 0; i < limits.length; i++) {
+                if (position.charAt(1) != limits[i]) {
+                    boolean blocked = false;
+                    String potentialNeighbour = "" + (char) (position.charAt(0) + directions[i][0]) + (char) (position.charAt(1) + directions[i][1]);
+                    String[] blockingWalls = getBlockingWalls(position, potentialNeighbour);
+                    for (String blockingWall : blockingWalls) {
+                        if (state.getWalls().contains(blockingWall)) {
+                            blocked = true;
+                            break;
+                        }
                     }
-                }
-                if (!blocked) {
-                    neighbours.add(potentialNeighbour);
-                }
-            }
-            if (position.charAt(1) != '1') {
-                boolean blocked = false;
-                String potentialNeighbour = "" + position.charAt(0) + (char) (position.charAt(1) - 1);
-                String[] blockingWalls = getBlockingWalls(position, potentialNeighbour);
-                for (String blockingWall : blockingWalls) {
-                    if (state.getWalls().contains(blockingWall)) {
-                        blocked = true;
-                        break;
+                    if (!blocked) {
+                        neighbours.add(potentialNeighbour);
                     }
-                }
-                if (!blocked) {
-                    neighbours.add(potentialNeighbour);
-                }
-            }
-            if (position.charAt(0) != 'i') {
-                boolean blocked = false;
-                String potentialNeighbour = "" + (char) (position.charAt(0) + 1) + position.charAt(1);
-                String[] blockingWalls = getBlockingWalls(position, potentialNeighbour);
-                for (String blockingWall : blockingWalls) {
-                    if (state.getWalls().contains(blockingWall)) {
-                        blocked = true;
-                        break;
-                    }
-                }
-                if (!blocked) {
-                    neighbours.add(potentialNeighbour);
-                }
-            }
-            if (position.charAt(0) != 'a') {
-                boolean blocked = false;
-                String potentialNeighbour = "" + (char) (position.charAt(0) - 1) + position.charAt(1);
-                String[] blockingWalls = getBlockingWalls(position, potentialNeighbour);
-                for (String blockingWall : blockingWalls) {
-                    if (state.getWalls().contains(blockingWall)) {
-                        blocked = true;
-                        break;
-                    }
-                }
-                if (!blocked) {
-                    neighbours.add(potentialNeighbour);
                 }
             }
         }
