@@ -28,7 +28,7 @@ final class KuridorMoveValidatorImpl {
         int distance = distanceBetweenPositions(activePawnPosition, move.getPosition());
         if (distance == 1) {
             Collection<String> walls = state.getWalls();
-            String[] blockingWalls = getBlockingWalls(move, activePawnPosition);
+            String[] blockingWalls = getBlockingWalls(move.getPosition(), activePawnPosition);
             for (String blockingWall : blockingWalls) {
                 if (walls.contains(blockingWall)) {
                     return false;
@@ -50,15 +50,33 @@ final class KuridorMoveValidatorImpl {
             } else {
                 expectedOpponentPawn = null;
             }
+            if (expectedOpponentPawn != null) {
+                Collection<String> walls = state.getWalls();
+                String[] blockingWalls = getBlockingWalls(expectedOpponentPawn, activePawnPosition);
+                for (String blockingWall : blockingWalls) {
+                    if (walls.contains(blockingWall)) {
+                        return false;
+                    }
+                }
+                blockingWalls = getBlockingWalls(move.getPosition(), expectedOpponentPawn);
+                for (String blockingWall : blockingWalls) {
+                    if (walls.contains(blockingWall)) {
+                        return false;
+                    }
+                }
+            }
             return otherPawns.contains(expectedOpponentPawn);
         }
         return false;
     }
 
-    private static String[] getBlockingWalls(KuridorMove move, String pawnPosition) {
+    private static String[] getBlockingWalls(String position, String pawnPosition) {
+        if (distanceBetweenPositions(position, pawnPosition) != 1) {
+            throw new IllegalArgumentException();
+        }
         String[] blockingWalls;
-        int directionX = move.getPosition().charAt(0) - pawnPosition.charAt(0);
-        int directionY = move.getPosition().charAt(1) - pawnPosition.charAt(1);
+        int directionX = position.charAt(0) - pawnPosition.charAt(0);
+        int directionY = position.charAt(1) - pawnPosition.charAt(1);
         if (directionY == 1) {
             blockingWalls = new String[]{
                     pawnPosition + "h",
@@ -66,8 +84,8 @@ final class KuridorMoveValidatorImpl {
             };
         } else if (directionY == -1) {
             blockingWalls = new String[]{
-                    move.getPosition() + "h",
-                    "" + (char) (move.getPosition().charAt(0) - 1) + move.getPosition().charAt(1) + "h"
+                    position + "h",
+                    "" + (char) (position.charAt(0) - 1) + position.charAt(1) + "h"
             };
         } else if (directionX == 1) {
             blockingWalls = new String[]{
@@ -76,8 +94,8 @@ final class KuridorMoveValidatorImpl {
             };
         } else {
             blockingWalls = new String[]{
-                    move.getPosition() + "v",
-                    "" + move.getPosition().charAt(0) + (char) (move.getPosition().charAt(1) - 1) + "v"
+                    position + "v",
+                    "" + position.charAt(0) + (char) (position.charAt(1) - 1) + "v"
             };
         }
         return blockingWalls;
