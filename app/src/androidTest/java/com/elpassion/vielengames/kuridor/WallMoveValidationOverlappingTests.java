@@ -23,6 +23,17 @@ public final class WallMoveValidationOverlappingTests extends WallMoveValidation
         assertNotValid("g6h");
     }
 
+    public void testWallsCannotPartiallyOverlap() {
+        testedState = withSomeWalls;
+        assertNotValid("a2v");
+        assertNotValid("b3h");
+        assertNotValid("d3h");
+        assertNotValid("b4h");
+        assertNotValid("d4h");
+        assertNotValid("g5v");
+        assertNotValid("g7v");
+    }
+
     private KuridorGameState withSomeWalls = KuridorGameState.builder()
             .team1(KuridorGameTeamState.builder().pawnPosition("e1").wallsLeft(10).build())
             .team2(KuridorGameTeamState.builder().pawnPosition("e9").wallsLeft(10).build())

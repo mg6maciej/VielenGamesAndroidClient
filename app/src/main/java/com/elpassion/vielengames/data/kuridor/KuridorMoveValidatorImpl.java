@@ -152,6 +152,19 @@ final class KuridorMoveValidatorImpl {
         if (walls.contains(otherWayPosition)) {
             return false;
         }
+        if (position.charAt(2) == 'h') {
+            String eastOverlappingPosition = (char) (position.charAt(0) + 1) + position.substring(1);
+            String westOverlappingPosition = (char) (position.charAt(0) - 1) + position.substring(1);
+            if (walls.contains(eastOverlappingPosition) || walls.contains(westOverlappingPosition)) {
+                return false;
+            }
+        } else {
+            String northOverlappingPosition = "" + position.charAt(0) + (char) (position.charAt(1) + 1) + position.charAt(2);
+            String southOverlappingPosition = "" + position.charAt(0) + (char) (position.charAt(1) - 1) + position.charAt(2);
+            if (walls.contains(northOverlappingPosition) || walls.contains(southOverlappingPosition)) {
+                return false;
+            }
+        }
         return true;
     }
 }
