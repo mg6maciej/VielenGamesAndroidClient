@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/game_header_player_profile_icon"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_margin="10dp"/>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/game_header_player_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/text_primary_color"/>
+
+        <TextView
+            android:id="@+id/game_header_walls_left_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/game_header_player_name"
+            android:layout_marginTop="5dp"
+            android:text="Walls left:"
+            android:textColor="@color/text_tertiary_color"/>
+
+        <TextView
+            android:id="@+id/game_header_walls_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/game_header_walls_left_label"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/game_header_walls_left_label"
+            android:textColor="@color/text_secondary_color"/>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/game_header_player_active"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/active_player_indicator"/>
+
+</merge>
