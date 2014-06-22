@@ -63,6 +63,9 @@ public final class VielenGamesClient {
         api.getGameProposals(new DefaultCallback<List<GameProposal>>() {
             @Override
             public void success(List<GameProposal> gameProposals, Response response) {
+                for (GameProposal gameProposal : gameProposals) {
+                    gameProposal.updateCreationTime();
+                }
                 eventBus.post(new GetGameProposalsResponseEvent(gameProposals));
             }
         });
@@ -77,6 +80,7 @@ public final class VielenGamesClient {
         api.createGameProposal(proposal, new DefaultCallback<GameProposal>() {
             @Override
             public void success(GameProposal proposal, Response response) {
+                proposal.updateCreationTime();
                 eventBus.post(new CreateGameProposalEvent(proposal));
             }
         });
@@ -86,6 +90,7 @@ public final class VielenGamesClient {
         api.joinGameProposal(proposal.getId(), prefs.getMe(), new DefaultCallback<GameProposal>() {
             @Override
             public void success(GameProposal proposal, Response response) {
+                proposal.updateCreationTime();
                 eventBus.post(new JoinGameProposalResponseEvent(proposal));
             }
         });

@@ -30,6 +30,8 @@ public final class GameProposalsFragment extends BaseFragment {
     VielenGamesPrefs prefs;
 
     private ListView listView;
+    private GameProposalsAdapter adapter;
+    private Runnable refreshAdapter = createRefreshAdapterAction();
 
     @InstanceState
     private ArrayList<GameProposal> proposals;
@@ -59,7 +61,32 @@ public final class GameProposalsFragment extends BaseFragment {
     }
 
     private void updateListView() {
-        listView.setAdapter(new GameProposalsAdapter(getActivity(), proposals, prefs.getMe(), client));
+        adapter = new GameProposalsAdapter(getActivity(), proposals, prefs.getMe(), client);
+        listView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshAdapter.run();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        listView.removeCallbacks(refreshAdapter);
+    }
+
+    private Runnable createRefreshAdapterAction() {
+        return new Runnable() {
+            @Override
+            public void run() {
+                if (adapter != null) {
+                    adapter.notifyDataSetChanged();
+                }
+                listView.postDelayed(this, 60 * 1000);
+            }
+        };
     }
 
     @Override
