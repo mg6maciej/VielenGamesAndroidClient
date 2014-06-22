@@ -15,6 +15,7 @@ import retrofit.http.Body;
 import retrofit.http.DELETE;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.PUT;
 import retrofit.http.Path;
 import retrofit.http.Query;
 
@@ -32,7 +33,7 @@ public interface VielenGamesApi {
     @POST("/game_proposals")
     void createGameProposal(@Body GameProposal proposal, Callback<GameProposal> callback);
 
-    @POST("/game_proposals/{proposal_id}/awaiting_players")
+    @PUT("/game_proposals/{proposal_id}/awaiting_players")
     void joinGameProposal(@Path("proposal_id") String proposalId, @Body Player player, Callback<GameProposal> callback);
 
     @DELETE("/game_proposals/{proposal_id}/awaiting_players/{player_id}")
