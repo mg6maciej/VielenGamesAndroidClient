@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/game_header_player_profile_icon"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="@dimen/common_image_size"
+        android:layout_height="@dimen/common_image_size"
         android:layout_margin="10dp"/>
 
     <RelativeLayout

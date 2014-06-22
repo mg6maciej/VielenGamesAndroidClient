@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/game_item_preview"
-        android:layout_width="65dp"
-        android:layout_height="65dp"/>
+        android:layout_width="@dimen/common_image_size"
+        android:layout_height="@dimen/common_image_size"/>
 
     <RelativeLayout
         android:layout_width="0dp"
