@@ -2,7 +2,6 @@ package com.elpassion.vielengames.ui;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.text.SpannableString;
@@ -17,6 +16,7 @@ import com.elpassion.vielengames.R;
 import com.elpassion.vielengames.data.Game;
 import com.elpassion.vielengames.data.Player;
 import com.elpassion.vielengames.data.kuridor.KuridorGame;
+import com.elpassion.vielengames.utils.Circlifier;
 import com.elpassion.vielengames.utils.ViewUtils;
 import com.elpassion.vielengames.utils.kuridor.KuridorGameStateDrawer;
 
@@ -63,12 +63,18 @@ public final class GamesAdapter extends BaseAdapter {
         int bitmapSize = context.getResources().getDimensionPixelSize(R.dimen.common_image_size);
         Bitmap bitmap = Bitmap.createBitmap(bitmapSize, bitmapSize, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
+        canvas.drawColor(0xFFFFFFFF);
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
         KuridorGameStateDrawer.Settings settings = new KuridorGameStateDrawer.Settings()
-                .paint(new Paint())
+                .paint(paint)
                 .team1Color(context.getResources().getColor(R.color.green_normal))
                 .team2Color(context.getResources().getColor(R.color.blue_normal));
         KuridorGameStateDrawer.draw(item.getCurrentState(), canvas, settings);
-        ViewUtils.setImage(bitmap, convertView, R.id.game_item_preview);
+        final int circleColor = 0xFFEEEEEE;
+        final float circleWidth = context.getResources().getDimension(R.dimen.common_circle_width);
+        final Bitmap circlified = Circlifier.circlify(bitmap, circleColor, circleWidth);
+        ViewUtils.setImage(circlified, convertView, R.id.game_item_preview);
         return convertView;
     }
 

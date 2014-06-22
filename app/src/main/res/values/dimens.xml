@@ -2,5 +2,6 @@
 <resources>
 
     <dimen name="common_image_size">65dp</dimen>
+    <dimen name="common_circle_width">1dp</dimen>
 
 </resources>

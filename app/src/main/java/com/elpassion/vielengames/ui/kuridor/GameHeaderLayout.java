@@ -7,8 +7,8 @@ import android.widget.ImageView;
 import com.elpassion.vielengames.R;
 import com.elpassion.vielengames.data.Player;
 import com.elpassion.vielengames.ui.BaseLinearLayout;
+import com.elpassion.vielengames.utils.VanGogh;
 import com.elpassion.vielengames.utils.ViewUtils;
-import com.squareup.picasso.Picasso;
 
 public final class GameHeaderLayout extends BaseLinearLayout {
 
@@ -29,7 +29,7 @@ public final class GameHeaderLayout extends BaseLinearLayout {
 
     public void update(Player player, int wallsLeft, boolean active) {
         ImageView imageView = ViewUtils.findView(this, R.id.game_header_player_profile_icon);
-        Picasso.with(getContext()).load(player.getAvatarUrl()).into(imageView);
+        VanGogh.loadCirclifiedInto(getContext(), player.getAvatarUrl(), imageView);
         ViewUtils.setText(player.getName(), this, R.id.game_header_player_name);
         ViewUtils.setText(String.valueOf(wallsLeft), this, R.id.game_header_walls_left);
         ViewUtils.setVisible(active, this, R.id.game_header_player_active);

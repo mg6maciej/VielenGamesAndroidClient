@@ -12,9 +12,9 @@ import com.elpassion.vielengames.R;
 import com.elpassion.vielengames.api.VielenGamesClient;
 import com.elpassion.vielengames.data.GameProposal;
 import com.elpassion.vielengames.data.Player;
+import com.elpassion.vielengames.utils.VanGogh;
 import com.elpassion.vielengames.utils.ViewUtils;
 import com.nhaarman.listviewanimations.itemmanipulation.OnDismissCallback;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +84,7 @@ public final class GameProposalsAdapter extends BaseAdapter implements OnDismiss
 
         ViewUtils.setText(player.getName(), convertView, R.id.game_proposal_name);
         ImageView profileIcon = ViewUtils.findView(convertView, R.id.game_proposal_profile_icon);
-        Picasso.with(context).load(player.getAvatarUrl()).into(profileIcon);
+        VanGogh.loadCirclifiedInto(context, player.getAvatarUrl(), profileIcon);
         ViewUtils.setText(formatAge(item.getAgeInSeconds()), convertView, R.id.game_proposal_age);
         return convertView;
     }
