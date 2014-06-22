@@ -10,7 +10,9 @@ import com.elpassion.vielengames.R;
 import com.elpassion.vielengames.VielenGamesPrefs;
 import com.elpassion.vielengames.api.VielenGamesClient;
 import com.elpassion.vielengames.data.GameProposal;
+import com.elpassion.vielengames.event.CreateGameProposalEvent;
 import com.elpassion.vielengames.event.GetGameProposalsResponseEvent;
+import com.elpassion.vielengames.event.LeaveGameProposalResponseEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
 import com.elpassion.vielengames.utils.ViewUtils;
 
@@ -58,6 +60,20 @@ public final class GameProposalsFragment extends BaseFragment {
     public void onEvent(GetGameProposalsResponseEvent event) {
         proposals = new ArrayList<GameProposal>(event.getGameProposals());
         updateListView();
+    }
+
+    @SuppressWarnings("unused")
+    public void onEvent(LeaveGameProposalResponseEvent event) {
+        GameProposal proposal = event.getProposal();
+        proposals.remove(proposal);
+        adapter.remove(proposal);
+    }
+
+    @SuppressWarnings("unused")
+    public void onEvent(CreateGameProposalEvent event) {
+        GameProposal proposal = event.getProposal();
+        proposals.add(0, proposal);
+        adapter.add(proposal);
     }
 
     private void updateListView() {

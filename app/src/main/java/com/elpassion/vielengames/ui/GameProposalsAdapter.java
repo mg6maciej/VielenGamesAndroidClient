@@ -15,6 +15,7 @@ import com.elpassion.vielengames.data.Player;
 import com.elpassion.vielengames.utils.ViewUtils;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class GameProposalsAdapter extends BaseAdapter {
@@ -30,8 +31,18 @@ public final class GameProposalsAdapter extends BaseAdapter {
         this.context = context;
         this.client = client;
         this.inflater = LayoutInflater.from(context);
-        this.proposals = proposals;
+        this.proposals = new ArrayList<GameProposal>(proposals);
         this.me = me;
+    }
+
+    public void remove(GameProposal proposal) {
+        proposals.remove(proposal);
+        notifyDataSetChanged();
+    }
+
+    public void add(GameProposal proposal) {
+        proposals.add(0, proposal);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -125,6 +136,4 @@ public final class GameProposalsAdapter extends BaseAdapter {
             }
         };
     }
-
-
 }

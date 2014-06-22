@@ -8,15 +8,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.elpassion.vielengames.ForegroundNotifier;
 import com.elpassion.vielengames.R;
 import com.elpassion.vielengames.api.GooglePlusAuth;
 import com.elpassion.vielengames.api.VielenGamesClient;
-import com.elpassion.vielengames.event.CreateGameProposalEvent;
 import com.elpassion.vielengames.event.GameClickEvent;
-import com.elpassion.vielengames.event.LeaveGameProposalResponseEvent;
 import com.elpassion.vielengames.event.OnAccessTokenRevoked;
 import com.elpassion.vielengames.event.bus.EventBus;
 import com.elpassion.vielengames.utils.ViewUtils;
@@ -117,7 +114,7 @@ public final class MainActivity extends BaseActivity {
         replaceProposalsFragment();
     }
 
-    private void replaceProposalsFragment(){
+    private void replaceProposalsFragment() {
         replaceWithFragment(new GameProposalsFragment());
         Button proposals = ViewUtils.findView(this, R.id.main_proposals_button);
         proposals.setTextColor(getResources().getColor(R.color.tab_text_color_selected));
@@ -144,16 +141,6 @@ public final class MainActivity extends BaseActivity {
                 .commit();
     }
 
-    @SuppressWarnings("unused")
-    public void onEvent(CreateGameProposalEvent event) {
-        Toast.makeText(this, "Created new game proposal.", Toast.LENGTH_SHORT).show();
-        replaceProposalsFragment();
-    }
-
-    @SuppressWarnings("unused")
-    public void onEvent(LeaveGameProposalResponseEvent event) {
-        replaceProposalsFragment();
-    }
     @SuppressWarnings("unused")
     public void onEvent(GameClickEvent event) {
         Intent intent = new Intent(this, GameActivity.class);

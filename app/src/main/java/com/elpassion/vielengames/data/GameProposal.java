@@ -5,6 +5,7 @@ import android.os.SystemClock;
 import java.util.List;
 
 import hrisey.Parcelable;
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 import lombok.experimental.Builder;
 import lombok.experimental.NonFinal;
@@ -12,6 +13,7 @@ import lombok.experimental.NonFinal;
 @Parcelable
 @Value
 @Builder
+@EqualsAndHashCode(of = "id")
 public final class GameProposal {
 
     String id;
