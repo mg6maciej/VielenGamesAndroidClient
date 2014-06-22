@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/game_item_player_names"
             android:layout_marginTop="5dp"
-            android:text="Turn:"
+            android:text="Time left:"
             android:textColor="@color/text_tertiary_color"/>
 
         <TextView
@@ -40,7 +40,7 @@
             android:layout_alignBaseline="@+id/game_item_turn_label"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/game_item_turn_label"
-            android:text="You"
+            android:text="unlimited"
             android:textColor="@color/text_secondary_color"/>
 
     </RelativeLayout>
