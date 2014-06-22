@@ -71,6 +71,9 @@ public final class GameView extends BaseView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        drawerSettings
+                .width(getWidth())
+                .height(getHeight());
         KuridorGameStateDrawer.draw(state, canvas, drawerSettings);
     }
 }

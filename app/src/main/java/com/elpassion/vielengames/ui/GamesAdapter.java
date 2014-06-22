@@ -67,6 +67,8 @@ public final class GamesAdapter extends BaseAdapter {
         Paint paint = new Paint();
         paint.setAntiAlias(true);
         KuridorGameStateDrawer.Settings settings = new KuridorGameStateDrawer.Settings()
+                .width(bitmapSize)
+                .height(bitmapSize)
                 .paint(paint)
                 .dotsRadius(1.0f)
                 .wallWidth(2.0f)

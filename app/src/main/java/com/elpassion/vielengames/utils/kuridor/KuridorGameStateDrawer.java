@@ -15,9 +15,9 @@ public final class KuridorGameStateDrawer {
     }
 
     public static void draw(KuridorGameState state, Canvas canvas, Settings settings) {
-        int size = Math.min(canvas.getWidth(), canvas.getHeight());
-        float xPadding = settings.padding() + (canvas.getWidth() - size) / 2.0f;
-        float yPadding = settings.padding() + (canvas.getHeight() - size) / 2.0f;
+        int size = Math.min(settings.width(), settings.height());
+        float xPadding = settings.padding() + (settings.width() - size) / 2.0f;
+        float yPadding = settings.padding() + (settings.height() - size) / 2.0f;
         for (int y = 0; y < 10; y++) {
             if (y == 0) {
                 settings.paint().setColor(settings.team1Color());
@@ -88,6 +88,8 @@ public final class KuridorGameStateDrawer {
     @Setter
     public static final class Settings {
 
+        private int width;
+        private int height;
         private Paint paint;
         private float padding;
         private float dotsRadius;
