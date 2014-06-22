@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/main_proposals_button"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/tab_background_color"
             android:text="PROPOSALS"
-            android:textColor="@color/tab_text_color" />
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@color/tab_text_color"/>
 
         <ImageButton
             android:id="@+id/main_add_proposal_button"
@@ -25,16 +27,17 @@
             android:background="@color/add_proposal_background_color"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:src="@drawable/add_proposal_icon" />
+            android:src="@drawable/add_proposal_icon"/>
 
         <Button
             android:id="@+id/main_my_games_button"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/tab_background_color"
             android:text="MY GAMES"
-            android:textColor="@color/tab_text_color" />
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@color/tab_text_color"/>
 
     </LinearLayout>
 
@@ -42,7 +45,7 @@
         android:id="@+id/main_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"/>
 
 
 </LinearLayout>
