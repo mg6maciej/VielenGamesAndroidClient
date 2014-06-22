@@ -1,10 +1,10 @@
 package com.elpassion.vielengames.ui;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
@@ -13,12 +13,13 @@ import com.elpassion.vielengames.api.VielenGamesClient;
 import com.elpassion.vielengames.data.GameProposal;
 import com.elpassion.vielengames.data.Player;
 import com.elpassion.vielengames.utils.ViewUtils;
+import com.nhaarman.listviewanimations.itemmanipulation.OnDismissCallback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public final class GameProposalsAdapter extends BaseAdapter {
+public final class GameProposalsAdapter extends BaseAdapter implements OnDismissCallback {
 
     public static final String TAG = GameProposalsAdapter.class.getSimpleName();
     private Context context;
@@ -35,8 +36,11 @@ public final class GameProposalsAdapter extends BaseAdapter {
         this.me = me;
     }
 
-    public void remove(GameProposal proposal) {
-        proposals.remove(proposal);
+    @Override
+    public void onDismiss(AbsListView listView, int[] positions) {
+        for (int position : positions) {
+            proposals.remove(position);
+        }
         notifyDataSetChanged();
     }
 

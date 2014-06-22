@@ -15,6 +15,8 @@ import com.elpassion.vielengames.event.GetGameProposalsResponseEvent;
 import com.elpassion.vielengames.event.LeaveGameProposalResponseEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
 import com.elpassion.vielengames.utils.ViewUtils;
+import com.nhaarman.listviewanimations.itemmanipulation.AnimateAdditionAdapter;
+import com.nhaarman.listviewanimations.itemmanipulation.AnimateDismissAdapter;
 
 import java.util.ArrayList;
 
@@ -33,6 +35,7 @@ public final class GameProposalsFragment extends BaseFragment {
 
     private ListView listView;
     private GameProposalsAdapter adapter;
+    private AnimateDismissAdapter dismissAdapterDecorator;
     private Runnable refreshAdapter = createRefreshAdapterAction();
 
     @InstanceState
@@ -65,8 +68,9 @@ public final class GameProposalsFragment extends BaseFragment {
     @SuppressWarnings("unused")
     public void onEvent(LeaveGameProposalResponseEvent event) {
         GameProposal proposal = event.getProposal();
-        proposals.remove(proposal);
-        adapter.remove(proposal);
+        int index = proposals.indexOf(proposal);
+        proposals.remove(index);
+        dismissAdapterDecorator.animateDismiss(index);
     }
 
     @SuppressWarnings("unused")
@@ -78,7 +82,9 @@ public final class GameProposalsFragment extends BaseFragment {
 
     private void updateListView() {
         adapter = new GameProposalsAdapter(getActivity(), proposals, prefs.getMe(), client);
-        listView.setAdapter(adapter);
+        dismissAdapterDecorator = new AnimateDismissAdapter(adapter, adapter);
+        dismissAdapterDecorator.setAbsListView(listView);
+        listView.setAdapter(dismissAdapterDecorator);
     }
 
     @Override
@@ -110,5 +116,7 @@ public final class GameProposalsFragment extends BaseFragment {
         super.onDestroyView();
         eventBus.unregister(this);
         listView = null;
+        adapter = null;
+        dismissAdapterDecorator = null;
     }
 }
