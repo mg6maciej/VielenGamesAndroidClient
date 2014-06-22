@@ -4,11 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/game_header_player_profile_icon"
+    <FrameLayout
         android:layout_width="@dimen/common_image_size"
         android:layout_height="@dimen/common_image_size"
-        android:layout_margin="10dp"/>
+        android:layout_margin="10dp">
+
+        <ImageView
+            android:id="@+id/game_header_player_profile_icon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <View
+            android:id="@+id/game_header_player_color"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="bottom|right"/>
+
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_width="0dp"
