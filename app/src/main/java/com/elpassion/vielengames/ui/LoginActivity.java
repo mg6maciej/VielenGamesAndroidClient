@@ -25,7 +25,6 @@ public final class LoginActivity extends BaseActivity implements View.OnClickLis
 
     public static final String TAG = LoginActivity.class.getSimpleName();
 
-
     @Inject
     GooglePlusAuth googlePlusAuth;
 
@@ -38,8 +37,6 @@ public final class LoginActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        hideActionBar();
         setContentView(R.layout.login_activity);
         findViewById(R.id.sign_in_button).setOnClickListener(this);
 
@@ -48,25 +45,9 @@ public final class LoginActivity extends BaseActivity implements View.OnClickLis
         customizeSignInButton();
     }
 
-    private void hideActionBar() {
-        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-        getSupportActionBar().hide();
-    }
-
     private void customizeSignInButton() {
         SignInButton button = (SignInButton) findViewById(R.id.sign_in_button);
         button.setStyle(SignInButton.SIZE_WIDE, SignInButton.COLOR_LIGHT);
-    }
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
     }
 
     @Override
@@ -74,8 +55,6 @@ public final class LoginActivity extends BaseActivity implements View.OnClickLis
         super.onDestroy();
         googlePlusAuth.disconnect();
         eventBus.unregister(this);
-
-
     }
 
     @Override
