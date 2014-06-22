@@ -1,5 +1,7 @@
 package com.elpassion.vielengames.ui;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.elpassion.vielengames.ForegroundNotifier;
@@ -14,28 +16,32 @@ import com.elpassion.vielengames.data.kuridor.KuridorMove;
 import com.elpassion.vielengames.event.GamesUpdatedEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
 import com.elpassion.vielengames.ui.kuridor.GameHeaderLayout;
+import com.elpassion.vielengames.ui.kuridor.GameView;
 import com.elpassion.vielengames.utils.ViewUtils;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-public class GameActivity extends BaseActivity implements MoveRequestListener {
+import hrisey.InstanceState;
 
-    private GameView gameView;
+public class GameActivity extends BaseActivity {
+
+    private static final String EXTRA_GAME = "game";
 
     @Inject
     VielenGamesClient gameClient;
     @Inject
     EventBus eventBus;
     @Inject
-    VielenGamesPrefs prefs;
-    @Inject
     ForegroundNotifier notifier;
     @Inject
     VielenGamesModel model;
 
-    public static final String GAME_ID_EXTRA = "com.elpassion.vielengames.EXTRA_GAME_ID";
+    @InstanceState
+    private KuridorGame game;
+
+    private GameView gameView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +50,22 @@ public class GameActivity extends BaseActivity implements MoveRequestListener {
         eventBus.register(this);
 
         gameView = (GameView) findViewById(R.id.game_view);
-        gameView.setPlayer(prefs.getMe());
-        gameView.setMoveListener(this);
-
+        gameView.setMoveListener(new GameView.MoveListener() {
+            @Override
+            public void onMove(KuridorMove move) {
+                gameClient.move(game, move);
+            }
+        });
+        if (game == null) {
+            game = getIntent().getParcelableExtra(EXTRA_GAME);
+        }
         updateGameView();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(EXTRA_GAME, game);
     }
 
     @Override
@@ -62,24 +80,19 @@ public class GameActivity extends BaseActivity implements MoveRequestListener {
     }
 
     private void updateGameView() {
-        String gameId = getIntent().getExtras().getString(GAME_ID_EXTRA);
-        KuridorGame thisGame = model.getGameById(gameId);
+        KuridorGame thisGame = model.getGameById(game.getId());
         if (thisGame != null) {
-            gameView.setGame(thisGame);
-            List<Player> players = thisGame.getPlayers();
-            KuridorGameState state = thisGame.getCurrentState();
-            Player team1Player = "team_1".equals(players.get(0).getTeam()) ? players.get(0) : players.get(1);
-            Player team2Player = "team_2".equals(players.get(0).getTeam()) ? players.get(0) : players.get(1);
-            GameHeaderLayout top = ViewUtils.findView(this, R.id.game_header_top);
-            top.update(team2Player, state.getTeam2().getWallsLeft(), "team_2".equals(state.getActiveTeam()));
-            GameHeaderLayout bottom = ViewUtils.findView(this, R.id.game_header_bottom);
-            bottom.update(team1Player, state.getTeam1().getWallsLeft(), "team_1".equals(state.getActiveTeam()));
+            game = thisGame;
         }
-    }
-
-    @Override
-    public void onRequest(KuridorGame game, KuridorMove move) {
-        gameClient.move(game, move);
+        KuridorGameState state = game.getCurrentState();
+        gameView.setState(state);
+        List<Player> players = game.getPlayers();
+        Player team1Player = "team_1".equals(players.get(0).getTeam()) ? players.get(0) : players.get(1);
+        Player team2Player = "team_2".equals(players.get(0).getTeam()) ? players.get(0) : players.get(1);
+        GameHeaderLayout top = ViewUtils.findView(this, R.id.game_header_top);
+        top.update(team2Player, state.getTeam2().getWallsLeft(), "team_2".equals(state.getActiveTeam()));
+        GameHeaderLayout bottom = ViewUtils.findView(this, R.id.game_header_bottom);
+        bottom.update(team1Player, state.getTeam1().getWallsLeft(), "team_1".equals(state.getActiveTeam()));
     }
 
     @Override
@@ -92,5 +105,30 @@ public class GameActivity extends BaseActivity implements MoveRequestListener {
     protected void onStop() {
         super.onStop();
         notifier.onActivityStopped();
+    }
+
+    public static IntentBuilder intent(Context context) {
+        return new IntentBuilder(context);
+    }
+
+    public static class IntentBuilder {
+
+        private final Context context;
+        private KuridorGame game;
+
+        IntentBuilder(Context context) {
+            this.context = context;
+        }
+
+        public IntentBuilder game(KuridorGame game) {
+            this.game = game;
+            return this;
+        }
+
+        public void start() {
+            Intent intent = new Intent(context, GameActivity.class);
+            intent.putExtra(EXTRA_GAME, game);
+            context.startActivity(intent);
+        }
     }
 }

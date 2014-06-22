@@ -13,6 +13,7 @@ import com.elpassion.vielengames.ForegroundNotifier;
 import com.elpassion.vielengames.R;
 import com.elpassion.vielengames.api.GooglePlusAuth;
 import com.elpassion.vielengames.api.VielenGamesClient;
+import com.elpassion.vielengames.data.kuridor.KuridorGame;
 import com.elpassion.vielengames.event.GameClickEvent;
 import com.elpassion.vielengames.event.OnAccessTokenRevoked;
 import com.elpassion.vielengames.event.bus.EventBus;
@@ -143,9 +144,9 @@ public final class MainActivity extends BaseActivity {
 
     @SuppressWarnings("unused")
     public void onEvent(GameClickEvent event) {
-        Intent intent = new Intent(this, GameActivity.class);
-        intent.putExtra(GameActivity.GAME_ID_EXTRA, event.getGame().getId());
-        startActivity(intent);
+        GameActivity.intent(this)
+                .game((KuridorGame) event.getGame())
+                .start();
     }
 
     @Override

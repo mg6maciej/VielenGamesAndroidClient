@@ -14,7 +14,7 @@ import lombok.experimental.Builder;
 @Value
 @Builder
 @EqualsAndHashCode(of = "id")
-public final class KuridorGame implements Game {
+public final class KuridorGame implements Game, android.os.Parcelable {
 
     String id;
     Player winner;

@@ -68,6 +68,10 @@ public final class GamesAdapter extends BaseAdapter {
         paint.setAntiAlias(true);
         KuridorGameStateDrawer.Settings settings = new KuridorGameStateDrawer.Settings()
                 .paint(paint)
+                .dotsRadius(1.0f)
+                .wallWidth(2.0f)
+                .wallPadding(2.0f)
+                .pawnPadding(2.0f)
                 .team1Color(context.getResources().getColor(R.color.green_normal))
                 .team2Color(context.getResources().getColor(R.color.blue_normal));
         KuridorGameStateDrawer.draw(item.getCurrentState(), canvas, settings);

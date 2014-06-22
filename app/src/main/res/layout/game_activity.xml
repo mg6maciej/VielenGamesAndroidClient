@@ -14,7 +14,7 @@
         android:layout_height="1dp"
         android:background="#eeeeee"/>
 
-    <com.elpassion.vielengames.ui.GameView
+    <com.elpassion.vielengames.ui.kuridor.GameView
         android:id="@+id/game_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
