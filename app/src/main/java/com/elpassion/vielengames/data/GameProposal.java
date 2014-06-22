@@ -14,4 +14,5 @@ public final class GameProposal {
     String id;
     String gameType;
     List<Player> awaitingPlayers;
+    int ageInSeconds;
 }

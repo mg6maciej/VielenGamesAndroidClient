@@ -70,7 +70,42 @@ public final class GameProposalsAdapter extends BaseAdapter {
         ViewUtils.setText(player.getName(), convertView, R.id.game_proposal_name);
         ImageView profileIcon = ViewUtils.findView(convertView, R.id.game_proposal_profile_icon);
         Picasso.with(context).load(player.getAvatarUrl()).into(profileIcon);
+        ViewUtils.setText(formatAge(item.getAgeInSeconds()), convertView, R.id.game_proposal_age);
         return convertView;
+    }
+
+    private CharSequence formatAge(int ageInSeconds) {
+        if (ageInSeconds < 60) {
+            return "Just now!";
+        } else if (ageInSeconds < 60 * 60) {
+            int ageInMinutes = ageInSeconds / 60;
+            if (ageInMinutes == 1) {
+                return "One minute ago.";
+            } else {
+                if (ageInMinutes > 30) {
+                    ageInMinutes -= ageInMinutes % 10;
+                } else if (ageInMinutes > 10) {
+                    ageInMinutes -= ageInMinutes % 5;
+                }
+                return ageInMinutes + " minutes ago.";
+            }
+        } else if (ageInSeconds < 24 * 60 * 60) {
+            int ageInHours = ageInSeconds / (60 * 60);
+            if (ageInHours == 1) {
+                return "One hour ago.";
+            } else {
+                return ageInHours + " hours ago.";
+            }
+        } else {
+            int ageInDays = ageInSeconds / (24 * 60 * 60);
+            if (ageInDays == 1) {
+                return "Yesterday.";
+            } else if (ageInDays < 100) {
+                return ageInDays + " days ago.";
+            } else {
+                return "Long, long ago.";
+            }
+        }
     }
 
     private View.OnClickListener getJoinGameButtonListener(final GameProposal item) {
