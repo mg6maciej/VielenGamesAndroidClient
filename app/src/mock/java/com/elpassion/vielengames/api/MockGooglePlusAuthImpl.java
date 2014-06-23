@@ -1,9 +1,12 @@
 package com.elpassion.vielengames.api;
 
+import android.content.Context;
+
 public final class MockGooglePlusAuthImpl implements GooglePlusAuth {
 
+
     @Override
-    public void connect() {
+    public void connect(Context context) {
 
     }
 
@@ -17,7 +20,7 @@ public final class MockGooglePlusAuthImpl implements GooglePlusAuth {
 
     @Override
     public boolean isConnecting() {
-
+        return false;
     }
 
     @Override
@@ -34,23 +37,14 @@ public final class MockGooglePlusAuthImpl implements GooglePlusAuth {
     }
 
     @Override
-    public void signUserOut() {
+    public void requestSignUserOut(Context context) {
+
     }
+
 
     @Override
     public boolean isConnected() {
-
+        return false;
     }
 
-    @Override
-    public void onConnected(Bundle bundle) {
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-    }
 }

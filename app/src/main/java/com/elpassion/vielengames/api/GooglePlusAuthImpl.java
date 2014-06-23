@@ -60,10 +60,7 @@ public class GooglePlusAuthImpl implements GooglePlusAuth, ConnectionCallbacks, 
     @Override
     public void connect(Context context) {
         clearTokenCache(context);
-
         googleApiClient.connect();
-
-
     }
 
     @Override
