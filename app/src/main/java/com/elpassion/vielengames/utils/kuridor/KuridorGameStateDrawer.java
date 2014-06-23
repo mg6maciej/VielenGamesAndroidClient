@@ -50,10 +50,10 @@ public final class KuridorGameStateDrawer {
                 stopY = centerY;
                 wallPaddingX = settings.wallPadding();
             } else {
-                startX = centerY;
-                startY = centerX - 1;
-                stopX = centerY;
-                stopY = centerX + 1;
+                startX = centerX;
+                startY = centerY - 1;
+                stopX = centerX;
+                stopY = centerY + 1;
                 wallPaddingY = settings.wallPadding();
             }
             canvas.drawLine(
