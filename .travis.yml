@@ -5,7 +5,7 @@ android:
     - extra-android-m2repository
     - extra-google-m2repository
   licenses:
-    - /android-sdk-license-[0-9a-f]{8}/
+    - 'android-sdk-license-[0-9a-f]{8}'
 
 before_install:
   - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
