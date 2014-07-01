@@ -3,6 +3,7 @@ package com.elpassion.vielengames.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.elpassion.vielengames.ForegroundNotifier;
 import com.elpassion.vielengames.R;
@@ -53,7 +54,11 @@ public class GameActivity extends BaseActivity {
         gameView.setMoveListener(new GameView.MoveListener() {
             @Override
             public void onMove(KuridorMove move) {
-                gameClient.move(game, move);
+                if (game.getCurrentState().isMoveValid(move)) {
+                    gameClient.move(game, move);
+                } else {
+                    Toast.makeText(GameActivity.this, "Illegal move: " + move.getPosition(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
         if (game == null) {
