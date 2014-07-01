@@ -1,9 +1,10 @@
 package com.elpassion.vielengames.data.kuridor;
 
-import com.google.gson.annotations.SerializedName;
-
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import hrisey.Parcelable;
 import lombok.Value;
@@ -16,39 +17,46 @@ import lombok.experimental.Wither;
 @Wither
 public final class KuridorGameState {
 
-    @SerializedName("team_1")
-    KuridorGameTeamState team1;
-    @SerializedName("team_2")
-    KuridorGameTeamState team2;
+    Map<String, KuridorGameTeamState> teams;
     Collection<String> walls;
     String activeTeam;
 
     public String getActiveTeamPawnPosition() {
-        return "team_1".equals(activeTeam)
-                ? team1.getPawnPosition()
-                : team2.getPawnPosition();
+        return teams.get(activeTeam).getPawnPosition();
     }
 
     public int getActiveTeamWallsLeft() {
-        return "team_1".equals(activeTeam)
-                ? team1.getWallsLeft()
-                : team2.getWallsLeft();
+        return teams.get(activeTeam).getWallsLeft();
     }
 
     public Collection<String> getInactiveTeamsPawnPositions() {
-        return "team_1".equals(activeTeam)
-                ? Collections.singleton(team2.getPawnPosition())
-                : Collections.singleton(team1.getPawnPosition());
+        ArrayList<String> inactiveTeams = new ArrayList<String>(teams.keySet());
+        inactiveTeams.remove(activeTeam);
+        ArrayList<String> pawnPositions = new ArrayList<String>();
+        for (String team : inactiveTeams) {
+            pawnPositions.add(teams.get(team).getPawnPosition());
+        }
+        return pawnPositions;
     }
 
     public boolean isMoveValid(KuridorMove move) {
         return KuridorMoveValidatorImpl.isMoveValid(this, move);
     }
 
+    public KuridorGameTeamState getTeam1() {
+        return teams.get("team_1");
+    }
+
+    public KuridorGameTeamState getTeam2() {
+        return teams.get("team_2");
+    }
+
     public static KuridorGameState initial() {
         return KuridorGameState.builder()
-                .team1(KuridorGameTeamState.builder().pawnPosition("e1").wallsLeft(10).build())
-                .team2(KuridorGameTeamState.builder().pawnPosition("e9").wallsLeft(10).build())
+                .teams(new HashMap<String, KuridorGameTeamState>() {{
+                    put("team_1", KuridorGameTeamState.builder().pawnPosition("e1").wallsLeft(10).build());
+                    put("team_2", KuridorGameTeamState.builder().pawnPosition("e9").wallsLeft(10).build());
+                }})
                 .walls(Collections.<String>emptyList())
                 .activeTeam("team_1")
                 .build();

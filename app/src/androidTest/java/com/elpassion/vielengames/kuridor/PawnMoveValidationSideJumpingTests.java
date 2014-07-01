@@ -1,9 +1,11 @@
 package com.elpassion.vielengames.kuridor;
 
 import com.elpassion.vielengames.data.kuridor.KuridorGameState;
+import com.elpassion.vielengames.data.kuridor.KuridorGameTeamState;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 
 public final class PawnMoveValidationSideJumpingTests extends PawnMoveValidationBaseTestCase {
 
@@ -31,28 +33,19 @@ public final class PawnMoveValidationSideJumpingTests extends PawnMoveValidation
         assertValid("d4");
     }
 
-    private KuridorGameState withOpponentToNorthAndWallBehindThem = KuridorGameState.builder()
-            .team1(centered)
-            .team2(northFromCenter)
-            .walls(Arrays.asList("e6h"))
-            .activeTeam("team_1")
-            .build();
-    private KuridorGameState withOpponentToSouthAndWallBehindThem = KuridorGameState.builder()
-            .team1(centered)
-            .team2(southFromCenter)
-            .walls(Arrays.asList("d3h"))
-            .activeTeam("team_1")
-            .build();
-    private KuridorGameState withOpponentToEastAndWallBehindThem = KuridorGameState.builder()
-            .team1(centered)
-            .team2(eastFromCenter)
-            .walls(Arrays.asList("f4v"))
-            .activeTeam("team_1")
-            .build();
-    private KuridorGameState withOpponentToWestAndWallBehindThem = KuridorGameState.builder()
-            .team1(centered)
-            .team2(westFromCenter)
-            .walls(Arrays.asList("c5v"))
-            .activeTeam("team_1")
-            .build();
+    private KuridorGameState withOpponentToNorthAndWallBehindThem = createGameState(northFromCenter, "e6h");
+    private KuridorGameState withOpponentToSouthAndWallBehindThem = createGameState(southFromCenter, "d3h");
+    private KuridorGameState withOpponentToEastAndWallBehindThem = createGameState(eastFromCenter, "f4v");
+    private KuridorGameState withOpponentToWestAndWallBehindThem = createGameState(westFromCenter, "c5v");
+
+    private KuridorGameState createGameState(final KuridorGameTeamState secondTeamState, String wall) {
+        return KuridorGameState.builder()
+                .teams(new HashMap<String, KuridorGameTeamState>() {{
+                    put("team_1", centered);
+                    put("team_2", secondTeamState);
+                }})
+                .walls(Collections.singletonList(wall))
+                .activeTeam("team_1")
+                .build();
+    }
 }

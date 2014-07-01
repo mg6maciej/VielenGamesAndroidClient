@@ -1,8 +1,11 @@
 package com.elpassion.vielengames.kuridor;
 
 import com.elpassion.vielengames.data.kuridor.KuridorGameState;
+import com.elpassion.vielengames.data.kuridor.KuridorGameTeamState;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 
 public final class PawnMoveValidationBlockingWallTests extends PawnMoveValidationBaseTestCase {
 
@@ -51,58 +54,24 @@ public final class PawnMoveValidationBlockingWallTests extends PawnMoveValidatio
         assertNotValid("d5");
     }
 
-    private KuridorGameState blockedFromNorth = KuridorGameState.builder()
-            .team1(centered)
-            .team2(secondStarting)
-            .walls(Arrays.asList("e5h"))
-            .activeTeam("team_1")
-            .build();
-    private KuridorGameState withRandomWalls = KuridorGameState.builder()
-            .team1(centered)
-            .team2(secondStarting)
-            .walls(Arrays.asList("c3v"))
-            .activeTeam("team_1")
-            .build();
-    private KuridorGameState blockedFromNorthOtherSide = KuridorGameState.builder()
-            .team1(centered)
-            .team2(secondStarting)
-            .walls(Arrays.asList("d5h"))
-            .activeTeam("team_1")
-            .build();
-    private KuridorGameState blockedFromSouth = KuridorGameState.builder()
-            .team1(centered)
-            .team2(secondStarting)
-            .walls(Arrays.asList("e4h"))
-            .activeTeam("team_1")
-            .build();
-    private KuridorGameState blockedFromSouthOtherSide = KuridorGameState.builder()
-            .team1(centered)
-            .team2(secondStarting)
-            .walls(Arrays.asList("d4h"))
-            .activeTeam("team_1")
-            .build();
-    private KuridorGameState blockedFromEast = KuridorGameState.builder()
-            .team1(centered)
-            .team2(secondStarting)
-            .walls(Arrays.asList("e5v"))
-            .activeTeam("team_1")
-            .build();
-    private KuridorGameState blockedFromEastOtherSide = KuridorGameState.builder()
-            .team1(centered)
-            .team2(secondStarting)
-            .walls(Arrays.asList("e4v"))
-            .activeTeam("team_1")
-            .build();
-    private KuridorGameState blockedFromWest = KuridorGameState.builder()
-            .team1(centered)
-            .team2(secondStarting)
-            .walls(Arrays.asList("d5v"))
-            .activeTeam("team_1")
-            .build();
-    private KuridorGameState blockedFromWestOtherSide = KuridorGameState.builder()
-            .team1(centered)
-            .team2(secondStarting)
-            .walls(Arrays.asList("d4v"))
-            .activeTeam("team_1")
-            .build();
+    private KuridorGameState blockedFromNorth = createGameState("e5h");
+    private KuridorGameState withRandomWalls = createGameState("c3v");
+    private KuridorGameState blockedFromNorthOtherSide = createGameState("d5h");
+    private KuridorGameState blockedFromSouth = createGameState("e4h");
+    private KuridorGameState blockedFromSouthOtherSide = createGameState("d4h");
+    private KuridorGameState blockedFromEast = createGameState("e5v");
+    private KuridorGameState blockedFromEastOtherSide = createGameState("e4v");
+    private KuridorGameState blockedFromWest = createGameState("d5v");
+    private KuridorGameState blockedFromWestOtherSide = createGameState("d4v");
+
+    private KuridorGameState createGameState(String wall) {
+        return KuridorGameState.builder()
+                .teams(new HashMap<String, KuridorGameTeamState>() {{
+                    put("team_1", centered);
+                    put("team_2", secondStarting);
+                }})
+                .walls(Collections.singletonList(wall))
+                .activeTeam("team_1")
+                .build();
+    }
 }

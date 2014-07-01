@@ -4,6 +4,7 @@ import com.elpassion.vielengames.data.kuridor.KuridorGameState;
 import com.elpassion.vielengames.data.kuridor.KuridorGameTeamState;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 public final class WallMoveValidationOutOfAmmoTests extends WallMoveValidationBaseTestCase {
 
@@ -14,8 +15,10 @@ public final class WallMoveValidationOutOfAmmoTests extends WallMoveValidationBa
     }
 
     private KuridorGameState withNoMoreWallsLeft = KuridorGameState.builder()
-            .team1(KuridorGameTeamState.builder().pawnPosition("e1").wallsLeft(0).build())
-            .team2(KuridorGameTeamState.builder().pawnPosition("e9").wallsLeft(10).build())
+            .teams(new HashMap<String, KuridorGameTeamState>() {{
+                put("team_1", KuridorGameTeamState.builder().pawnPosition("e1").wallsLeft(0).build());
+                put("team_2", KuridorGameTeamState.builder().pawnPosition("e9").wallsLeft(10).build());
+            }})
             .activeTeam("team_1")
             .build();
 }

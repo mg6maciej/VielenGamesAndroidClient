@@ -1,8 +1,10 @@
 package com.elpassion.vielengames.kuridor;
 
 import com.elpassion.vielengames.data.kuridor.KuridorGameState;
+import com.elpassion.vielengames.data.kuridor.KuridorGameTeamState;
 
 import java.util.Collections;
+import java.util.HashMap;
 
 public final class PawnMoveValidationSimpleTests extends PawnMoveValidationBaseTestCase {
 
@@ -56,8 +58,10 @@ public final class PawnMoveValidationSimpleTests extends PawnMoveValidationBaseT
     }
 
     private KuridorGameState withoutBlocks = KuridorGameState.builder()
-            .team1(centered)
-            .team2(secondStarting)
+            .teams(new HashMap<String, KuridorGameTeamState>() {{
+                put("team_1", centered);
+                put("team_2", secondStarting);
+            }})
             .walls(Collections.<String>emptyList())
             .activeTeam("team_1")
             .build();

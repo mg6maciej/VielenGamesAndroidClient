@@ -1,8 +1,10 @@
 package com.elpassion.vielengames.kuridor;
 
 import com.elpassion.vielengames.data.kuridor.KuridorGameState;
+import com.elpassion.vielengames.data.kuridor.KuridorGameTeamState;
 
 import java.util.Collections;
+import java.util.HashMap;
 
 public final class PawnMoveValidationSimpleJumpingTests extends PawnMoveValidationBaseTestCase {
 
@@ -31,28 +33,19 @@ public final class PawnMoveValidationSimpleJumpingTests extends PawnMoveValidati
         assertValid("c5");
     }
 
-    private KuridorGameState withOpponentToNorth = KuridorGameState.builder()
-            .team1(centered)
-            .team2(northFromCenter)
-            .walls(Collections.<String>emptyList())
-            .activeTeam("team_1")
-            .build();
-    private KuridorGameState withOpponentToSouth = KuridorGameState.builder()
-            .team1(centered)
-            .team2(southFromCenter)
-            .walls(Collections.<String>emptyList())
-            .activeTeam("team_1")
-            .build();
-    private KuridorGameState withOpponentToEast = KuridorGameState.builder()
-            .team1(centered)
-            .team2(eastFromCenter)
-            .walls(Collections.<String>emptyList())
-            .activeTeam("team_1")
-            .build();
-    private KuridorGameState withOpponentToWest = KuridorGameState.builder()
-            .team1(centered)
-            .team2(westFromCenter)
-            .walls(Collections.<String>emptyList())
-            .activeTeam("team_1")
-            .build();
+    private KuridorGameState withOpponentToNorth = createGameState(northFromCenter);
+    private KuridorGameState withOpponentToSouth = createGameState(southFromCenter);
+    private KuridorGameState withOpponentToEast = createGameState(eastFromCenter);
+    private KuridorGameState withOpponentToWest = createGameState(westFromCenter);
+
+    private KuridorGameState createGameState(final KuridorGameTeamState secondTeamState) {
+        return KuridorGameState.builder()
+                .teams(new HashMap<String, KuridorGameTeamState>() {{
+                    put("team_1", centered);
+                    put("team_2", secondTeamState);
+                }})
+                .walls(Collections.<String>emptyList())
+                .activeTeam("team_1")
+                .build();
+    }
 }

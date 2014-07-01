@@ -4,6 +4,7 @@ import com.elpassion.vielengames.data.kuridor.KuridorGameState;
 import com.elpassion.vielengames.data.kuridor.KuridorGameTeamState;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 public final class WallMoveValidationBlockingPawnTests extends WallMoveValidationBaseTestCase {
 
@@ -83,15 +84,19 @@ public final class WallMoveValidationBlockingPawnTests extends WallMoveValidatio
     }
 
     private KuridorGameState withAlmostBlockedPawn = KuridorGameState.builder()
-            .team1(KuridorGameTeamState.builder().pawnPosition("e5").wallsLeft(10).build())
-            .team2(KuridorGameTeamState.builder().pawnPosition("e9").wallsLeft(10).build())
+            .teams(new HashMap<String, KuridorGameTeamState>() {{
+                put("team_1", KuridorGameTeamState.builder().pawnPosition("e5").wallsLeft(10).build());
+                put("team_2", KuridorGameTeamState.builder().pawnPosition("e9").wallsLeft(10).build());
+            }})
             .walls(Arrays.asList("e5h", "d4v", "f4v"))
             .activeTeam("team_1")
             .build();
 
     private KuridorGameState withSnailHouseFromWalls = KuridorGameState.builder()
-            .team1(KuridorGameTeamState.builder().pawnPosition("e5").wallsLeft(1).build())
-            .team2(KuridorGameTeamState.builder().pawnPosition("e8").wallsLeft(0).build())
+            .teams(new HashMap<String, KuridorGameTeamState>() {{
+                put("team_1", KuridorGameTeamState.builder().pawnPosition("e5").wallsLeft(1).build());
+                put("team_2", KuridorGameTeamState.builder().pawnPosition("e8").wallsLeft(0).build());
+            }})
             .walls(Arrays.asList(
                     "e3h",
                     "f4v", "f6v",
@@ -104,43 +109,55 @@ public final class WallMoveValidationBlockingPawnTests extends WallMoveValidatio
             .build();
 
     private KuridorGameState withPlayersAlmostSeparatedOnGoodSides = KuridorGameState.builder()
-            .team1(KuridorGameTeamState.builder().pawnPosition("e6").wallsLeft(5).build())
-            .team2(KuridorGameTeamState.builder().pawnPosition("e5").wallsLeft(5).build())
+            .teams(new HashMap<String, KuridorGameTeamState>() {{
+                put("team_1", KuridorGameTeamState.builder().pawnPosition("e6").wallsLeft(5).build());
+                put("team_2", KuridorGameTeamState.builder().pawnPosition("e5").wallsLeft(5).build());
+            }})
             .walls(Arrays.asList("a5h", "c5h", "e5h", "g5h", "h5v"))
             .activeTeam("team_1")
             .build();
 
     private KuridorGameState withPlayersAlmostSeparatedOnWrongSides = KuridorGameState.builder()
-            .team1(KuridorGameTeamState.builder().pawnPosition("e5").wallsLeft(5).build())
-            .team2(KuridorGameTeamState.builder().pawnPosition("e6").wallsLeft(5).build())
+            .teams(new HashMap<String, KuridorGameTeamState>() {{
+                put("team_1", KuridorGameTeamState.builder().pawnPosition("e5").wallsLeft(5).build());
+                put("team_2", KuridorGameTeamState.builder().pawnPosition("e6").wallsLeft(5).build());
+            }})
             .walls(Arrays.asList("a5h", "c5h", "e5h", "g5h", "h5v"))
             .activeTeam("team_1")
             .build();
 
     private KuridorGameState withPlayersAlmostSeparatedOnNorthSide = KuridorGameState.builder()
-            .team1(KuridorGameTeamState.builder().pawnPosition("f6").wallsLeft(5).build())
-            .team2(KuridorGameTeamState.builder().pawnPosition("e6").wallsLeft(5).build())
+            .teams(new HashMap<String, KuridorGameTeamState>() {{
+                put("team_1", KuridorGameTeamState.builder().pawnPosition("f6").wallsLeft(5).build());
+                put("team_2", KuridorGameTeamState.builder().pawnPosition("e6").wallsLeft(5).build());
+            }})
             .walls(Arrays.asList("a5h", "c5h", "e5h", "g5h", "h5v"))
             .activeTeam("team_1")
             .build();
 
     private KuridorGameState withPlayersAlmostSeparatedOnSouthSide = KuridorGameState.builder()
-            .team1(KuridorGameTeamState.builder().pawnPosition("e5").wallsLeft(5).build())
-            .team2(KuridorGameTeamState.builder().pawnPosition("f5").wallsLeft(5).build())
+            .teams(new HashMap<String, KuridorGameTeamState>() {{
+                put("team_1", KuridorGameTeamState.builder().pawnPosition("e5").wallsLeft(5).build());
+                put("team_2", KuridorGameTeamState.builder().pawnPosition("f5").wallsLeft(5).build());
+            }})
             .walls(Arrays.asList("a5h", "c5h", "e5h", "g5h", "h5v"))
             .activeTeam("team_1")
             .build();
 
     private KuridorGameState withAlmostBlockedPawnsOnNorthAndSouthSides = KuridorGameState.builder()
-            .team1(KuridorGameTeamState.builder().pawnPosition("e1").wallsLeft(8).build())
-            .team2(KuridorGameTeamState.builder().pawnPosition("e9").wallsLeft(8).build())
+            .teams(new HashMap<String, KuridorGameTeamState>() {{
+                put("team_1", KuridorGameTeamState.builder().pawnPosition("e1").wallsLeft(8).build());
+                put("team_2", KuridorGameTeamState.builder().pawnPosition("e9").wallsLeft(8).build());
+            }})
             .walls(Arrays.asList("d1v", "e1v", "d8v", "e8v"))
             .activeTeam("team_1")
             .build();
 
     private KuridorGameState withAlmostBlockedPawnsOnEastAndWestSides = KuridorGameState.builder()
-            .team1(KuridorGameTeamState.builder().pawnPosition("a5").wallsLeft(8).build())
-            .team2(KuridorGameTeamState.builder().pawnPosition("i5").wallsLeft(8).build())
+            .teams(new HashMap<String, KuridorGameTeamState>() {{
+                put("team_1", KuridorGameTeamState.builder().pawnPosition("a5").wallsLeft(8).build());
+                put("team_2", KuridorGameTeamState.builder().pawnPosition("i5").wallsLeft(8).build());
+            }})
             .walls(Arrays.asList("a4h", "a5h", "h4h", "h5h"))
             .activeTeam("team_1")
             .build();
