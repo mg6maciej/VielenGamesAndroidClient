@@ -1,26 +1,18 @@
 language: android
-android:
-  components:
-    - build-tools-19.1.0
-    - extra-android-m2repository
-    - extra-google-m2repository
-  licenses:
-    - 'android-sdk-license-[0-9a-f]{8}'
 
 before_install:
+  - 'sudo mv /usr/local/android-sdk/tools/android-* /usr/local/bin'
+  - "android-update-sdk --components='platform-tools,tools' --accept-licenses='.+'"
+  - "android-update-sdk --components='build-tools-20.0.0' --accept-licenses='.+'"
+  - "android-update-sdk --components='android-19' --accept-licenses='.+'"
+  - "android-update-sdk --components='extra-android-m2repository,extra-google-m2repository' --accept-licenses='.+'"
+
   - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
   - emulator -avd test -no-skin -no-audio -no-window &
 
 before_script:
   - ./ci/wait_for_emulator
 
-script:
-    - ./gradlew connectedAndroidTestProductionDebug
-
 notifications:
   email:
     - maciek.gorski@gmail.com
-    - siemionides@gmail.com
-    - mb921028@gmail.com
-    - pawelkobojek@gmail.com
-
