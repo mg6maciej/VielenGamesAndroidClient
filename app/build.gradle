@@ -39,6 +39,9 @@ android {
             buildConfigField 'String', 'ENDPOINT', '"https://vielengamesapi.apiary-mock.com/"'
         }
     }
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
