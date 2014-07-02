@@ -38,6 +38,8 @@ public class GameActivity extends BaseActivity {
     ForegroundNotifier notifier;
     @Inject
     VielenGamesModel model;
+    @Inject
+    VielenGamesPrefs prefs;
 
     @InstanceState
     private KuridorGame game;
@@ -54,10 +56,12 @@ public class GameActivity extends BaseActivity {
         gameView.setMoveListener(new GameView.MoveListener() {
             @Override
             public void onMove(KuridorMove move) {
-                if (game.getCurrentState().isMoveValid(move)) {
-                    gameClient.move(game, move);
-                } else {
+                if (!imActiveUser()) {
+                    Toast.makeText(GameActivity.this, "It's not your turn", Toast.LENGTH_SHORT).show();
+                } else if (!game.getCurrentState().isMoveValid(move)) {
                     Toast.makeText(GameActivity.this, "Illegal move: " + move.getPosition(), Toast.LENGTH_SHORT).show();
+                } else {
+                    gameClient.move(game, move);
                 }
             }
         });
@@ -65,6 +69,10 @@ public class GameActivity extends BaseActivity {
             game = getIntent().getParcelableExtra(EXTRA_GAME);
         }
         updateGameView();
+    }
+
+    private boolean imActiveUser() {
+        return prefs.getMe().equals(game.getActivePlayer());
     }
 
     @Override

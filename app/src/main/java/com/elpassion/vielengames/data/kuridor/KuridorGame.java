@@ -21,4 +21,17 @@ public final class KuridorGame implements Game, android.os.Parcelable {
     List<Player> players;
     List<KuridorMove> moves;
     KuridorGameState currentState;
+
+    public Player getActivePlayer() {
+        String activeTeam = currentState.getActiveTeam();
+        if (activeTeam == null) {
+            return null;
+        }
+        for (Player p : players) {
+            if (p.getTeam().equals(activeTeam)) {
+                return p;
+            }
+        }
+        throw new IllegalStateException();
+    }
 }

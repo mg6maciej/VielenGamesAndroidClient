@@ -65,7 +65,7 @@ public final class SessionUpdatesHandler {
     private void requestUpdates(boolean immediate) {
         if (!requestingUpdates && notifier.isInForeground()) {
             requestingUpdates = true;
-            handler.postDelayed(requestUpdatesRunnable, immediate ? 0 : 10000);
+            handler.postDelayed(requestUpdatesRunnable, immediate ? 0 : 1000);
         }
     }
 }
