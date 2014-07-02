@@ -84,11 +84,15 @@ final class KuridorMoveValidatorImpl {
                     }
                 }
                 boolean wallBehind = false;
-                blockingWalls = getBlockingWalls(twoSquaresForPawn, expectedOpponentPawn);
-                for (String blockingWall : blockingWalls) {
-                    if (walls.contains(blockingWall)) {
-                        wallBehind = true;
-                        break;
+                if (!PAWN_MOVE_PATTERN.matcher(twoSquaresForPawn).matches()) {
+                    wallBehind = true;
+                } else {
+                    blockingWalls = getBlockingWalls(twoSquaresForPawn, expectedOpponentPawn);
+                    for (String blockingWall : blockingWalls) {
+                        if (walls.contains(blockingWall)) {
+                            wallBehind = true;
+                            break;
+                        }
                     }
                 }
                 if (straight) {
