@@ -1,30 +1,13 @@
 package com.elpassion.vielengames.ui;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 
-import com.elpassion.vielengames.R;
 import com.elpassion.vielengames.data.Game;
 import com.elpassion.vielengames.data.Player;
 import com.elpassion.vielengames.data.kuridor.KuridorGame;
-import com.elpassion.vielengames.data.kuridor.KuridorMove;
 import com.elpassion.vielengames.ui.common.AbstractBaseAdapter;
-import com.elpassion.vielengames.utils.Circlifier;
-import com.elpassion.vielengames.utils.ViewUtils;
-import com.elpassion.vielengames.utils.kuridor.KuridorGameStateDrawer;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public final class GamesAdapter extends AbstractBaseAdapter {
@@ -38,18 +21,30 @@ public final class GamesAdapter extends AbstractBaseAdapter {
 
     public void updateGames(List<Game> games) {
         List<Game> myTurnGames = new ArrayList<Game>();
+        List<Game> recentlyFinishedGames = new ArrayList<Game>();
         List<Game> oppTurnGames = new ArrayList<Game>();
         for (Game game : games) {
             if (imActiveUser(game)) {
                 myTurnGames.add(game);
+            } else if (noActivePlayer(game)) {
+                recentlyFinishedGames.add(game);
             } else {
                 oppTurnGames.add(game);
             }
         }
         items.clear();
         addGames("MY TURN", myTurnGames);
+        addGames("RECENTLY FINISHED", recentlyFinishedGames);
         addGames("OPPONENT'S TURN", oppTurnGames);
         notifyDataSetChanged();
+    }
+
+    private boolean imActiveUser(Game game) {
+        return me.equals(((KuridorGame) game).getActivePlayer());
+    }
+
+    private boolean noActivePlayer(Game game) {
+        return ((KuridorGame) game).getActivePlayer() == null;
     }
 
     private void addGames(String sectionTitle, List<Game> games) {
@@ -59,9 +54,5 @@ public final class GamesAdapter extends AbstractBaseAdapter {
                 items.add(new GameItemAdapter(game, me));
             }
         }
-    }
-
-    private boolean imActiveUser(Game game) {
-        return me.equals(((KuridorGame) game).getActivePlayer());
     }
 }
