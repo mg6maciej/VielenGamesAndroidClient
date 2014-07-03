@@ -1,13 +1,12 @@
 package com.elpassion.vielengames;
 
 import android.os.Handler;
-import android.util.Log;
 
 import com.elpassion.vielengames.api.VielenGamesClient;
-import com.elpassion.vielengames.data.SessionResponse;
 import com.elpassion.vielengames.data.Updates;
 import com.elpassion.vielengames.event.AppForegroundEvent;
 import com.elpassion.vielengames.event.SessionStartedResponseEvent;
+import com.elpassion.vielengames.event.SessionUpdatesFailedEvent;
 import com.elpassion.vielengames.event.SessionUpdatesResponseEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
 
@@ -18,8 +17,7 @@ import javax.inject.Singleton;
 public final class SessionUpdatesHandler {
 
     private final VielenGamesClient client;
-    private final EventBus eventBus;
-    private ForegroundNotifier notifier;
+    private final ForegroundNotifier notifier;
 
     private final Handler handler = new Handler();
     private final Runnable requestUpdatesRunnable = new Runnable() {
@@ -33,11 +31,10 @@ public final class SessionUpdatesHandler {
     private String lastUpdateTimestamp;
 
     @Inject
-    public SessionUpdatesHandler(VielenGamesClient client, EventBus eventBus, ForegroundNotifier notifier) {
+    public SessionUpdatesHandler(VielenGamesClient client, ForegroundNotifier notifier, EventBus eventBus) {
         this.client = client;
-        this.eventBus = eventBus;
         this.notifier = notifier;
-        this.eventBus.register(this);
+        eventBus.register(this);
     }
 
     @SuppressWarnings("unused")
@@ -50,6 +47,12 @@ public final class SessionUpdatesHandler {
     public void onEvent(SessionUpdatesResponseEvent event) {
         requestingUpdates = false;
         updateTimestamp(event.getUpdates());
+        requestUpdates(false);
+    }
+
+    @SuppressWarnings("unused")
+    public void onEvent(SessionUpdatesFailedEvent event) {
+        requestingUpdates = false;
         requestUpdates(false);
     }
 

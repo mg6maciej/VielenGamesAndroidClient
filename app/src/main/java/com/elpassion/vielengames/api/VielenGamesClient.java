@@ -17,6 +17,7 @@ import com.elpassion.vielengames.event.JoinGameProposalResponseEvent;
 import com.elpassion.vielengames.event.LeaveGameProposalResponseEvent;
 import com.elpassion.vielengames.event.MoveFailureEvent;
 import com.elpassion.vielengames.event.SessionStartedResponseEvent;
+import com.elpassion.vielengames.event.SessionUpdatesFailedEvent;
 import com.elpassion.vielengames.event.SessionUpdatesResponseEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
 
@@ -53,10 +54,15 @@ public final class VielenGamesClient {
     }
 
     public void requestUpdates(String since) {
-        api.getSessionUpdates(since, new DefaultCallback<Updates>() {
+        api.getSessionUpdates(since, new Callback<Updates>() {
             @Override
             public void success(Updates updates, Response response) {
                 eventBus.post(new SessionUpdatesResponseEvent(updates));
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                eventBus.post(new SessionUpdatesFailedEvent());
             }
         });
     }
