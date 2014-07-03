@@ -16,92 +16,52 @@ import com.elpassion.vielengames.R;
 import com.elpassion.vielengames.data.Game;
 import com.elpassion.vielengames.data.Player;
 import com.elpassion.vielengames.data.kuridor.KuridorGame;
+import com.elpassion.vielengames.data.kuridor.KuridorMove;
+import com.elpassion.vielengames.ui.common.AbstractBaseAdapter;
 import com.elpassion.vielengames.utils.Circlifier;
 import com.elpassion.vielengames.utils.ViewUtils;
 import com.elpassion.vielengames.utils.kuridor.KuridorGameStateDrawer;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-public final class GamesAdapter extends BaseAdapter {
+public final class GamesAdapter extends AbstractBaseAdapter {
 
-    private Context context;
     private Player me;
-    private final LayoutInflater inflater;
-    private List<Game> games;
 
     public GamesAdapter(Context context, Player me) {
-        this.context = context;
+        super(context);
         this.me = me;
-        this.inflater = LayoutInflater.from(context);
-        this.games = new ArrayList<Game>();
-    }
-
-    @Override
-    public int getCount() {
-        return games.size();
-    }
-
-    @Override
-    public Game getItem(int position) {
-        return games.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.game_item, parent, false);
-        }
-        KuridorGame item = (KuridorGame) getItem(position);
-        CharSequence text = formatPlayerNames(item);
-        ViewUtils.setText(text, convertView, R.id.game_item_player_names);
-        int bitmapSize = context.getResources().getDimensionPixelSize(R.dimen.common_image_size);
-        Bitmap bitmap = Bitmap.createBitmap(bitmapSize, bitmapSize, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        canvas.drawColor(0xFFFFFFFF);
-        Paint paint = new Paint();
-        paint.setAntiAlias(true);
-        KuridorGameStateDrawer.Settings settings = new KuridorGameStateDrawer.Settings()
-                .width(bitmapSize)
-                .height(bitmapSize)
-                .paint(paint)
-                .dotsRadius(1.0f)
-                .wallWidth(2.0f)
-                .wallPadding(2.0f)
-                .pawnPadding(2.0f)
-                .team1Color(context.getResources().getColor(R.color.green_normal))
-                .team2Color(context.getResources().getColor(R.color.blue_normal));
-        KuridorGameStateDrawer.draw(item.getCurrentState(), canvas, settings);
-        final int circleColor = 0xFFEEEEEE;
-        final float circleWidth = context.getResources().getDimension(R.dimen.common_circle_width);
-        final Bitmap circlified = Circlifier.circlify(bitmap, circleColor, circleWidth);
-        ViewUtils.setImage(circlified, convertView, R.id.game_item_preview);
-        return convertView;
-    }
-
-    private CharSequence formatPlayerNames(KuridorGame item) {
-        List<Player> players = item.getPlayers();
-        Player team1Player = "team_1".equals(players.get(0).getTeam()) ? players.get(0) : players.get(1);
-        Player team2Player = "team_2".equals(players.get(0).getTeam()) ? players.get(0) : players.get(1);
-        String name1 = me.equals(team1Player) ? "You" : team1Player.getName();
-        String name2 = me.equals(team2Player) ? "You" : team2Player.getName();
-        SpannableString spannableString = new SpannableString(name1 + " vs " + name2);
-        int greenTextColor = context.getResources().getColor(R.color.text_green_color);
-        spannableString.setSpan(
-                new ForegroundColorSpan(greenTextColor),
-                name1.length(),
-                name1.length() + 4,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return spannableString;
     }
 
     public void updateGames(List<Game> games) {
-        this.games = new ArrayList<Game>(games);
+        List<Game> myTurnGames = new ArrayList<Game>();
+        List<Game> oppTurnGames = new ArrayList<Game>();
+        for (Game game : games) {
+            if (imActiveUser(game)) {
+                myTurnGames.add(game);
+            } else {
+                oppTurnGames.add(game);
+            }
+        }
+        items.clear();
+        addGames("MY TURN", myTurnGames);
+        addGames("OPPONENT'S TURN", oppTurnGames);
         notifyDataSetChanged();
+    }
+
+    private void addGames(String sectionTitle, List<Game> games) {
+        if (games.size() > 0) {
+            items.add(new GamesSectionItemAdapter(sectionTitle));
+            for (Game game : games) {
+                items.add(new GameItemAdapter(game, me));
+            }
+        }
+    }
+
+    private boolean imActiveUser(Game game) {
+        return me.equals(((KuridorGame) game).getActivePlayer());
     }
 }
