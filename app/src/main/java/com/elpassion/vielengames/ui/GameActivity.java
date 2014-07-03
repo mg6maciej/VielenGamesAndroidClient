@@ -15,6 +15,7 @@ import com.elpassion.vielengames.data.kuridor.KuridorGame;
 import com.elpassion.vielengames.data.kuridor.KuridorGameState;
 import com.elpassion.vielengames.data.kuridor.KuridorMove;
 import com.elpassion.vielengames.event.GamesUpdatedEvent;
+import com.elpassion.vielengames.event.MoveFailureEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
 import com.elpassion.vielengames.ui.kuridor.GameHeaderLayout;
 import com.elpassion.vielengames.ui.kuridor.GameView;
@@ -69,6 +70,18 @@ public class GameActivity extends BaseActivity {
             game = getIntent().getParcelableExtra(EXTRA_GAME);
         }
         updateGameView();
+    }
+
+    @SuppressWarnings("unused")
+    public void onEvent(MoveFailureEvent event) {
+        switch (event.getReason()) {
+            case ILLEGAL_MOVE:
+                Toast.makeText(GameActivity.this, "Server says: Illegal move: " + event.getMove().getPosition(), Toast.LENGTH_SHORT).show();
+                break;
+            case NOT_YOUR_TURN:
+                Toast.makeText(GameActivity.this, "Server says: It's not your turn", Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 
     private boolean imActiveUser() {

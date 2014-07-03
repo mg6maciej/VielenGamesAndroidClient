@@ -5,6 +5,7 @@ import android.util.Log;
 import com.elpassion.vielengames.VielenGamesPrefs;
 import com.elpassion.vielengames.data.Empty;
 import com.elpassion.vielengames.data.GameProposal;
+import com.elpassion.vielengames.data.MoveFailure;
 import com.elpassion.vielengames.data.SessionRequest;
 import com.elpassion.vielengames.data.SessionResponse;
 import com.elpassion.vielengames.data.Updates;
@@ -14,6 +15,7 @@ import com.elpassion.vielengames.event.CreateGameProposalEvent;
 import com.elpassion.vielengames.event.GetGameProposalsResponseEvent;
 import com.elpassion.vielengames.event.JoinGameProposalResponseEvent;
 import com.elpassion.vielengames.event.LeaveGameProposalResponseEvent;
+import com.elpassion.vielengames.event.MoveFailureEvent;
 import com.elpassion.vielengames.event.SessionStartedResponseEvent;
 import com.elpassion.vielengames.event.SessionUpdatesResponseEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
@@ -105,10 +107,18 @@ public final class VielenGamesClient {
         });
     }
 
-    public void move(KuridorGame game, KuridorMove move) {
-        api.move(game.getId(), move, new DefaultCallback<Empty>() {
+    public void move(KuridorGame game, final KuridorMove move) {
+        api.move(game.getId(), move, new Callback<Empty>() {
             @Override
             public void success(Empty empty, Response response) {
+            }
+
+            @Override
+            public void failure(RetrofitError retrofitError) {
+                if (!retrofitError.isNetworkError()) {
+                    MoveFailure moveFailure = (MoveFailure) retrofitError.getBodyAs(MoveFailure.class);
+                    eventBus.post(new MoveFailureEvent(moveFailure.getError(), move));
+                }
             }
         });
     }
