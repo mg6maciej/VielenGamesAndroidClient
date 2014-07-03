@@ -28,6 +28,11 @@ android {
             applicationId "com.elpassion.vielengames.staging"
             buildConfigField 'String', 'ENDPOINT', '"https://vielen-games-api-staging.herokuapp.com"'
         }
+        mlody {
+            flavorDimension 'backend'
+            applicationId "com.elpassion.vielengames.mlody"
+            buildConfigField 'String', 'ENDPOINT', '"http://192.168.88.58:9292"'
+        }
         mock {
             flavorDimension 'backend'
             applicationId "com.elpassion.vielengames.mock"
