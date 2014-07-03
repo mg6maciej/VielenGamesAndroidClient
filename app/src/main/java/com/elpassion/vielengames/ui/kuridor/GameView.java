@@ -107,15 +107,6 @@ public final class GameView extends BaseView {
                 invalidate();
                 return true;
             }
-
-            @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                if (lastMove != null) {
-                    moveListener.onMove(lastMove);
-                    lastMove = null;
-                }
-                return true;
-            }
         });
     }
 
@@ -225,6 +216,14 @@ public final class GameView extends BaseView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return gestureDetector.onTouchEvent(event);
+        gestureDetector.onTouchEvent(event);
+        if (event.getActionMasked() == MotionEvent.ACTION_UP) {
+            if (lastMove != null) {
+                moveListener.onMove(lastMove);
+                lastMove = null;
+                invalidate();
+            }
+        }
+        return true;
     }
 }
