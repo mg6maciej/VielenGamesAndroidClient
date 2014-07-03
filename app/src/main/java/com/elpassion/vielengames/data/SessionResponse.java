@@ -11,5 +11,4 @@ public final class SessionResponse {
 
     String authToken;
     Player user;
-    Updates updates;
 }

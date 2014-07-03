@@ -38,12 +38,6 @@ public final class SessionUpdatesHandler {
     }
 
     @SuppressWarnings("unused")
-    public void onEvent(SessionStartedResponseEvent event) {
-        updateTimestamp(event.getSessionResponse().getUpdates());
-        requestUpdates(false);
-    }
-
-    @SuppressWarnings("unused")
     public void onEvent(SessionUpdatesResponseEvent event) {
         requestingUpdates = false;
         updateTimestamp(event.getUpdates());

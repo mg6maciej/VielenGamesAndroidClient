@@ -39,12 +39,6 @@ public final class VielenGamesModel {
     }
 
     @SuppressWarnings("unused")
-    public void onEvent(SessionStartedResponseEvent event) {
-        this.games = new ArrayList<Game>();
-        syncState(event.getSessionResponse().getUpdates());
-    }
-
-    @SuppressWarnings("unused")
     public void onEvent(SessionUpdatesResponseEvent event) {
         syncState(event.getUpdates());
     }
