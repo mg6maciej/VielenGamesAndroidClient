@@ -8,4 +8,9 @@
     <string name="button_join_label">JOIN</string>
     <string name="button_delete_label">DELETE</string>
 
+    <string name="result_won_title">You Won!</string>
+    <string name="result_lost_title">You Lost</string>
+    <string name="result_won_subtitle">Congratulations.</string>
+    <string name="result_lost_subtitle">Maybe next time…</string>
+
 </resources>

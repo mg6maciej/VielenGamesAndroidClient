@@ -84,7 +84,7 @@ public final class GameProposalsAdapter extends BaseAdapter implements OnDismiss
 
         ViewUtils.setText(player.getName(), convertView, R.id.game_proposal_name);
         ImageView profileIcon = ViewUtils.findView(convertView, R.id.game_proposal_profile_icon);
-        VanGogh.loadCirclifiedInto(context, player.getAvatarUrl(), profileIcon);
+        VanGogh.loadCirclifiedInto(context, player.getAvatarUrl(), profileIcon, R.dimen.common_image_size);
         ViewUtils.setText(formatAge(item.getAgeInSeconds()), convertView, R.id.game_proposal_age);
         return convertView;
     }

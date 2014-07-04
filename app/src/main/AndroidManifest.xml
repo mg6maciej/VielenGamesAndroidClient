@@ -37,6 +37,9 @@
         <activity
             android:name="com.elpassion.vielengames.ui.GameActivity"
             android:label="Games"/>
+        <activity
+            android:name="com.elpassion.vielengames.ui.ResultOverlayActivity"
+            android:theme="@style/AppTheme.Overlay"/>
 
     </application>
 

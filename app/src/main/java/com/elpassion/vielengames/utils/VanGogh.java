@@ -2,6 +2,7 @@ package com.elpassion.vielengames.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.annotation.DimenRes;
 import android.widget.ImageView;
 
 import com.elpassion.vielengames.R;
@@ -10,10 +11,10 @@ import com.squareup.picasso.Transformation;
 
 public final class VanGogh {
 
-    public static void loadCirclifiedInto(final Context context, String url, ImageView into) {
+    public static void loadCirclifiedInto(final Context context, String url, ImageView into, @DimenRes int imageSize) {
         Picasso.with(context)
                 .load(url)
-                .resizeDimen(R.dimen.common_image_size, R.dimen.common_image_size)
+                .resizeDimen(imageSize, imageSize)
                 .centerCrop()
                 .transform(new Transformation() {
                     @Override

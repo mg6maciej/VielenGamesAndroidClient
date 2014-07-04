@@ -56,6 +56,6 @@ public final class VielenGamesModel {
                 this.games.add(game);
             }
         }
-        eventBus.post(new GamesUpdatedEvent());
+        eventBus.post(new GamesUpdatedEvent(games));
     }
 }

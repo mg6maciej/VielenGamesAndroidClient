@@ -11,4 +11,6 @@
     <dimen name="game_view_wall_padding">3dp</dimen>
     <dimen name="game_view_pawn_padding">3dp</dimen>
 
+    <dimen name="result_overlay_image_size">40dp</dimen>
+
 </resources>

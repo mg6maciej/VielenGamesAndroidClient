@@ -4,6 +4,7 @@
     <color name="gray_dot">#5f5f5f</color>
     <color name="login_background">@android:color/black</color>
     <color name="game_background">@android:color/white</color>
+    <color name="overlay_background">#dd000000</color>
     <color name="green_normal">#2fd386</color>
     <color name="green_pressed">#2fd386</color>
     <color name="blue_normal">#00c2fc</color>

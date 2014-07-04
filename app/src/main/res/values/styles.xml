@@ -15,4 +15,15 @@
 
     </style>
 
+    <style name="AppTheme.Overlay">
+
+        <item name="android:windowBackground">@color/overlay_background</item>
+        <item name="android:windowActionBar" tools:ignore="NewApi">false</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+
+    </style>
+
 </resources>

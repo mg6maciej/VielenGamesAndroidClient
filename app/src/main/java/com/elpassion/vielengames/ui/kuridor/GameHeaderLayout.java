@@ -29,7 +29,7 @@ public final class GameHeaderLayout extends BaseLinearLayout {
 
     public void update(Player player, int wallsLeft, boolean active) {
         ImageView imageView = ViewUtils.findView(this, R.id.game_header_player_profile_icon);
-        VanGogh.loadCirclifiedInto(getContext(), player.getAvatarUrl(), imageView);
+        VanGogh.loadCirclifiedInto(getContext(), player.getAvatarUrl(), imageView, R.dimen.common_image_size);
         int drawableId = "team_1".equals(player.getTeam())
                 ? R.drawable.green_circle
                 : R.drawable.blue_circle;

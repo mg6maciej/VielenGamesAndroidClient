@@ -18,6 +18,7 @@ import com.elpassion.vielengames.ui.LauncherActivity;
 import com.elpassion.vielengames.ui.LoginActivity;
 import com.elpassion.vielengames.ui.MainActivity;
 import com.elpassion.vielengames.ui.MyGamesFragment;
+import com.elpassion.vielengames.ui.ResultOverlayActivity;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.gson.FieldNamingPolicy;
@@ -40,7 +41,8 @@ import retrofit.converter.GsonConverter;
                 MainActivity.class,
                 GameProposalsFragment.class,
                 MyGamesFragment.class,
-                GameActivity.class
+                GameActivity.class,
+                ResultOverlayActivity.class
         },
         library = true
 )
