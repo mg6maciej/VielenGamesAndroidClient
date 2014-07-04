@@ -1,6 +1,7 @@
 package com.elpassion.vielengames.ui;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.elpassion.vielengames.R;
@@ -21,5 +22,12 @@ public final class ResultOverlayActivity extends BaseActivity {
         VanGogh.loadCirclifiedInto(this, game.getPlayers().get(0).getAvatarUrl(), winnerImage, R.dimen.result_overlay_image_size);
         ImageView loserImage = ViewUtils.findView(this, R.id.result_overlay_face_lost);
         VanGogh.loadCirclifiedInto(this, game.getPlayers().get(1).getAvatarUrl(), loserImage, R.dimen.result_overlay_image_size);
+
+        ViewUtils.setOnClickListener(this, R.id.result_overlay_container, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 }
