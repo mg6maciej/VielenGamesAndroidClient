@@ -18,11 +18,22 @@ public final class ResultOverlayActivity extends BaseActivity {
         setContentView(R.layout.result_overlay_activity);
 
         KuridorGame game = getIntent().getParcelableExtra("game");
+        updateWinnerInfo(game);
+        updateLoserInfo(game);
+        setFinishOnPressListener();
+    }
+
+    private void updateWinnerInfo(KuridorGame game) {
         ImageView winnerImage = ViewUtils.findView(this, R.id.result_overlay_face_won);
         VanGogh.loadCirclifiedInto(this, game.getWinner().getAvatarUrl(), winnerImage, R.dimen.result_overlay_image_size);
+    }
+
+    private void updateLoserInfo(KuridorGame game) {
         ImageView loserImage = ViewUtils.findView(this, R.id.result_overlay_face_lost);
         VanGogh.loadCirclifiedInto(this, game.getLoser().getAvatarUrl(), loserImage, R.dimen.result_overlay_image_size);
+    }
 
+    private void setFinishOnPressListener() {
         ViewUtils.setOnClickListener(this, R.id.result_overlay_container, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
