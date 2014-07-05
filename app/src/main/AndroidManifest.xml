@@ -40,6 +40,9 @@
         <activity
             android:name="com.elpassion.vielengames.ui.ResultOverlayActivity"
             android:theme="@style/AppTheme.Overlay"/>
+        <activity
+            android:name="com.elpassion.vielengames.ui.GameHelpOverlayActivity"
+            android:theme="@style/AppTheme.Overlay"/>
 
     </application>
 

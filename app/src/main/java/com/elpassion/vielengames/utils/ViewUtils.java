@@ -2,6 +2,8 @@ package com.elpassion.vielengames.utils;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.IdRes;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -60,8 +62,13 @@ public final class ViewUtils {
         imageView.setImageBitmap(bitmap);
     }
 
-    public static void setBackground(int drawableId, View parent, int viewId) {
+    public static void setBackground(@DrawableRes int drawableId, View parent, int viewId) {
         View view = findView(parent, viewId);
         view.setBackgroundResource(drawableId);
+    }
+
+    public static void setImage(@DrawableRes int drawableId, View parent, @IdRes int viewId) {
+        ImageView view = findView(parent, viewId);
+        view.setImageResource(drawableId);
     }
 }

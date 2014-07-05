@@ -13,6 +13,7 @@ import com.elpassion.vielengames.event.bus.EventBus;
 import com.elpassion.vielengames.event.bus.GreenRobotEventBus;
 import com.elpassion.vielengames.parser.GameJsonDeserializer;
 import com.elpassion.vielengames.ui.GameActivity;
+import com.elpassion.vielengames.ui.GameHelpOverlayActivity;
 import com.elpassion.vielengames.ui.GameProposalsFragment;
 import com.elpassion.vielengames.ui.LauncherActivity;
 import com.elpassion.vielengames.ui.LoginActivity;
@@ -42,7 +43,8 @@ import retrofit.converter.GsonConverter;
                 GameProposalsFragment.class,
                 MyGamesFragment.class,
                 GameActivity.class,
-                ResultOverlayActivity.class
+                ResultOverlayActivity.class,
+                GameHelpOverlayActivity.class
         },
         library = true
 )
