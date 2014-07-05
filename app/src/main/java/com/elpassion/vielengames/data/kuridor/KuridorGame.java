@@ -34,4 +34,16 @@ public final class KuridorGame implements Game, android.os.Parcelable {
         }
         throw new IllegalStateException();
     }
+
+    public Player getLoser() {
+        if (winner == null) {
+            return null;
+        }
+        for (Player potentialLoser : players) {
+            if (!winner.equals(potentialLoser)) {
+                return potentialLoser;
+            }
+        }
+        throw new IllegalStateException();
+    }
 }

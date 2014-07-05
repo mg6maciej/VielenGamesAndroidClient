@@ -9,6 +9,7 @@ import com.elpassion.vielengames.ForegroundNotifier;
 import com.elpassion.vielengames.R;
 import com.elpassion.vielengames.VielenGamesPrefs;
 import com.elpassion.vielengames.api.VielenGamesClient;
+import com.elpassion.vielengames.data.Game;
 import com.elpassion.vielengames.data.Player;
 import com.elpassion.vielengames.data.VielenGamesModel;
 import com.elpassion.vielengames.data.kuridor.KuridorGame;
@@ -21,6 +22,7 @@ import com.elpassion.vielengames.ui.kuridor.GameHeaderLayout;
 import com.elpassion.vielengames.ui.kuridor.GameView;
 import com.elpassion.vielengames.utils.ViewUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -69,7 +71,7 @@ public class GameActivity extends BaseActivity {
         if (game == null) {
             game = getIntent().getParcelableExtra(EXTRA_GAME);
         }
-        updateGameView();
+        updateGameView(Collections.singletonList(game));
     }
 
     @SuppressWarnings("unused")
@@ -102,10 +104,13 @@ public class GameActivity extends BaseActivity {
 
     @SuppressWarnings("unused")
     public void onEvent(GamesUpdatedEvent event) {
-        updateGameView();
+        updateGameView(event.getGames());
     }
 
-    private void updateGameView() {
+    private void updateGameView(List<? extends Game> games) {
+        if (!games.contains(game)) {
+            return;
+        }
         KuridorGame thisGame = model.getGameById(game.getId());
         if (thisGame != null) {
             game = thisGame;
@@ -119,6 +124,12 @@ public class GameActivity extends BaseActivity {
         top.update(team2Player, state.getTeam2().getWallsLeft(), "team_2".equals(state.getActiveTeam()));
         GameHeaderLayout bottom = ViewUtils.findView(this, R.id.game_header_bottom);
         bottom.update(team1Player, state.getTeam1().getWallsLeft(), "team_1".equals(state.getActiveTeam()));
+
+        if (game.getWinner() != null) {
+            Intent intent = new Intent(this, ResultOverlayActivity.class);
+            intent.putExtra("game", game);
+            startActivity(intent);
+        }
     }
 
     @Override
