@@ -12,6 +12,7 @@ import com.elpassion.vielengames.api.VielenGamesClient;
 import com.elpassion.vielengames.data.GameProposal;
 import com.elpassion.vielengames.event.CreateGameProposalEvent;
 import com.elpassion.vielengames.event.GetGameProposalsResponseEvent;
+import com.elpassion.vielengames.event.JoinGameProposalResponseEvent;
 import com.elpassion.vielengames.event.LeaveGameProposalResponseEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
 import com.elpassion.vielengames.utils.ViewUtils;
@@ -75,9 +76,12 @@ public final class GameProposalsFragment extends BaseFragment {
 
     @SuppressWarnings("unused")
     public void onEvent(CreateGameProposalEvent event) {
-        GameProposal proposal = event.getProposal();
-        proposals.add(0, proposal);
-        adapter.add(proposal);
+        client.requestGameProposals();
+    }
+
+    @SuppressWarnings("unused")
+    public void onEvent(JoinGameProposalResponseEvent event) {
+        client.requestGameProposals();
     }
 
     private void updateListView() {
