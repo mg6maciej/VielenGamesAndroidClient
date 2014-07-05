@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
+import android.support.annotation.StringRes;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +30,16 @@ public final class ViewUtils {
     public static void setText(CharSequence text, Activity activity, int viewId) {
         TextView view = findView(activity, viewId);
         view.setText(text);
+    }
+
+    public static void setText(@StringRes int stringRes, View parent, int viewId) {
+        TextView view = findView(parent, viewId);
+        view.setText(stringRes);
+    }
+
+    public static void setText(@StringRes int stringRes, Activity activity, int viewId) {
+        TextView view = findView(activity, viewId);
+        view.setText(stringRes);
     }
 
     public static void setOnClickListener(Activity activity, int viewId, View.OnClickListener listener) {

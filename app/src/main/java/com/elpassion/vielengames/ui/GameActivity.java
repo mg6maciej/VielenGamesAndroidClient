@@ -126,9 +126,9 @@ public class GameActivity extends BaseActivity {
         bottom.update(team1Player, state.getTeam1().getWallsLeft(), "team_1".equals(state.getActiveTeam()));
 
         if (game.getWinner() != null) {
-            Intent intent = new Intent(this, ResultOverlayActivity.class);
-            intent.putExtra("game", game);
-            startActivity(intent);
+            ResultOverlayActivity.intent(this)
+                    .game(game)
+                    .start();
         }
     }
 
