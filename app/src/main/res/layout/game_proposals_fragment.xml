@@ -17,4 +17,30 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
 
+    <LinearLayout
+        android:id="@+id/game_proposals_no_game_proposals"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_horizontal"
+            android:text="No game proposals are currently available.\nPress the plus button to create a new proposal."/>
+
+        <ImageButton
+            android:id="@+id/game_proposals_add_proposal_button"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:background="@drawable/green"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:src="@drawable/add_proposal_icon"/>
+
+    </LinearLayout>
+
 </FrameLayout>

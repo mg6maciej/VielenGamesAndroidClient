@@ -16,7 +16,6 @@ import com.elpassion.vielengames.event.JoinGameProposalResponseEvent;
 import com.elpassion.vielengames.event.LeaveGameProposalResponseEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
 import com.elpassion.vielengames.utils.ViewUtils;
-import com.nhaarman.listviewanimations.itemmanipulation.AnimateAdditionAdapter;
 import com.nhaarman.listviewanimations.itemmanipulation.AnimateDismissAdapter;
 
 import java.util.ArrayList;
@@ -34,6 +33,7 @@ public final class GameProposalsFragment extends BaseFragment {
     @Inject
     VielenGamesPrefs prefs;
 
+    private View root;
     private ListView listView;
     private GameProposalsAdapter adapter;
     private AnimateDismissAdapter dismissAdapterDecorator;
@@ -51,10 +51,12 @@ public final class GameProposalsFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         eventBus.register(this);
+        root = view;
         listView = ViewUtils.findView(view, R.id.game_proposals_list);
-        listView.setEmptyView(ViewUtils.findView(view, R.id.game_proposals_loading_indicator));
         if (proposals == null) {
             client.requestGameProposals();
+            ViewUtils.setVisible(true, root, R.id.game_proposals_loading_indicator);
+            ViewUtils.setVisible(false, root, R.id.game_proposals_no_game_proposals);
         } else {
             updateListView();
         }
@@ -76,15 +78,27 @@ public final class GameProposalsFragment extends BaseFragment {
 
     @SuppressWarnings("unused")
     public void onEvent(CreateGameProposalEvent event) {
-        client.requestGameProposals();
+        requestGameProposals();
     }
 
     @SuppressWarnings("unused")
     public void onEvent(JoinGameProposalResponseEvent event) {
+        requestGameProposals();
+    }
+
+    private void requestGameProposals() {
+        proposals = null;
+        adapter = null;
+        dismissAdapterDecorator = null;
+        listView.setAdapter(null);
         client.requestGameProposals();
+        ViewUtils.setVisible(true, root, R.id.game_proposals_loading_indicator);
+        ViewUtils.setVisible(false, root, R.id.game_proposals_no_game_proposals);
     }
 
     private void updateListView() {
+        ViewUtils.setVisible(false, root, R.id.game_proposals_loading_indicator);
+        ViewUtils.setVisible(proposals.size() == 0, root, R.id.game_proposals_no_game_proposals);
         adapter = new GameProposalsAdapter(getActivity(), proposals, prefs.getMe(), client);
         dismissAdapterDecorator = new AnimateDismissAdapter(adapter, adapter);
         dismissAdapterDecorator.setAbsListView(listView);
@@ -119,6 +133,7 @@ public final class GameProposalsFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         eventBus.unregister(this);
+        root = null;
         listView = null;
         adapter = null;
         dismissAdapterDecorator = null;
