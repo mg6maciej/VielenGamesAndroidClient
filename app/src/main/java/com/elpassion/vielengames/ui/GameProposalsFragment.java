@@ -53,6 +53,12 @@ public final class GameProposalsFragment extends BaseFragment {
         eventBus.register(this);
         root = view;
         listView = ViewUtils.findView(view, R.id.game_proposals_list);
+        ViewUtils.setOnClickListener(view, R.id.game_proposals_add_proposal_button, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                client.createGameProposal("kuridor");
+            }
+        });
         if (proposals == null) {
             client.requestGameProposals();
             ViewUtils.setVisible(true, root, R.id.game_proposals_loading_indicator);
