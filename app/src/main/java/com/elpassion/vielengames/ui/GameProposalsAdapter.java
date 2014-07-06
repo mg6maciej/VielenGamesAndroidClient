@@ -75,11 +75,11 @@ public final class GameProposalsAdapter extends BaseAdapter implements OnDismiss
         boolean isMyGame = player.getId().equals(me.getId());
 
         View.OnClickListener buttonListener = isMyGame ? getDeleteGameButtonListener(item) : getJoinGameButtonListener(item);
-        int buttonBackGroundColor = isMyGame ? android.R.color.holo_red_dark : R.color.green_normal;
+        int buttonBackGroundColor = isMyGame ? R.drawable.red : R.drawable.green;
         String buttonLabelText = isMyGame ? context.getString(R.string.button_delete_label) : context.getString(R.string.button_join_label);
 
         ViewUtils.setOnClickListener(convertView, R.id.game_proposal_action_button, buttonListener);
-        ViewUtils.setBackgroundColor(context.getResources().getColor(buttonBackGroundColor), convertView, R.id.game_proposal_action_button);
+        ViewUtils.setBackground(buttonBackGroundColor, convertView, R.id.game_proposal_action_button);
         ViewUtils.setText(buttonLabelText, convertView, R.id.game_proposal_action_button);
 
         ViewUtils.setText(player.getName(), convertView, R.id.game_proposal_name);

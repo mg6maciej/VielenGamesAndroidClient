@@ -6,8 +6,10 @@
     <color name="game_background">@android:color/white</color>
     <color name="overlay_background">#dd000000</color>
     <color name="green_normal">#2fd386</color>
-    <color name="green_pressed">#2fd386</color>
+    <color name="green_pressed">#00a053</color>
     <color name="blue_normal">#00c2fc</color>
+    <color name="red_normal">#cc0000</color>
+    <color name="red_pressed">#990000</color>
     <color name="tab_text_color">#e1e1e1</color>
     <color name="tab_text_color_selected">@color/green_normal</color>
     <color name="tab_background_color">#000000</color>

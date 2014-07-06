@@ -62,12 +62,6 @@ public final class ViewUtils {
         view.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
-    public static void setBackgroundColor(int backgroundColor, View parent, int viewId) {
-        View view = findView(parent, viewId);
-        view.setBackgroundColor(backgroundColor);
-
-    }
-
     public static void setImage(Bitmap bitmap, View parent, int viewId) {
         ImageView imageView = findView(parent, viewId);
         imageView.setImageBitmap(bitmap);
