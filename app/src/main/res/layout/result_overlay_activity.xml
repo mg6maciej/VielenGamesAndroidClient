@@ -47,7 +47,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:textAppearance="?android:textAppearanceLarge"
-        android:textColor="@color/tab_text_color"/>
+        android:textColor="@color/overlay_text"/>
 
     <TextView
         android:id="@+id/result_overlay_title"

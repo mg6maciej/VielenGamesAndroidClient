@@ -1,6 +1,5 @@
 package com.elpassion.vielengames.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.Menu;
@@ -40,15 +39,12 @@ public final class MainActivity extends BaseActivity {
         setButtonListeners();
         if (savedInstanceState == null) {
             replaceWithFragment(new GameProposalsFragment());
-            Button proposals = ViewUtils.findView(this, R.id.main_proposals_button);
-            proposals.setTextColor(getResources().getColor(R.color.tab_text_color_selected));
+            ViewUtils.setSelected(this, R.id.main_proposals_button);
         } else {
             if (getSupportFragmentManager().findFragmentById(R.id.main_fragment_container) instanceof GameProposalsFragment) {
-                Button proposals = ViewUtils.findView(this, R.id.main_proposals_button);
-                proposals.setTextColor(getResources().getColor(R.color.tab_text_color_selected));
+                ViewUtils.setSelected(this, R.id.main_proposals_button);
             } else {
-                Button myGames = ViewUtils.findView(this, R.id.main_my_games_button);
-                myGames.setTextColor(getResources().getColor(R.color.tab_text_color_selected));
+                ViewUtils.setSelected(this, R.id.main_my_games_button);
             }
         }
         eventBus.register(this);
@@ -117,10 +113,8 @@ public final class MainActivity extends BaseActivity {
 
     private void replaceProposalsFragment() {
         replaceWithFragment(new GameProposalsFragment());
-        Button proposals = ViewUtils.findView(this, R.id.main_proposals_button);
-        proposals.setTextColor(getResources().getColor(R.color.tab_text_color_selected));
-        Button myGames = ViewUtils.findView(this, R.id.main_my_games_button);
-        myGames.setTextColor(getResources().getColor(R.color.tab_text_color));
+        ViewUtils.setSelected(this, R.id.main_proposals_button);
+        ViewUtils.setNotSelected(this, R.id.main_my_games_button);
     }
 
     private void onAddProposalClick() {
@@ -129,10 +123,8 @@ public final class MainActivity extends BaseActivity {
 
     private void onMyGamesClick() {
         replaceWithFragment(new MyGamesFragment());
-        Button proposals = ViewUtils.findView(this, R.id.main_proposals_button);
-        proposals.setTextColor(getResources().getColor(R.color.tab_text_color));
-        Button myGames = ViewUtils.findView(this, R.id.main_my_games_button);
-        myGames.setTextColor(getResources().getColor(R.color.tab_text_color_selected));
+        ViewUtils.setNotSelected(this, R.id.main_proposals_button);
+        ViewUtils.setSelected(this, R.id.main_my_games_button);
     }
 
     private void replaceWithFragment(BaseFragment fragment) {

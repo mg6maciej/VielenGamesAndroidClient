@@ -76,4 +76,14 @@ public final class ViewUtils {
         ImageView view = findView(parent, viewId);
         view.setImageResource(drawableId);
     }
+
+    public static void setSelected(Activity activity, @IdRes int viewId) {
+        View view = findView(activity, viewId);
+        view.setSelected(true);
+    }
+
+    public static void setNotSelected(Activity activity, @IdRes int viewId) {
+        View view = findView(activity, viewId);
+        view.setSelected(false);
+    }
 }

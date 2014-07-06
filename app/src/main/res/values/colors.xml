@@ -10,15 +10,16 @@
     <color name="blue_normal">#00c2fc</color>
     <color name="red_normal">#cc0000</color>
     <color name="red_pressed">#990000</color>
-    <color name="tab_text_color">#e1e1e1</color>
-    <color name="tab_text_color_selected">@color/green_normal</color>
-    <color name="tab_background_color">#000000</color>
-    <color name="add_proposal_background_color">@color/green_normal</color>
+    <color name="tab_text_normal">#e1e1e1</color>
+    <color name="tab_text_selected">@color/green_normal</color>
+    <color name="tab_background_normal">#000000</color>
+    <color name="tab_background_pressed">#333333</color>
     <color name="header_background_color">#f7f7f7</color>
     <color name="header_text_color">#bfbfbf</color>
     <color name="text_primary_color">@android:color/black</color>
     <color name="text_secondary_color">#4b4b4b</color>
     <color name="text_tertiary_color">#818181</color>
     <color name="text_green_color">@color/green_normal</color>
+    <color name="overlay_text">#e1e1e1</color>
 
 </resources>

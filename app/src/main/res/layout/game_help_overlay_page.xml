@@ -17,6 +17,6 @@
         android:layout_height="100dp"
         android:gravity="center_horizontal"
         android:textAppearance="?android:textAppearanceLarge"
-        android:textColor="@color/tab_text_color"/>
+        android:textColor="@color/overlay_text"/>
 
 </LinearLayout>
