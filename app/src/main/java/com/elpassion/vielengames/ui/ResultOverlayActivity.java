@@ -38,15 +38,19 @@ public final class ResultOverlayActivity extends BaseActivity {
         Player me = prefs.getMe();
         int title;
         int subtitle;
+        int color;
         if (me.equals(game.getWinner())) {
             title = R.string.result_won_title;
             subtitle = R.string.result_won_subtitle;
+            color = R.color.green_normal;
         } else {
             title = R.string.result_lost_title;
             subtitle = R.string.result_lost_subtitle;
+            color = R.color.blue_normal;
         }
         ViewUtils.setText(title, this, R.id.result_overlay_title);
         ViewUtils.setText(subtitle, this, R.id.result_overlay_subtitle);
+        ViewUtils.setTextColor(color, this, R.id.result_overlay_title);
     }
 
     private void updateWinnerInfo(KuridorGame game) {

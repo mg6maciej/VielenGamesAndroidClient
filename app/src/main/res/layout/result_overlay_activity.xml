@@ -55,7 +55,6 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/result_overlay_subtitle"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/green_normal"
         android:textSize="50dp"/>
 
 </RelativeLayout>
