@@ -201,7 +201,13 @@ public final class GameView extends BaseView {
             stopY = centerY + 1;
             wallPaddingY = drawerSettings.wallPadding();
         }
-        drawerSettings.paint().setColor(0xAAFF0000);
+        int wallColor;
+        if ("team_1".equals(state.getActiveTeam())) {
+            wallColor = R.color.green_normal;
+        } else {
+            wallColor = R.color.blue_normal;
+        }
+        drawerSettings.paint().setColor(getContext().getResources().getColor(wallColor));
         drawerSettings.paint().setStrokeWidth(drawerSettings.wallWidth());
         int size = Math.min(drawerSettings.width(), drawerSettings.height());
         float xPadding = drawerSettings.padding() + (drawerSettings.width() - size) / 2.0f;
