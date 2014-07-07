@@ -107,10 +107,9 @@ public final class MainActivity extends BaseActivity {
     }
 
     private void onProposalsClick() {
-        replaceProposalsFragment();
-    }
-
-    private void replaceProposalsFragment() {
+        if (getSupportFragmentManager().findFragmentById(R.id.main_fragment_container) instanceof GameProposalsFragment) {
+            return;
+        }
         replaceWithFragment(new GameProposalsFragment());
         ViewUtils.setSelected(this, R.id.main_proposals_button);
         ViewUtils.setNotSelected(this, R.id.main_my_games_button);
@@ -121,6 +120,9 @@ public final class MainActivity extends BaseActivity {
     }
 
     private void onMyGamesClick() {
+        if (getSupportFragmentManager().findFragmentById(R.id.main_fragment_container) instanceof MyGamesFragment) {
+            return;
+        }
         replaceWithFragment(new MyGamesFragment());
         ViewUtils.setNotSelected(this, R.id.main_proposals_button);
         ViewUtils.setSelected(this, R.id.main_my_games_button);

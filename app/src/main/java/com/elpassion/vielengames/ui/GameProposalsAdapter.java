@@ -14,12 +14,11 @@ import com.elpassion.vielengames.data.GameProposal;
 import com.elpassion.vielengames.data.Player;
 import com.elpassion.vielengames.utils.VanGogh;
 import com.elpassion.vielengames.utils.ViewUtils;
-import com.nhaarman.listviewanimations.itemmanipulation.OnDismissCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public final class GameProposalsAdapter extends BaseAdapter implements OnDismissCallback {
+public final class GameProposalsAdapter extends BaseAdapter {
 
     public static final String TAG = GameProposalsAdapter.class.getSimpleName();
     private Context context;
@@ -34,19 +33,6 @@ public final class GameProposalsAdapter extends BaseAdapter implements OnDismiss
         this.inflater = LayoutInflater.from(context);
         this.proposals = new ArrayList<GameProposal>(proposals);
         this.me = me;
-    }
-
-    @Override
-    public void onDismiss(AbsListView listView, int[] positions) {
-        for (int position : positions) {
-            proposals.remove(position);
-        }
-        notifyDataSetChanged();
-    }
-
-    public void add(GameProposal proposal) {
-        proposals.add(0, proposal);
-        notifyDataSetChanged();
     }
 
     @Override

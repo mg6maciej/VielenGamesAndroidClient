@@ -1,6 +1,7 @@
 package com.elpassion.vielengames.ui;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,6 @@ import com.elpassion.vielengames.event.JoinGameProposalResponseEvent;
 import com.elpassion.vielengames.event.LeaveGameProposalResponseEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
 import com.elpassion.vielengames.utils.ViewUtils;
-import com.nhaarman.listviewanimations.itemmanipulation.AnimateDismissAdapter;
 
 import java.util.ArrayList;
 
@@ -35,8 +35,8 @@ public final class GameProposalsFragment extends BaseFragment {
 
     private View root;
     private ListView listView;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private GameProposalsAdapter adapter;
-    private AnimateDismissAdapter dismissAdapterDecorator;
     private Runnable refreshAdapter = createRefreshAdapterAction();
 
     @InstanceState
@@ -53,6 +53,18 @@ public final class GameProposalsFragment extends BaseFragment {
         eventBus.register(this);
         root = view;
         listView = ViewUtils.findView(view, R.id.game_proposals_list);
+        swipeRefreshLayout = ViewUtils.findView(view, R.id.game_proposals_swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                requestGameProposals();
+            }
+        });
+        swipeRefreshLayout.setColorSchemeResources(
+                android.R.color.black,
+                R.color.green_normal,
+                android.R.color.black,
+                R.color.green_normal);
         ViewUtils.setOnClickListener(view, R.id.game_proposals_add_proposal_button, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,9 +72,7 @@ public final class GameProposalsFragment extends BaseFragment {
             }
         });
         if (proposals == null) {
-            client.requestGameProposals();
-            ViewUtils.setVisible(true, root, R.id.game_proposals_loading_indicator);
-            ViewUtils.setVisible(false, root, R.id.game_proposals_no_game_proposals);
+            requestGameProposals();
         } else {
             updateListView();
         }
@@ -76,10 +86,7 @@ public final class GameProposalsFragment extends BaseFragment {
 
     @SuppressWarnings("unused")
     public void onEvent(LeaveGameProposalResponseEvent event) {
-        GameProposal proposal = event.getProposal();
-        int index = proposals.indexOf(proposal);
-        proposals.remove(index);
-        dismissAdapterDecorator.animateDismiss(index);
+        requestGameProposals();
     }
 
     @SuppressWarnings("unused")
@@ -93,22 +100,15 @@ public final class GameProposalsFragment extends BaseFragment {
     }
 
     private void requestGameProposals() {
-        proposals = null;
-        adapter = null;
-        dismissAdapterDecorator = null;
-        listView.setAdapter(null);
         client.requestGameProposals();
-        ViewUtils.setVisible(true, root, R.id.game_proposals_loading_indicator);
-        ViewUtils.setVisible(false, root, R.id.game_proposals_no_game_proposals);
+        swipeRefreshLayout.setRefreshing(true);
     }
 
     private void updateListView() {
-        ViewUtils.setVisible(false, root, R.id.game_proposals_loading_indicator);
         ViewUtils.setVisible(proposals.size() == 0, root, R.id.game_proposals_no_game_proposals);
         adapter = new GameProposalsAdapter(getActivity(), proposals, prefs.getMe(), client);
-        dismissAdapterDecorator = new AnimateDismissAdapter(adapter, adapter);
-        dismissAdapterDecorator.setAbsListView(listView);
-        listView.setAdapter(dismissAdapterDecorator);
+        listView.setAdapter(adapter);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -141,7 +141,7 @@ public final class GameProposalsFragment extends BaseFragment {
         eventBus.unregister(this);
         root = null;
         listView = null;
+        swipeRefreshLayout = null;
         adapter = null;
-        dismissAdapterDecorator = null;
     }
 }

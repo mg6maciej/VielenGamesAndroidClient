@@ -61,7 +61,6 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.0.0-RC2'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0-RC2'
     compile 'de.greenrobot:eventbus:2.2.1'
-    compile 'com.nhaarman.listviewanimations:library:2.6.0'
     androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.1'
 
 }
