@@ -1,8 +1,7 @@
 package com.elpassion.vielengames.ui;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -39,23 +38,38 @@ public final class MainActivity extends BaseActivity {
     @Inject
     GooglePlusAuth googlePlusAuth;
 
+    private ViewPager viewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         setButtonListeners();
-        if (savedInstanceState == null) {
-            replaceWithFragment(new GameProposalsFragment());
-            ViewUtils.setSelected(this, R.id.main_proposals_button);
-        } else {
-            if (getSupportFragmentManager().findFragmentById(R.id.main_fragment_container) instanceof GameProposalsFragment) {
-                ViewUtils.setSelected(this, R.id.main_proposals_button);
-            } else {
-                ViewUtils.setSelected(this, R.id.main_my_games_button);
-            }
-        }
-        eventBus.register(this);
+        initViewPager();
+        ViewUtils.setSelected(this, viewPager.getCurrentItem() == 0
+                ? R.id.main_proposals_button
+                : R.id.main_my_games_button);
         updateGamesCount();
+        eventBus.register(this);
+    }
+
+    private void initViewPager() {
+        final MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager());
+        viewPager = ViewUtils.findView(this, R.id.main_view_pager);
+        viewPager.setAdapter(adapter);
+        viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    adapter.requestGameProposals();
+                    ViewUtils.setSelected(MainActivity.this, R.id.main_proposals_button);
+                    ViewUtils.setNotSelected(MainActivity.this, R.id.main_my_games_button);
+                } else {
+                    ViewUtils.setSelected(MainActivity.this, R.id.main_my_games_button);
+                    ViewUtils.setNotSelected(MainActivity.this, R.id.main_proposals_button);
+                }
+            }
+        });
     }
 
     @Override
@@ -87,7 +101,6 @@ public final class MainActivity extends BaseActivity {
 
     private void onSignOutClick() {
         googlePlusAuth.requestSignUserOut(this);
-
     }
 
     public void onEvent(OnAccessTokenRevoked event) {
@@ -103,28 +116,17 @@ public final class MainActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.action_sign_out:
                 onSignOutClick();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-
         }
-
     }
 
     private void onProposalsClick() {
-        Fragment f = getSupportFragmentManager().findFragmentById(R.id.main_fragment_container);
-        if (f instanceof GameProposalsFragment) {
-            GameProposalsFragment gameProposalsFragment = (GameProposalsFragment) f;
-            gameProposalsFragment.requestGameProposals();
-        } else {
-            replaceWithFragment(new GameProposalsFragment());
-            ViewUtils.setSelected(this, R.id.main_proposals_button);
-            ViewUtils.setNotSelected(this, R.id.main_my_games_button);
-        }
+        viewPager.setCurrentItem(0, true);
     }
 
     private void onAddProposalClick() {
@@ -132,19 +134,7 @@ public final class MainActivity extends BaseActivity {
     }
 
     private void onMyGamesClick() {
-        if (getSupportFragmentManager().findFragmentById(R.id.main_fragment_container) instanceof MyGamesFragment) {
-            return;
-        }
-        replaceWithFragment(new MyGamesFragment());
-        ViewUtils.setNotSelected(this, R.id.main_proposals_button);
-        ViewUtils.setSelected(this, R.id.main_my_games_button);
-    }
-
-    private void replaceWithFragment(BaseFragment fragment) {
-        FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction()
-                .replace(R.id.main_fragment_container, fragment)
-                .commit();
+        viewPager.setCurrentItem(1, true);
     }
 
     @SuppressWarnings("unused")
