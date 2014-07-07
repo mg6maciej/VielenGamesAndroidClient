@@ -1,6 +1,7 @@
 package com.elpassion.vielengames.ui;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -107,12 +108,15 @@ public final class MainActivity extends BaseActivity {
     }
 
     private void onProposalsClick() {
-        if (getSupportFragmentManager().findFragmentById(R.id.main_fragment_container) instanceof GameProposalsFragment) {
-            return;
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.main_fragment_container);
+        if (f instanceof GameProposalsFragment) {
+            GameProposalsFragment gameProposalsFragment = (GameProposalsFragment) f;
+            gameProposalsFragment.requestGameProposals();
+        } else {
+            replaceWithFragment(new GameProposalsFragment());
+            ViewUtils.setSelected(this, R.id.main_proposals_button);
+            ViewUtils.setNotSelected(this, R.id.main_my_games_button);
         }
-        replaceWithFragment(new GameProposalsFragment());
-        ViewUtils.setSelected(this, R.id.main_proposals_button);
-        ViewUtils.setNotSelected(this, R.id.main_my_games_button);
     }
 
     private void onAddProposalClick() {

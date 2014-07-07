@@ -99,7 +99,7 @@ public final class GameProposalsFragment extends BaseFragment {
         requestGameProposals();
     }
 
-    private void requestGameProposals() {
+    public void requestGameProposals() {
         client.requestGameProposals();
         swipeRefreshLayout.setRefreshing(true);
     }
