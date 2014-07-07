@@ -25,19 +25,38 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@drawable/green"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             android:src="@drawable/add_proposal_icon"/>
 
-        <Button
+        <LinearLayout
             android:id="@+id/main_my_games_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/tab_background"
-            android:text="MY GAMES"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@color/tab_text"/>
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MY GAMES"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="@color/tab_text"/>
+
+            <TextView
+                android:id="@+id/main_my_games_count"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="6dp"
+                android:background="@drawable/red_circle"
+                android:gravity="center"
+                android:visibility="gone"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:textColor="#fff"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

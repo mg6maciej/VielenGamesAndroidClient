@@ -10,10 +10,14 @@ import android.view.View;
 
 import com.elpassion.vielengames.ForegroundNotifier;
 import com.elpassion.vielengames.R;
+import com.elpassion.vielengames.VielenGamesPrefs;
 import com.elpassion.vielengames.api.GooglePlusAuth;
 import com.elpassion.vielengames.api.VielenGamesClient;
+import com.elpassion.vielengames.data.Game;
+import com.elpassion.vielengames.data.VielenGamesModel;
 import com.elpassion.vielengames.data.kuridor.KuridorGame;
 import com.elpassion.vielengames.event.GameClickEvent;
+import com.elpassion.vielengames.event.GamesUpdatedEvent;
 import com.elpassion.vielengames.event.OnAccessTokenRevoked;
 import com.elpassion.vielengames.event.bus.EventBus;
 import com.elpassion.vielengames.utils.ViewUtils;
@@ -28,7 +32,10 @@ public final class MainActivity extends BaseActivity {
     EventBus eventBus;
     @Inject
     ForegroundNotifier notifier;
-
+    @Inject
+    VielenGamesPrefs prefs;
+    @Inject
+    VielenGamesModel model;
     @Inject
     GooglePlusAuth googlePlusAuth;
 
@@ -48,6 +55,7 @@ public final class MainActivity extends BaseActivity {
             }
         }
         eventBus.register(this);
+        updateGamesCount();
     }
 
     @Override
@@ -144,6 +152,26 @@ public final class MainActivity extends BaseActivity {
         GameActivity.intent(this)
                 .game((KuridorGame) event.getGame())
                 .start();
+    }
+
+    @SuppressWarnings("unused")
+    public void onEvent(GamesUpdatedEvent event) {
+        updateGamesCount();
+    }
+
+    private void updateGamesCount() {
+        int count = 0;
+        for (Game game : model.getMyGames()) {
+            if (imActiveUser(game)) {
+                count++;
+            }
+        }
+        ViewUtils.setVisible(count > 0, this, R.id.main_my_games_count);
+        ViewUtils.setText(String.valueOf(count), this, R.id.main_my_games_count);
+    }
+
+    private boolean imActiveUser(Game game) {
+        return prefs.getMe().equals(((KuridorGame) game).getActivePlayer());
     }
 
     @Override

@@ -30,6 +30,11 @@ public final class ViewUtils {
         view.setText(text);
     }
 
+    public static void setText(CharSequence text, Activity activity, @IdRes int viewId) {
+        TextView view = findView(activity, viewId);
+        view.setText(text);
+    }
+
     public static void setText(@StringRes int stringRes, Activity activity, @IdRes int viewId) {
         TextView view = findView(activity, viewId);
         view.setText(stringRes);
@@ -47,6 +52,11 @@ public final class ViewUtils {
 
     public static void setVisible(boolean visible, View parent, @IdRes int viewId) {
         View view = findView(parent, viewId);
+        view.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    public static void setVisible(boolean visible, Activity activity, @IdRes int viewId) {
+        View view = findView(activity, viewId);
         view.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
