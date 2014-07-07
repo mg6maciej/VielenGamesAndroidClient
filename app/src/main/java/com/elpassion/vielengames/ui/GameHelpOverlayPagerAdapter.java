@@ -14,6 +14,12 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public final class GameHelpOverlayPagerAdapter extends PagerAdapter {
 
+    private static final int[] imageResArray = {
+            R.drawable.game_help_overlay_1,
+            R.drawable.game_help_overlay_2,
+            R.drawable.game_help_overlay_3
+    };
+
     public interface OnPageClickListener {
 
         void onPageClick();
@@ -42,7 +48,7 @@ public final class GameHelpOverlayPagerAdapter extends PagerAdapter {
             }
         });
         Resources r = container.getResources();
-        ViewUtils.setImage(R.drawable.game_help_overlay_1, page, R.id.game_help_overlay_image);
+        ViewUtils.setImage(imageResArray[position], page, R.id.game_help_overlay_image);
         ViewUtils.setText(r.getStringArray(R.array.game_help_overlay_info)[position], page, R.id.game_help_overlay_info);
         container.addView(page);
         return page;

@@ -9,4 +9,5 @@ public final class VielenGamesPrefs {
 
     private Player me;
     private String token;
+    private boolean helpOverlayAlreadyShown;
 }

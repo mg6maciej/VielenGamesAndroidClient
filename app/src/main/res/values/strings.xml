@@ -18,10 +18,5 @@
         <item>Press and scroll to build a wall\nand block your opponent</item>
         <item>Reach the opposite side\nbefore your opponent does</item>
     </string-array>
-    <integer-array name="game_help_overlay_image">
-        <item>@drawable/game_help_overlay_1</item>
-        <item>@drawable/game_help_overlay_2</item>
-        <item>@drawable/game_help_overlay_3</item>
-    </integer-array>
 
 </resources>

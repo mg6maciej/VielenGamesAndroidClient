@@ -130,6 +130,11 @@ public class GameActivity extends BaseActivity {
                     .game(game)
                     .start();
         }
+        if (!prefs.getHelpOverlayAlreadyShown()) {
+            prefs.setHelpOverlayAlreadyShown(true);
+            Intent intent = new Intent(this, GameHelpOverlayActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override
