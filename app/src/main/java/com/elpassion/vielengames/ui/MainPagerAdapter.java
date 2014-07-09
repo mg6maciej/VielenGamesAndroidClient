@@ -28,8 +28,4 @@ public final class MainPagerAdapter extends FragmentPagerAdapter {
         }
         throw new IllegalStateException();
     }
-
-    public void requestGameProposals() {
-        gameProposalsFragment.requestGameProposals();
-    }
 }

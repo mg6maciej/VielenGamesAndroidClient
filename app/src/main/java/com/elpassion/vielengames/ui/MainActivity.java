@@ -61,7 +61,6 @@ public final class MainActivity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                 if (position == 0) {
-                    adapter.requestGameProposals();
                     ViewUtils.setSelected(MainActivity.this, R.id.main_proposals_button);
                     ViewUtils.setNotSelected(MainActivity.this, R.id.main_my_games_button);
                 } else {
