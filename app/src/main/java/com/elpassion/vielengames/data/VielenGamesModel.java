@@ -48,6 +48,9 @@ public final class VielenGamesModel {
     }
 
     private void syncGames(List<Game> games) {
+        if (games.isEmpty()) {
+            return;
+        }
         for (Game game : games) {
             int index = this.games.indexOf(game);
             if (index != -1) {
