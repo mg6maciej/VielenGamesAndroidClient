@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.elpassion.vielengames.api.GooglePlusAuth;
-import com.elpassion.vielengames.api.GooglePlusAuthImpl;
 import com.elpassion.vielengames.api.VielenGamesApi;
 import com.elpassion.vielengames.api.VielenGamesClient;
 import com.elpassion.vielengames.data.Game;
@@ -20,8 +18,6 @@ import com.elpassion.vielengames.ui.LoginActivity;
 import com.elpassion.vielengames.ui.MainActivity;
 import com.elpassion.vielengames.ui.MyGamesFragment;
 import com.elpassion.vielengames.ui.ResultOverlayActivity;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.plus.Plus;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -74,21 +70,6 @@ public final class VielenGamesModule {
     @Singleton
     public EventBus provideEventBus() {
         return new GreenRobotEventBus();
-    }
-
-    @Provides
-    @Singleton
-    public GooglePlusAuth provideGooglePlusAuth(GoogleApiClient googleApiClient, EventBus eventBus) {
-        return new GooglePlusAuthImpl(googleApiClient, eventBus);
-    }
-
-    @Provides
-    @Singleton
-    public GoogleApiClient provideGoogleApiClient() {
-        return new GoogleApiClient.Builder(context)
-                .addApi(Plus.API)
-                .addScope(Plus.SCOPE_PLUS_PROFILE)
-                .build();
     }
 
     @Provides

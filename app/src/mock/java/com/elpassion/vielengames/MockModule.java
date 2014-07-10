@@ -1,7 +1,5 @@
 package com.elpassion.vielengames;
 
-import com.elpassion.vielengames.api.GooglePlusAuth;
-import com.elpassion.vielengames.api.MockGooglePlusAuthImpl;
 import com.elpassion.vielengames.api.MockVielenGamesApiImpl;
 import com.elpassion.vielengames.api.VielenGamesApi;
 
@@ -16,12 +14,6 @@ import dagger.Provides;
 )
 @SuppressWarnings("unused")
 public final class MockModule {
-
-    @Provides
-    @Singleton
-    public GooglePlusAuth provideGooglePlusAuth() {
-        return new MockGooglePlusAuthImpl();
-    }
 
     @Provides
     @Singleton
