@@ -2,11 +2,12 @@ package com.elpassion.vielengames.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 
 import com.elpassion.vielengames.R;
 import com.elpassion.vielengames.api.VielenGamesClient;
 import com.elpassion.vielengames.data.SessionRequest;
+import com.elpassion.vielengames.event.SessionCreateFailedEvent;
 import com.elpassion.vielengames.event.SessionStartedResponseEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
 import com.elpassion.vielengames.utils.ViewUtils;
@@ -24,6 +25,8 @@ public final class LoginActivity extends BaseActivity {
     @Inject
     EventBus eventBus;
 
+    private LoginButton facebookLoginButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,8 +36,8 @@ public final class LoginActivity extends BaseActivity {
     }
 
     private void initFacebookLoginButton() {
-        LoginButton loginButton = ViewUtils.findView(this, R.id.login_button_facebook);
-        loginButton.setSessionStatusCallback(new Session.StatusCallback() {
+        facebookLoginButton = ViewUtils.findView(this, R.id.login_button_facebook);
+        facebookLoginButton.setSessionStatusCallback(new Session.StatusCallback() {
             @Override
             public void call(Session session, SessionState state, Exception exception) {
                 maybeCreateSessionWithFacebook(session);
@@ -45,7 +48,7 @@ public final class LoginActivity extends BaseActivity {
 
     private void maybeCreateSessionWithFacebook(Session session) {
         if (session != null && session.isOpened()) {
-            //ViewUtils.setVisible(false, this, R.id.login_button_facebook);
+            facebookLoginButton.setVisibility(View.GONE);
             SessionRequest sessionRequest = SessionRequest.builder()
                     .provider("facebook")
                     .providerToken(session.getAccessToken())
@@ -64,6 +67,17 @@ public final class LoginActivity extends BaseActivity {
     public void onEvent(SessionStartedResponseEvent event) {
         startMainActivity();
         finish();
+    }
+
+    @SuppressWarnings("unused")
+    public void onEvent(SessionCreateFailedEvent event) {
+        facebookLoginButton.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                facebookLoginButton.setVisibility(View.VISIBLE);
+            }
+        }, 100L);
+        Session.getActiveSession().close();
     }
 
     public void startMainActivity() {

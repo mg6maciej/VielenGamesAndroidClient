@@ -4,14 +4,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.elpassion.vielengames.R;
-import com.elpassion.vielengames.api.VielenGamesClient;
 import com.elpassion.vielengames.data.GameProposal;
 import com.elpassion.vielengames.data.Player;
+import com.elpassion.vielengames.event.JoinGameProposalClickEvent;
+import com.elpassion.vielengames.event.LeaveGameProposalClickEvent;
+import com.elpassion.vielengames.event.bus.EventBus;
 import com.elpassion.vielengames.utils.VanGogh;
 import com.elpassion.vielengames.utils.ViewUtils;
 
@@ -22,14 +23,14 @@ public final class GameProposalsAdapter extends BaseAdapter {
 
     public static final String TAG = GameProposalsAdapter.class.getSimpleName();
     private Context context;
-    private VielenGamesClient client;
+    private EventBus eventBus;
     private Player me;
     private final LayoutInflater inflater;
     private final List<GameProposal> proposals;
 
-    public GameProposalsAdapter(Context context, List<GameProposal> proposals, Player me, VielenGamesClient client) {
+    public GameProposalsAdapter(Context context, List<GameProposal> proposals, Player me, EventBus eventBus) {
         this.context = context;
-        this.client = client;
+        this.eventBus = eventBus;
         this.inflater = LayoutInflater.from(context);
         this.proposals = new ArrayList<GameProposal>(proposals);
         this.me = me;
@@ -113,7 +114,7 @@ public final class GameProposalsAdapter extends BaseAdapter {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                client.joinGameProposal(item);
+                eventBus.post(new JoinGameProposalClickEvent(item));
             }
         };
     }
@@ -122,7 +123,7 @@ public final class GameProposalsAdapter extends BaseAdapter {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                client.leaveGameProposal(item);
+                eventBus.post(new LeaveGameProposalClickEvent(item));
             }
         };
     }

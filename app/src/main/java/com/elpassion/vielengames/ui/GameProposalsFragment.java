@@ -11,10 +11,9 @@ import com.elpassion.vielengames.R;
 import com.elpassion.vielengames.VielenGamesPrefs;
 import com.elpassion.vielengames.api.VielenGamesClient;
 import com.elpassion.vielengames.data.GameProposal;
-import com.elpassion.vielengames.event.CreateGameProposalEvent;
-import com.elpassion.vielengames.event.GetGameProposalsResponseEvent;
-import com.elpassion.vielengames.event.JoinGameProposalResponseEvent;
-import com.elpassion.vielengames.event.LeaveGameProposalResponseEvent;
+import com.elpassion.vielengames.event.JoinGameProposalClickEvent;
+import com.elpassion.vielengames.event.LeaveGameProposalClickEvent;
+import com.elpassion.vielengames.event.ProposalsUpdateEvent;
 import com.elpassion.vielengames.event.bus.EventBus;
 import com.elpassion.vielengames.utils.ViewUtils;
 
@@ -69,6 +68,7 @@ public final class GameProposalsFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 client.createGameProposal("kuridor");
+                swipeRefreshLayout.setRefreshing(true);
             }
         });
         if (proposals == null) {
@@ -79,24 +79,21 @@ public final class GameProposalsFragment extends BaseFragment {
     }
 
     @SuppressWarnings("unused")
-    public void onEvent(GetGameProposalsResponseEvent event) {
-        proposals = new ArrayList<GameProposal>(event.getGameProposals());
+    public void onEvent(ProposalsUpdateEvent event) {
+        proposals = new ArrayList<GameProposal>(event.getProposals());
         updateListView();
     }
 
     @SuppressWarnings("unused")
-    public void onEvent(LeaveGameProposalResponseEvent event) {
-        requestGameProposals();
+    public void onEvent(JoinGameProposalClickEvent event) {
+        client.joinGameProposal(event.getProposal());
+        swipeRefreshLayout.setRefreshing(true);
     }
 
     @SuppressWarnings("unused")
-    public void onEvent(CreateGameProposalEvent event) {
-        requestGameProposals();
-    }
-
-    @SuppressWarnings("unused")
-    public void onEvent(JoinGameProposalResponseEvent event) {
-        requestGameProposals();
+    public void onEvent(LeaveGameProposalClickEvent event) {
+        client.leaveGameProposal(event.getProposal());
+        swipeRefreshLayout.setRefreshing(true);
     }
 
     private void requestGameProposals() {
@@ -106,7 +103,7 @@ public final class GameProposalsFragment extends BaseFragment {
 
     private void updateListView() {
         ViewUtils.setVisible(proposals.size() == 0, root, R.id.game_proposals_no_game_proposals);
-        adapter = new GameProposalsAdapter(getActivity(), proposals, prefs.getMe(), client);
+        adapter = new GameProposalsAdapter(getActivity(), proposals, prefs.getMe(), eventBus);
         listView.setAdapter(adapter);
         swipeRefreshLayout.setRefreshing(false);
     }

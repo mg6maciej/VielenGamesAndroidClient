@@ -11,11 +11,9 @@ import com.elpassion.vielengames.data.SessionResponse;
 import com.elpassion.vielengames.data.Updates;
 import com.elpassion.vielengames.data.kuridor.KuridorGame;
 import com.elpassion.vielengames.data.kuridor.KuridorMove;
-import com.elpassion.vielengames.event.CreateGameProposalEvent;
-import com.elpassion.vielengames.event.GetGameProposalsResponseEvent;
-import com.elpassion.vielengames.event.JoinGameProposalResponseEvent;
-import com.elpassion.vielengames.event.LeaveGameProposalResponseEvent;
 import com.elpassion.vielengames.event.MoveFailureEvent;
+import com.elpassion.vielengames.event.ProposalsUpdateEvent;
+import com.elpassion.vielengames.event.SessionCreateFailedEvent;
 import com.elpassion.vielengames.event.SessionStartedResponseEvent;
 import com.elpassion.vielengames.event.SessionUpdatesFailedEvent;
 import com.elpassion.vielengames.event.SessionUpdatesResponseEvent;
@@ -43,12 +41,17 @@ public final class VielenGamesClient {
     }
 
     public void createSession(SessionRequest sessionRequest) {
-        api.createSession(sessionRequest, new DefaultCallback<SessionResponse>() {
+        api.createSession(sessionRequest, new Callback<SessionResponse>() {
             @Override
             public void success(SessionResponse sessionResponse, Response response) {
                 prefs.setToken(sessionResponse.getAuthToken());
                 prefs.setMe(sessionResponse.getUser());
                 eventBus.post(new SessionStartedResponseEvent(sessionResponse));
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                eventBus.post(new SessionCreateFailedEvent());
             }
         });
     }
@@ -68,15 +71,7 @@ public final class VielenGamesClient {
     }
 
     public void requestGameProposals() {
-        api.getGameProposals(new DefaultCallback<List<GameProposal>>() {
-            @Override
-            public void success(List<GameProposal> gameProposals, Response response) {
-                for (GameProposal gameProposal : gameProposals) {
-                    gameProposal.updateCreationTime();
-                }
-                eventBus.post(new GetGameProposalsResponseEvent(gameProposals));
-            }
-        });
+        api.getGameProposals(new ProposalsCallback());
     }
 
     public void createGameProposal(String gameType) {
@@ -84,33 +79,15 @@ public final class VielenGamesClient {
                 .gameType(gameType)
                 .awaitingPlayers(Collections.singletonList(prefs.getMe()))
                 .build();
-
-        api.createGameProposal(proposal, new DefaultCallback<GameProposal>() {
-            @Override
-            public void success(GameProposal proposal, Response response) {
-                proposal.updateCreationTime();
-                eventBus.post(new CreateGameProposalEvent(proposal));
-            }
-        });
+        api.createGameProposal(proposal, new ProposalsCallback());
     }
 
     public void joinGameProposal(GameProposal proposal) {
-        api.joinGameProposal(proposal.getId(), prefs.getMe(), new DefaultCallback<GameProposal>() {
-            @Override
-            public void success(GameProposal proposal, Response response) {
-                proposal.updateCreationTime();
-                eventBus.post(new JoinGameProposalResponseEvent(proposal));
-            }
-        });
+        api.joinGameProposal(proposal.getId(), prefs.getMe(), new ProposalsCallback());
     }
 
-    public void leaveGameProposal(final GameProposal proposal) {
-        api.leaveGameProposal(proposal.getId(), prefs.getMe().getId(), new DefaultCallback<Empty>() {
-            @Override
-            public void success(Empty empty, Response response) {
-                eventBus.post(new LeaveGameProposalResponseEvent(proposal));
-            }
-        });
+    public void leaveGameProposal(GameProposal proposal) {
+        api.leaveGameProposal(proposal.getId(), prefs.getMe().getId(), new ProposalsCallback());
     }
 
     public void move(KuridorGame game, final KuridorMove move) {
@@ -134,6 +111,17 @@ public final class VielenGamesClient {
         @Override
         public void failure(RetrofitError retrofitError) {
             Log.e("tag", "retrofit", retrofitError);
+        }
+    }
+
+    private final class ProposalsCallback extends DefaultCallback<List<GameProposal>> {
+
+        @Override
+        public void success(List<GameProposal> proposals, Response response) {
+            for (GameProposal proposal : proposals) {
+                proposal.updateCreationTime();
+            }
+            eventBus.post(new ProposalsUpdateEvent(proposals));
         }
     }
 }

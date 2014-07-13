@@ -31,13 +31,13 @@ public interface VielenGamesApi {
     void getGameProposals(Callback<List<GameProposal>> callback);
 
     @POST("/game_proposals")
-    void createGameProposal(@Body GameProposal proposal, Callback<GameProposal> callback);
+    void createGameProposal(@Body GameProposal proposal, Callback<List<GameProposal>> callback);
 
     @PUT("/game_proposals/{proposal_id}/awaiting_players")
-    void joinGameProposal(@Path("proposal_id") String proposalId, @Body Player player, Callback<GameProposal> callback);
+    void joinGameProposal(@Path("proposal_id") String proposalId, @Body Player player, Callback<List<GameProposal>> callback);
 
     @DELETE("/game_proposals/{proposal_id}/awaiting_players/{player_id}")
-    void leaveGameProposal(@Path("proposal_id") String proposalId, @Path("player_id") String playerId, Callback<Empty> callback);
+    void leaveGameProposal(@Path("proposal_id") String proposalId, @Path("player_id") String playerId, Callback<List<GameProposal>> callback);
 
     @POST("/games/{game_id}/moves")
     void move(@Path("game_id") String gameId, @Body KuridorMove move, Callback<Empty> callback);

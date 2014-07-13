@@ -5,7 +5,7 @@ import com.elpassion.vielengames.data.GameProposal;
 import lombok.Value;
 
 @Value
-public final class CreateGameProposalEvent {
+public final class LeaveGameProposalClickEvent {
 
     GameProposal proposal;
 }
