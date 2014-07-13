@@ -18,6 +18,9 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.crashlytics.ApiKey"
+            android:value="0cf260c36cedb146355182b159518ec281339e3f" />
 
         <activity
             android:name="com.elpassion.vielengames.ui.LauncherActivity"

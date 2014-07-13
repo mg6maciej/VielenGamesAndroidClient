@@ -3,6 +3,7 @@ package com.elpassion.vielengames;
 import android.app.Application;
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
 import com.elpassion.vielengames.data.VielenGamesModel;
 
 import javax.inject.Inject;
@@ -21,6 +22,7 @@ public final class VielenGamesApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Crashlytics.start(this);
         initObjectGraph();
         inject(this);
     }

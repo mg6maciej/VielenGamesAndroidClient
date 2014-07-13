@@ -1,4 +1,19 @@
-apply plugin: 'android'
+buildscript {
+    repositories {
+        maven { url 'http://download.crashlytics.com/maven' }
+    }
+
+    dependencies {
+        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
+    }
+}
+
+repositories {
+    maven { url 'http://download.crashlytics.com/maven' }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'crashlytics'
 
 android {
     compileSdkVersion 19
@@ -46,6 +61,7 @@ android {
 
 dependencies {
     compile project(':facebook')
+    compile 'com.crashlytics.android:crashlytics:1.+'
     provided 'com.squareup.dagger:dagger-compiler:1.2.1'
     provided 'pl.mg6.hrisey:hrisey:0.3.1'
     compile 'com.android.support:support-v4:20.0.0'
