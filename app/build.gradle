@@ -20,7 +20,7 @@ android {
     buildToolsVersion "20.0.0"
 
     defaultConfig {
-        applicationId "com.elpassion.vielengames"
+        applicationId "com.vielengames"
         minSdkVersion 10
         targetSdkVersion 19
         versionCode 1
@@ -36,21 +36,22 @@ android {
     productFlavors {
         production {
             flavorDimension 'backend'
+            applicationId "com.vielengames"
             buildConfigField 'String', 'ENDPOINT', '"https://vielen-games-api.herokuapp.com"'
         }
         staging {
             flavorDimension 'backend'
-            applicationId "com.elpassion.vielengames.staging"
+            applicationId "com.vielengames.staging"
             buildConfigField 'String', 'ENDPOINT', '"https://vielen-games-api-staging.herokuapp.com"'
         }
         mock {
             flavorDimension 'backend'
-            applicationId "com.elpassion.vielengames.mock"
+            applicationId "com.vielengames.mock"
             buildConfigField 'String', 'ENDPOINT', '"mock://mock"'
         }
         apiary {
             flavorDimension 'backend'
-            applicationId "com.elpassion.vielengames.apiary"
+            applicationId "com.vielengames.apiary"
             buildConfigField 'String', 'ENDPOINT', '"https://vielengamesapi.apiary-mock.com/"'
         }
     }

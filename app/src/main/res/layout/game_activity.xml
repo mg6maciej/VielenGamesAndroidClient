@@ -4,7 +4,7 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <com.elpassion.vielengames.ui.kuridor.GameHeaderLayout
+    <com.vielengames.ui.kuridor.GameHeaderLayout
         android:id="@+id/game_header_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -14,7 +14,7 @@
         android:layout_height="1dp"
         android:background="#eeeeee"/>
 
-    <com.elpassion.vielengames.ui.kuridor.GameView
+    <com.vielengames.ui.kuridor.GameView
         android:id="@+id/game_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -25,7 +25,7 @@
         android:layout_height="1dp"
         android:background="#eeeeee"/>
 
-    <com.elpassion.vielengames.ui.kuridor.GameHeaderLayout
+    <com.vielengames.ui.kuridor.GameHeaderLayout
         android:id="@+id/game_header_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
