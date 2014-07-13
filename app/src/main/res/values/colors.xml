@@ -21,5 +21,6 @@
     <color name="text_tertiary_color">#818181</color>
     <color name="text_green_color">@color/green_normal</color>
     <color name="overlay_text">#e1e1e1</color>
+    <color name="text_link_color">@color/blue_normal</color>
 
 </resources>
