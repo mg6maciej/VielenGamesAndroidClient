@@ -6,9 +6,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.elpassion.vielengames.R;
 import com.facebook.Session;
 import com.vielengames.ForegroundNotifier;
-import com.elpassion.vielengames.R;
 import com.vielengames.VielenGamesPrefs;
 import com.vielengames.api.VielenGamesClient;
 import com.vielengames.data.Game;
@@ -17,6 +17,7 @@ import com.vielengames.data.kuridor.KuridorGame;
 import com.vielengames.event.CreateGameProposalClickEvent;
 import com.vielengames.event.GameClickEvent;
 import com.vielengames.event.GamesUpdatedEvent;
+import com.vielengames.event.RefreshGameProposalsEvent;
 import com.vielengames.event.bus.EventBus;
 import com.vielengames.utils.ViewUtils;
 
@@ -58,6 +59,7 @@ public final class MainActivity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                 if (position == 0) {
+                    refreshGameProposals();
                     ViewUtils.setSelected(MainActivity.this, R.id.main_proposals_button);
                     ViewUtils.setNotSelected(MainActivity.this, R.id.main_my_games_button);
                 } else {
@@ -66,6 +68,11 @@ public final class MainActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    private void refreshGameProposals() {
+        client.requestGameProposals();
+        eventBus.post(new RefreshGameProposalsEvent());
     }
 
     @Override

@@ -15,6 +15,7 @@ import com.vielengames.event.CreateGameProposalClickEvent;
 import com.vielengames.event.JoinGameProposalClickEvent;
 import com.vielengames.event.LeaveGameProposalClickEvent;
 import com.vielengames.event.ProposalsUpdateEvent;
+import com.vielengames.event.RefreshGameProposalsEvent;
 import com.vielengames.event.bus.EventBus;
 import com.vielengames.utils.ViewUtils;
 
@@ -99,6 +100,11 @@ public final class GameProposalsFragment extends BaseFragment {
 
     @SuppressWarnings("unused")
     public void onEvent(CreateGameProposalClickEvent event) {
+        swipeRefreshLayout.setRefreshing(true);
+    }
+
+    @SuppressWarnings("unused")
+    public void onEvent(RefreshGameProposalsEvent event) {
         swipeRefreshLayout.setRefreshing(true);
     }
 
