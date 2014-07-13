@@ -3,6 +3,7 @@ package com.elpassion.vielengames.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.elpassion.vielengames.R;
 import com.elpassion.vielengames.api.VielenGamesClient;
@@ -25,18 +26,25 @@ public final class LoginActivity extends BaseActivity {
     @Inject
     EventBus eventBus;
 
-    private LoginButton facebookLoginButton;
+    private View buttonsContainer;
+    private ProgressBar progressIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
         eventBus.register(this);
+        initViews();
+    }
+
+    private void initViews() {
+        buttonsContainer = ViewUtils.findView(this, R.id.login_buttons_container);
+        progressIndicator = ViewUtils.findView(this, R.id.login_progress_indicator);
         initFacebookLoginButton();
     }
 
     private void initFacebookLoginButton() {
-        facebookLoginButton = ViewUtils.findView(this, R.id.login_button_facebook);
+        LoginButton facebookLoginButton = ViewUtils.findView(this, R.id.login_button_facebook);
         facebookLoginButton.setSessionStatusCallback(new Session.StatusCallback() {
             @Override
             public void call(Session session, SessionState state, Exception exception) {
@@ -48,7 +56,8 @@ public final class LoginActivity extends BaseActivity {
 
     private void maybeCreateSessionWithFacebook(Session session) {
         if (session != null && session.isOpened()) {
-            facebookLoginButton.setVisibility(View.GONE);
+            buttonsContainer.setVisibility(View.INVISIBLE);
+            progressIndicator.setVisibility(View.VISIBLE);
             SessionRequest sessionRequest = SessionRequest.builder()
                     .provider("facebook")
                     .providerToken(session.getAccessToken())
@@ -71,10 +80,11 @@ public final class LoginActivity extends BaseActivity {
 
     @SuppressWarnings("unused")
     public void onEvent(SessionCreateFailedEvent event) {
-        facebookLoginButton.postDelayed(new Runnable() {
+        buttonsContainer.postDelayed(new Runnable() {
             @Override
             public void run() {
-                facebookLoginButton.setVisibility(View.VISIBLE);
+                buttonsContainer.setVisibility(View.VISIBLE);
+                progressIndicator.setVisibility(View.INVISIBLE);
             }
         }, 100L);
         Session.getActiveSession().close();
