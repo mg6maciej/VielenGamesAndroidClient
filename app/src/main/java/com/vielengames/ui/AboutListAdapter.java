@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.annotation.DrawableRes;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vielengames.R;
@@ -15,7 +13,6 @@ import com.vielengames.ui.common.ItemAdapter;
 import com.vielengames.utils.Circlifier;
 import com.vielengames.utils.ViewUtils;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 public final class AboutListAdapter extends AbstractBaseAdapter {
