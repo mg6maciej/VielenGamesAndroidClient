@@ -5,16 +5,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.elpassion.vielengames.R;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.widget.LoginButton;
+import com.vielengames.R;
 import com.vielengames.api.VielenGamesClient;
 import com.vielengames.data.SessionRequest;
 import com.vielengames.event.SessionCreateFailedEvent;
 import com.vielengames.event.SessionStartedResponseEvent;
 import com.vielengames.event.bus.EventBus;
 import com.vielengames.utils.ViewUtils;
-import com.facebook.Session;
-import com.facebook.SessionState;
-import com.facebook.widget.LoginButton;
 
 import javax.inject.Inject;
 

@@ -2,7 +2,7 @@ package com.vielengames.ui;
 
 import android.view.View;
 
-import com.elpassion.vielengames.R;
+import com.vielengames.R;
 import com.vielengames.ui.common.ItemAdapter;
 import com.vielengames.utils.ViewUtils;
 

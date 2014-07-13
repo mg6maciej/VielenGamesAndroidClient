@@ -3,7 +3,7 @@ package com.vielengames.ui;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 
-import com.elpassion.vielengames.R;
+import com.vielengames.R;
 import com.vielengames.utils.ViewUtils;
 
 public final class GameHelpOverlayActivity extends BaseActivity {

@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import com.elpassion.vielengames.R;
+import com.vielengames.R;
 import com.vielengames.data.GameProposal;
 import com.vielengames.data.Player;
 import com.vielengames.event.JoinGameProposalClickEvent;

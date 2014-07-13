@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.elpassion.vielengames.R;
+import com.vielengames.R;
 import com.vielengames.utils.ViewUtils;
 
 import lombok.AllArgsConstructor;

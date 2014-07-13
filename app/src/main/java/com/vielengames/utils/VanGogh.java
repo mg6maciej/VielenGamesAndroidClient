@@ -5,9 +5,9 @@ import android.graphics.Bitmap;
 import android.support.annotation.DimenRes;
 import android.widget.ImageView;
 
-import com.elpassion.vielengames.R;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
+import com.vielengames.R;
 
 public final class VanGogh {
 

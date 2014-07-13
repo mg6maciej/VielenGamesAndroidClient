@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import com.elpassion.vielengames.R;
+import com.vielengames.R;
 import com.vielengames.data.Player;
 import com.vielengames.ui.BaseLinearLayout;
 import com.vielengames.utils.VanGogh;

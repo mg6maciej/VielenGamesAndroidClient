@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.elpassion.vielengames.R;
+import com.vielengames.R;
 import com.vielengames.VielenGamesPrefs;
 import com.vielengames.data.Player;
 import com.vielengames.data.kuridor.KuridorGame;

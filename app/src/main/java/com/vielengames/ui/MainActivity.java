@@ -7,9 +7,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.elpassion.vielengames.R;
 import com.facebook.Session;
 import com.vielengames.ForegroundNotifier;
+import com.vielengames.R;
 import com.vielengames.VielenGamesPrefs;
 import com.vielengames.api.VielenGamesClient;
 import com.vielengames.data.Game;

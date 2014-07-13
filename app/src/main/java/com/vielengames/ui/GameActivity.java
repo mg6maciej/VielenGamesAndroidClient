@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.vielengames.ForegroundNotifier;
-import com.elpassion.vielengames.R;
+import com.vielengames.R;
 import com.vielengames.VielenGamesPrefs;
 import com.vielengames.api.VielenGamesClient;
 import com.vielengames.data.Game;

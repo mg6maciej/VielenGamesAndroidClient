@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.elpassion.vielengames.R;
+import com.vielengames.R;
 import com.vielengames.VielenGamesPrefs;
 import com.vielengames.api.VielenGamesClient;
 import com.vielengames.data.GameProposal;

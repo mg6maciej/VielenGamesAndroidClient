@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
-import com.elpassion.vielengames.R;
+import com.vielengames.R;
 import com.vielengames.data.kuridor.KuridorGameState;
 import com.vielengames.data.kuridor.KuridorMove;
 import com.vielengames.ui.BaseView;

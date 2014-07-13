@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.elpassion.vielengames.BuildConfig;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.vielengames.api.VielenGamesApi;
 import com.vielengames.api.VielenGamesClient;
 import com.vielengames.data.Game;
@@ -20,9 +22,6 @@ import com.vielengames.ui.LoginActivity;
 import com.vielengames.ui.MainActivity;
 import com.vielengames.ui.MyGamesFragment;
 import com.vielengames.ui.ResultOverlayActivity;
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import javax.inject.Singleton;
 
