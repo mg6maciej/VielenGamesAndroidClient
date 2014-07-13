@@ -3,6 +3,8 @@ package com.elpassion.vielengames.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.elpassion.vielengames.ForegroundNotifier;
@@ -72,6 +74,37 @@ public class GameActivity extends BaseActivity {
             game = getIntent().getParcelableExtra(EXTRA_GAME);
         }
         updateGameView(Collections.singletonList(game));
+        showGameHelpFirstTime();
+    }
+
+    private void showGameHelpFirstTime() {
+        if (!prefs.getHelpOverlayAlreadyShown()) {
+            prefs.setHelpOverlayAlreadyShown(true);
+            showGameHelp();
+        }
+    }
+
+    private void showGameHelp() {
+        Intent intent = new Intent(this, GameHelpOverlayActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.game, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.game_help:
+                showGameHelp();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("unused")
@@ -129,11 +162,6 @@ public class GameActivity extends BaseActivity {
             ResultOverlayActivity.intent(this)
                     .game(game)
                     .start();
-        }
-        if (!prefs.getHelpOverlayAlreadyShown()) {
-            prefs.setHelpOverlayAlreadyShown(true);
-            Intent intent = new Intent(this, GameHelpOverlayActivity.class);
-            startActivity(intent);
         }
     }
 
