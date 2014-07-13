@@ -27,15 +27,15 @@ public final class MockVielenGamesApiImpl implements VielenGamesApi {
     }
 
     @Override
-    public void createGameProposal(GameProposal proposal, Callback<GameProposal> callback) {
+    public void createGameProposal(GameProposal proposal, Callback<List<GameProposal>> callback) {
     }
 
     @Override
-    public void joinGameProposal(String proposalId, Player player, Callback<GameProposal> callback) {
+    public void joinGameProposal(String proposalId, Player player, Callback<List<GameProposal>> callback) {
     }
 
     @Override
-    public void leaveGameProposal(String proposalId, String playerId, Callback<Empty> callback) {
+    public void leaveGameProposal(String proposalId, String playerId, Callback<List<GameProposal>> callback) {
     }
 
     @Override
