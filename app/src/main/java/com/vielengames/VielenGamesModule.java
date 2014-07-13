@@ -11,6 +11,7 @@ import com.vielengames.data.Game;
 import com.vielengames.event.bus.EventBus;
 import com.vielengames.event.bus.GreenRobotEventBus;
 import com.vielengames.parser.GameJsonDeserializer;
+import com.vielengames.ui.AboutActivity;
 import com.vielengames.ui.GameActivity;
 import com.vielengames.ui.GameHelpOverlayActivity;
 import com.vielengames.ui.GameProposalsFragment;
@@ -40,10 +41,10 @@ import retrofit.converter.GsonConverter;
                 GameProposalsFragment.class,
                 MyGamesFragment.class,
                 GameActivity.class,
+                AboutActivity.class,
                 ResultOverlayActivity.class,
                 GameHelpOverlayActivity.class
-        },
-        library = true
+        }
 )
 @SuppressWarnings("unused")
 public final class VielenGamesModule {

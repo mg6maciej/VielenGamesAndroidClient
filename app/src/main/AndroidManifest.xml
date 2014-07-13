@@ -48,6 +48,10 @@
             android:label="Games"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.vielengames.ui.AboutActivity"
+            android:label="Games"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.vielengames.ui.ResultOverlayActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Overlay" />

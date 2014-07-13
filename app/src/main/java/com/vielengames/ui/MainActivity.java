@@ -1,5 +1,6 @@
 package com.vielengames.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
@@ -89,6 +90,9 @@ public final class MainActivity extends BaseActivity {
             case R.id.main_sign_out:
                 signOut();
                 return true;
+            case R.id.main_about:
+                showAbout();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -98,6 +102,11 @@ public final class MainActivity extends BaseActivity {
             Session.getActiveSession().close();
         }
         finish();
+    }
+
+    private void showAbout() {
+        Intent intent = new Intent(this, AboutActivity.class);
+        startActivity(intent);
     }
 
     @Override
