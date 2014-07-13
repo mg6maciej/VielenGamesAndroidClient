@@ -14,6 +14,7 @@ import com.vielengames.api.VielenGamesClient;
 import com.vielengames.data.Game;
 import com.vielengames.data.VielenGamesModel;
 import com.vielengames.data.kuridor.KuridorGame;
+import com.vielengames.event.CreateGameProposalClickEvent;
 import com.vielengames.event.GameClickEvent;
 import com.vielengames.event.GamesUpdatedEvent;
 import com.vielengames.event.bus.EventBus;
@@ -125,6 +126,8 @@ public final class MainActivity extends BaseActivity {
 
     private void onAddProposalClick() {
         client.createGameProposal("kuridor");
+        eventBus.post(new CreateGameProposalClickEvent());
+        viewPager.setCurrentItem(0, true);
     }
 
     private void onMyGamesClick() {

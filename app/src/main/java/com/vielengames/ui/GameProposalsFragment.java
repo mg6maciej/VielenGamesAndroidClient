@@ -11,6 +11,7 @@ import com.elpassion.vielengames.R;
 import com.vielengames.VielenGamesPrefs;
 import com.vielengames.api.VielenGamesClient;
 import com.vielengames.data.GameProposal;
+import com.vielengames.event.CreateGameProposalClickEvent;
 import com.vielengames.event.JoinGameProposalClickEvent;
 import com.vielengames.event.LeaveGameProposalClickEvent;
 import com.vielengames.event.ProposalsUpdateEvent;
@@ -93,6 +94,11 @@ public final class GameProposalsFragment extends BaseFragment {
     @SuppressWarnings("unused")
     public void onEvent(LeaveGameProposalClickEvent event) {
         client.leaveGameProposal(event.getProposal());
+        swipeRefreshLayout.setRefreshing(true);
+    }
+
+    @SuppressWarnings("unused")
+    public void onEvent(CreateGameProposalClickEvent event) {
         swipeRefreshLayout.setRefreshing(true);
     }
 
