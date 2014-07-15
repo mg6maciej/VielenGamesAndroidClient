@@ -98,9 +98,8 @@ public final class MainActivity extends BaseActivity {
     }
 
     private void signOut() {
-        if (Session.getActiveSession() != null) {
-            Session.getActiveSession().close();
-        }
+        Session.openActiveSessionFromCache(getApplicationContext())
+                .closeAndClearTokenInformation();
         finish();
     }
 
