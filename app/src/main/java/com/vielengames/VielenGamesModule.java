@@ -98,8 +98,9 @@ public final class VielenGamesModule {
         return new RequestInterceptor() {
             @Override
             public void intercept(RequestFacade requestFacade) {
+                requestFacade.addHeader("Accept", "application/vnd.vielengames.v1+json");
+                requestFacade.addHeader("User-Agent", "Vielen Games Official Android Client (https://github.com/mg6maciej/VielenGamesAndroidClient)");
                 requestFacade.addHeader("X-Auth-Token", prefs.getToken());
-                requestFacade.addHeader("X-Client-Version", "1");
                 requestFacade.addHeader("X-Supported-Game-Types", "kuridor");
             }
         };
