@@ -75,6 +75,9 @@ final class KuridorMoveValidatorImpl {
             outer:
             for (int i = 0; i < expectedOpponentPawns.length; i++) {
                 String expectedOpponentPawn = expectedOpponentPawns[i];
+                if (!otherPawns.contains(expectedOpponentPawn)) {
+                    continue;
+                }
                 String twoSquaresForPawn = twoSquares[i];
                 Collection<String> walls = state.getWalls();
                 String[] blockingWalls = getBlockingWalls(expectedOpponentPawn, activePawnPosition);
@@ -97,9 +100,7 @@ final class KuridorMoveValidatorImpl {
                 }
                 if (straight) {
                     if (!wallBehind) {
-                        if (otherPawns.contains(expectedOpponentPawn)) {
-                            return true;
-                        }
+                        return true;
                     }
                 } else {
                     if (wallBehind) {
