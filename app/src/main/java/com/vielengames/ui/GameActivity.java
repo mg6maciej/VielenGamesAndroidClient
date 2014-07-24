@@ -62,7 +62,11 @@ public class GameActivity extends BaseActivity {
             @Override
             public void onMove(KuridorMove move) {
                 if (!imActiveUser()) {
-                    Toast.makeText(GameActivity.this, "It's not your turn", Toast.LENGTH_SHORT).show();
+                    if (noActivePlayer()) {
+                        Toast.makeText(GameActivity.this, "Game is already finished", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(GameActivity.this, "It's not your turn", Toast.LENGTH_SHORT).show();
+                    }
                 } else if (!game.getCurrentState().isMoveValid(move)) {
                     Toast.makeText(GameActivity.this, "Illegal move: " + move.getPosition(), Toast.LENGTH_SHORT).show();
                 } else {
@@ -116,11 +120,18 @@ public class GameActivity extends BaseActivity {
             case NOT_YOUR_TURN:
                 Toast.makeText(GameActivity.this, "Server says: It's not your turn", Toast.LENGTH_SHORT).show();
                 break;
+            case GAME_FINISHED:
+                Toast.makeText(GameActivity.this, "Server says: Game is already finished", Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 
     private boolean imActiveUser() {
         return prefs.getMe().equals(game.getActivePlayer());
+    }
+
+    private boolean noActivePlayer() {
+        return game.getActivePlayer() == null;
     }
 
     @Override

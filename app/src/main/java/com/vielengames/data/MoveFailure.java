@@ -12,7 +12,9 @@ public final class MoveFailure {
         @SerializedName("illegal_move")
         ILLEGAL_MOVE,
         @SerializedName("not_your_turn")
-        NOT_YOUR_TURN
+        NOT_YOUR_TURN,
+        @SerializedName("game_finished")
+        GAME_FINISHED
     }
 
     Reason error;
