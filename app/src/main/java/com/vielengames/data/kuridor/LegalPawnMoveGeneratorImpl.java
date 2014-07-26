@@ -35,6 +35,9 @@ final class LegalPawnMoveGeneratorImpl {
                         char sideJumpFileLetter = (char) (potentialMove.charAt(0) + jumpDirection[0]);
                         char sideJumpRankLetter = (char) (potentialMove.charAt(1) + jumpDirection[1]);
                         String potentialSideJump = "" + sideJumpFileLetter + sideJumpRankLetter;
+                        if (isBlockedByWall(state, potentialMove, potentialSideJump)) {
+                            continue;
+                        }
                         moves.add(KuridorMove.pawn(potentialSideJump));
                     }
                 } else {
