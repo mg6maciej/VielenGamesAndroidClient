@@ -46,11 +46,7 @@ public final class KuridorGameState {
     }
 
     public Collection<KuridorMove> getLegalPawnMoves() {
-        return new HashSet<KuridorMove>(Arrays.asList(
-                KuridorMove.pawn("d5"),
-                KuridorMove.pawn("e4"),
-                KuridorMove.pawn("e6"),
-                KuridorMove.pawn("f5")));
+        return LegalPawnMoveGeneratorImpl.getLegalPawnMoves(this);
     }
 
     public KuridorGameTeamState getTeam1() {

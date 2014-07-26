@@ -25,14 +25,6 @@ public abstract class PawnMoveGenerationBaseTestCase extends TestCase {
             .pawnPosition("e9")
             .wallsLeft(10)
             .build();
-    KuridorGameState withoutBlocks = KuridorGameState.builder()
-            .teams(new HashMap<String, KuridorGameTeamState>() {{
-                put("team_1", centered);
-                put("team_2", secondStarting);
-            }})
-            .walls(Collections.<String>emptyList())
-            .activeTeam("team_1")
-            .build();
 
     void assertContainsAll(String... moves) {
         Collection<KuridorMove> legalMoves = testedState.getLegalPawnMoves();
