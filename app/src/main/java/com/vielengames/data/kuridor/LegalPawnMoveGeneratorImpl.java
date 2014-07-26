@@ -15,23 +15,22 @@ final class LegalPawnMoveGeneratorImpl {
     public static Collection<KuridorMove> getLegalPawnMoves(KuridorGameState state) {
         Collection<KuridorMove> moves = new HashSet<KuridorMove>();
         String pawnPosition = state.getActiveTeamPawnPosition();
-        outer:
         for (int i = 0; i < SIMPLE_DIRECTIONS.length; i++) {
             int[] direction = SIMPLE_DIRECTIONS[i];
             char fileLetter = (char) (pawnPosition.charAt(0) + direction[0]);
             char rankLetter = (char) (pawnPosition.charAt(1) + direction[1]);
-            if (fileLetter < 'a' || fileLetter > 'i' || rankLetter < '1' || rankLetter > '9') {
+            if (isOutsideOfBoard(fileLetter, rankLetter)) {
                 continue;
             }
             String potentialMove = "" + fileLetter + rankLetter;
             if (isBlockedByWall(state, pawnPosition, potentialMove)) {
-                continue outer;
+                continue;
             }
             if (state.getInactiveTeamsPawnPositions().contains(potentialMove)) {
                 char jumpFileLetter = (char) (potentialMove.charAt(0) + direction[0]);
                 char jumpRankLetter = (char) (potentialMove.charAt(1) + direction[1]);
                 String potentialStraightJump = "" + jumpFileLetter + jumpRankLetter;
-                if (isBlockedByWall(state, potentialMove, potentialStraightJump)) {
+                if (isOutsideOfBoard(jumpFileLetter, jumpRankLetter) || isBlockedByWall(state, potentialMove, potentialStraightJump)) {
                     for (int[] jumpDirection : LEFT_RIGHT_JUMP_DIRECTIONS[i]) {
                         char sideJumpFileLetter = (char) (potentialMove.charAt(0) + jumpDirection[0]);
                         char sideJumpRankLetter = (char) (potentialMove.charAt(1) + jumpDirection[1]);
@@ -46,6 +45,10 @@ final class LegalPawnMoveGeneratorImpl {
             }
         }
         return moves;
+    }
+
+    private static boolean isOutsideOfBoard(char fileLetter, char rankLetter) {
+        return fileLetter < 'a' || fileLetter > 'i' || rankLetter < '1' || rankLetter > '9';
     }
 
     private static boolean isBlockedByWall(KuridorGameState state, String pawnPosition, String potentialMove) {
