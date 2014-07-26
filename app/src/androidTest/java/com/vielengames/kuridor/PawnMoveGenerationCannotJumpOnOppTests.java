@@ -10,7 +10,7 @@ public final class PawnMoveGenerationCannotJumpOnOppTests extends PawnMoveGenera
 
     public void testCannotJumpOnOppToNorth() {
         testedState = closeToEachOther;
-        assertContainsAll("f5", "e4", "d5");
+        assertContainsExactly("f5", "e4", "d5", "e7");
     }
 
     KuridorGameState closeToEachOther = KuridorGameState.builder()

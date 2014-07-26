@@ -6,12 +6,8 @@ import com.vielengames.data.kuridor.KuridorMove;
 
 import junit.framework.TestCase;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 
 public abstract class PawnMoveGenerationBaseTestCase extends TestCase {
 
@@ -30,7 +26,7 @@ public abstract class PawnMoveGenerationBaseTestCase extends TestCase {
             .wallsLeft(10)
             .build();
 
-    void assertContainsAll(String... moves) {
+    void assertContainsExactly(String... moves) {
         Collection<KuridorMove> legalMoves = testedState.getLegalPawnMoves();
         Collection<KuridorMove> expectedMoves = new HashSet<KuridorMove>();
         for (String move : moves) {

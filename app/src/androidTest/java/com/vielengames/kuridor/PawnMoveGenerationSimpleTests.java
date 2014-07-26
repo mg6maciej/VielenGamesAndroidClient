@@ -10,12 +10,12 @@ public final class PawnMoveGenerationSimpleTests extends PawnMoveGenerationBaseT
 
     public void testAllSimpleMovesValid() {
         testedState = withoutBlocks;
-        assertContainsAll("e6", "f5", "e4", "d5");
+        assertContainsExactly("e6", "f5", "e4", "d5");
     }
 
     public void testAllSimpleMovesWhenNextToEndOfBoardValid() {
         testedState = KuridorGameState.initial();
-        assertContainsAll("e2", "d1", "f1");
+        assertContainsExactly("e2", "d1", "f1");
     }
 
     KuridorGameState withoutBlocks = KuridorGameState.builder()
