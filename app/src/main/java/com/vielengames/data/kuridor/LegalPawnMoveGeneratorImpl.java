@@ -17,26 +17,17 @@ final class LegalPawnMoveGeneratorImpl {
         String pawnPosition = state.getActiveTeamPawnPosition();
         for (int i = 0; i < SIMPLE_DIRECTIONS.length; i++) {
             int[] direction = SIMPLE_DIRECTIONS[i];
-            char fileLetter = (char) (pawnPosition.charAt(0) + direction[0]);
-            char rankLetter = (char) (pawnPosition.charAt(1) + direction[1]);
-            if (isOutsideOfBoard(fileLetter, rankLetter)) {
-                continue;
-            }
-            String potentialMove = "" + fileLetter + rankLetter;
-            if (isBlockedByWall(state, pawnPosition, potentialMove)) {
+            String potentialMove = getMoveInDirection(pawnPosition, direction);
+            if (isOutsideOfBoard(potentialMove) || isBlockedByWall(state, pawnPosition, potentialMove)) {
                 continue;
             }
             if (state.getInactiveTeamsPawnPositions().contains(potentialMove)) {
-                char jumpFileLetter = (char) (potentialMove.charAt(0) + direction[0]);
-                char jumpRankLetter = (char) (potentialMove.charAt(1) + direction[1]);
-                String potentialStraightJump = "" + jumpFileLetter + jumpRankLetter;
-                if (isOutsideOfBoard(jumpFileLetter, jumpRankLetter)
+                String potentialStraightJump = getMoveInDirection(potentialMove, direction);
+                if (isOutsideOfBoard(potentialStraightJump)
                         || isBlockedByWall(state, potentialMove, potentialStraightJump)) {
                     for (int[] jumpDirection : LEFT_RIGHT_JUMP_DIRECTIONS[i]) {
-                        char sideJumpFileLetter = (char) (potentialMove.charAt(0) + jumpDirection[0]);
-                        char sideJumpRankLetter = (char) (potentialMove.charAt(1) + jumpDirection[1]);
-                        String potentialSideJump = "" + sideJumpFileLetter + sideJumpRankLetter;
-                        if (isOutsideOfBoard(sideJumpFileLetter, sideJumpRankLetter)
+                        String potentialSideJump = getMoveInDirection(potentialMove, jumpDirection);
+                        if (isOutsideOfBoard(potentialSideJump)
                                 || isBlockedByWall(state, potentialMove, potentialSideJump)) {
                             continue;
                         }
@@ -52,7 +43,15 @@ final class LegalPawnMoveGeneratorImpl {
         return moves;
     }
 
-    private static boolean isOutsideOfBoard(char fileLetter, char rankLetter) {
+    private static String getMoveInDirection(String pawnPosition, int[] direction) {
+        char sideJumpFileLetter = (char) (pawnPosition.charAt(0) + direction[0]);
+        char sideJumpRankLetter = (char) (pawnPosition.charAt(1) + direction[1]);
+        return "" + sideJumpFileLetter + sideJumpRankLetter;
+    }
+
+    private static boolean isOutsideOfBoard(String pawnPosition) {
+        char fileLetter = pawnPosition.charAt(0);
+        char rankLetter = pawnPosition.charAt(1);
         return fileLetter < 'a' || fileLetter > 'i' || rankLetter < '1' || rankLetter > '9';
     }
 
