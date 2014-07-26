@@ -8,34 +8,54 @@ final class LegalPawnMoveGeneratorImpl {
     private static final int[][] SIMPLE_DIRECTIONS = {
             {-1, 0}, {0, -1}, {0, 1}, {1, 0}
     };
+    private static final int[][][] LEFT_RIGHT_JUMP_DIRECTIONS = {
+            {{0, -1}, {0, 1}}, {{-1, 0}, {1, 0}}, {{-1, 0}, {1, 0}}, {{0, -1}, {0, 1}}
+    };
 
     public static Collection<KuridorMove> getLegalPawnMoves(KuridorGameState state) {
         Collection<KuridorMove> moves = new HashSet<KuridorMove>();
         String pawnPosition = state.getActiveTeamPawnPosition();
         outer:
-        for (int[] direction : SIMPLE_DIRECTIONS) {
+        for (int i = 0; i < SIMPLE_DIRECTIONS.length; i++) {
+            int[] direction = SIMPLE_DIRECTIONS[i];
             char fileLetter = (char) (pawnPosition.charAt(0) + direction[0]);
             char rankLetter = (char) (pawnPosition.charAt(1) + direction[1]);
             if (fileLetter < 'a' || fileLetter > 'i' || rankLetter < '1' || rankLetter > '9') {
                 continue;
             }
             String potentialMove = "" + fileLetter + rankLetter;
-            String[] blockingWalls = getBlockingWalls(pawnPosition, potentialMove);
-            for (String blockingWall : blockingWalls) {
-                if (state.getWalls().contains(blockingWall)) {
-                    continue outer;
-                }
+            if (isBlockedByWall(state, pawnPosition, potentialMove)) {
+                continue outer;
             }
             if (state.getInactiveTeamsPawnPositions().contains(potentialMove)) {
                 char jumpFileLetter = (char) (potentialMove.charAt(0) + direction[0]);
                 char jumpRankLetter = (char) (potentialMove.charAt(1) + direction[1]);
                 String potentialStraightJump = "" + jumpFileLetter + jumpRankLetter;
-                moves.add(KuridorMove.pawn(potentialStraightJump));
+                if (isBlockedByWall(state, potentialMove, potentialStraightJump)) {
+                    for (int[] jumpDirection : LEFT_RIGHT_JUMP_DIRECTIONS[i]) {
+                        char sideJumpFileLetter = (char) (potentialMove.charAt(0) + jumpDirection[0]);
+                        char sideJumpRankLetter = (char) (potentialMove.charAt(1) + jumpDirection[1]);
+                        String potentialSideJump = "" + sideJumpFileLetter + sideJumpRankLetter;
+                        moves.add(KuridorMove.pawn(potentialSideJump));
+                    }
+                } else {
+                    moves.add(KuridorMove.pawn(potentialStraightJump));
+                }
             } else {
                 moves.add(KuridorMove.pawn(potentialMove));
             }
         }
         return moves;
+    }
+
+    private static boolean isBlockedByWall(KuridorGameState state, String pawnPosition, String potentialMove) {
+        String[] blockingWalls = getBlockingWalls(pawnPosition, potentialMove);
+        for (String blockingWall : blockingWalls) {
+            if (state.getWalls().contains(blockingWall)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static String[] getBlockingWalls(String position, String pawnPosition) {
