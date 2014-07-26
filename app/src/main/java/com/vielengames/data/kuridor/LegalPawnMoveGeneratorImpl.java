@@ -19,6 +19,9 @@ final class LegalPawnMoveGeneratorImpl {
                 continue;
             }
             String potentialMove = "" + fileLetter + rankLetter;
+            if (state.getInactiveTeamsPawnPositions().contains(potentialMove)) {
+                continue;
+            }
             moves.add(KuridorMove.pawn(potentialMove));
         }
         return moves;
