@@ -1,9 +1,11 @@
 package com.vielengames.data.kuridor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import hrisey.Parcelable;
@@ -41,6 +43,14 @@ public final class KuridorGameState {
 
     public boolean isMoveValid(KuridorMove move) {
         return KuridorMoveValidatorImpl.isMoveValid(this, move);
+    }
+
+    public Collection<KuridorMove> getLegalPawnMoves() {
+        return new HashSet<KuridorMove>(Arrays.asList(
+                KuridorMove.pawn("d5"),
+                KuridorMove.pawn("e4"),
+                KuridorMove.pawn("e6"),
+                KuridorMove.pawn("f5")));
     }
 
     public KuridorGameTeamState getTeam1() {
