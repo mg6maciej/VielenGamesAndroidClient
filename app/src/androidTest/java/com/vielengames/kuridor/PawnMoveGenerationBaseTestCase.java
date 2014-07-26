@@ -29,6 +29,14 @@ public abstract class PawnMoveGenerationBaseTestCase extends TestCase {
             .pawnPosition("e8")
             .wallsLeft(10)
             .build();
+    KuridorGameTeamState a5 = KuridorGameTeamState.builder()
+            .pawnPosition("a5")
+            .wallsLeft(10)
+            .build();
+    KuridorGameTeamState a6 = KuridorGameTeamState.builder()
+            .pawnPosition("a6")
+            .wallsLeft(10)
+            .build();
 
     void assertContainsExactly(String... moves) {
         Collection<KuridorMove> legalMoves = testedState.getLegalPawnMoves();

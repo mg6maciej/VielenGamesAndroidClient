@@ -14,12 +14,26 @@ public final class PawnMoveGenerationCannotJumpLeftOrRightWhenBlockedTests exten
         assertContainsExactly("e4");
     }
 
+    public void testCannotJumpLeftWhenNearEndOfBoard() {
+        testedState = closeToEachOtherAndEndOfBoardOnLeft;
+        assertContainsExactly("a4", "b5", "b6");
+    }
+
     KuridorGameState closeToEachOtherAndWallsAround = KuridorGameState.builder()
             .teams(new HashMap<String, KuridorGameTeamState>() {{
                 put("team_1", centered);
                 put("team_2", northFromCenter);
             }})
             .walls(Arrays.asList("e6h", "e5v", "d5v"))
+            .activeTeam("team_1")
+            .build();
+
+    KuridorGameState closeToEachOtherAndEndOfBoardOnLeft = KuridorGameState.builder()
+            .teams(new HashMap<String, KuridorGameTeamState>() {{
+                put("team_1", a5);
+                put("team_2", a6);
+            }})
+            .walls(Collections.singletonList("a6h"))
             .activeTeam("team_1")
             .build();
 }
