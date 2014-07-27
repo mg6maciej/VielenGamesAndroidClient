@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -69,7 +70,8 @@ public final class GameView extends BaseView {
                 .wallPadding(r.getDimension(R.dimen.game_view_wall_padding))
                 .pawnPadding(r.getDimension(R.dimen.game_view_pawn_padding))
                 .team1Color(r.getColor(R.color.green_normal))
-                .team2Color(r.getColor(R.color.blue_normal));
+                .team2Color(r.getColor(R.color.blue_normal))
+                .drawLegalPawnMoves(true);
 
         gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
 

@@ -4,6 +4,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import com.vielengames.data.kuridor.KuridorGameState;
+import com.vielengames.data.kuridor.KuridorMove;
+
+import java.util.Collection;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -81,6 +84,25 @@ public final class KuridorGameStateDrawer {
                 yPadding + (size - 1 - 2 * settings.padding()) * yTeam2 / 18.0f,
                 (size - 1 - 2 * settings.padding()) / 18.0f - settings.pawnPadding(),
                 settings.paint());
+        if (settings.drawLegalPawnMoves()) {
+            int activeTeamColor = "team_1".equals(state.getActiveTeam()) ? settings.team1Color() : settings.team2Color();
+            activeTeamColor &= 0x80FFFFFF;
+            settings.paint().setColor(activeTeamColor);
+            String pawnPosition = state.getActiveTeamPawnPosition();
+            Collection<KuridorMove> legalMoves = state.getLegalPawnMoves();
+            for (KuridorMove move : legalMoves) {
+                int xActive = 1 + 2 * (pawnPosition.charAt(0) - 'a');
+                int yActive = 1 + 2 * ('9' - pawnPosition.charAt(1));
+                int xDestination = 1 + 2 * (move.getPosition().charAt(0) - 'a');
+                int yDestination = 1 + 2 * ('9' - move.getPosition().charAt(1));
+                canvas.drawLine(
+                        xPadding + (size - 1 - 2 * settings.padding()) * xActive / 18.0f,
+                        yPadding + (size - 1 - 2 * settings.padding()) * yActive / 18.0f,
+                        xPadding + (size - 1 - 2 * settings.padding()) * xDestination / 18.0f,
+                        yPadding + (size - 1 - 2 * settings.padding()) * yDestination / 18.0f,
+                        settings.paint());
+            }
+        }
     }
 
     @Accessors(fluent = true)
@@ -99,5 +121,6 @@ public final class KuridorGameStateDrawer {
         private float pawnPadding;
         private int team1Color;
         private int team2Color;
+        private boolean drawLegalPawnMoves;
     }
 }
