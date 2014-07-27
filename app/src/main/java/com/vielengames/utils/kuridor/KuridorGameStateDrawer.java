@@ -2,6 +2,7 @@ package com.vielengames.utils.kuridor;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
 
 import com.vielengames.data.kuridor.KuridorGameState;
 import com.vielengames.data.kuridor.KuridorMove;
@@ -95,12 +96,78 @@ public final class KuridorGameStateDrawer {
                 int yActive = 1 + 2 * ('9' - pawnPosition.charAt(1));
                 int xDestination = 1 + 2 * (move.getPosition().charAt(0) - 'a');
                 int yDestination = 1 + 2 * ('9' - move.getPosition().charAt(1));
-                canvas.drawLine(
-                        xPadding + (size - 1 - 2 * settings.padding()) * xActive / 18.0f,
-                        yPadding + (size - 1 - 2 * settings.padding()) * yActive / 18.0f,
-                        xPadding + (size - 1 - 2 * settings.padding()) * xDestination / 18.0f,
-                        yPadding + (size - 1 - 2 * settings.padding()) * yDestination / 18.0f,
-                        settings.paint());
+                String oppPosition = state.getInactiveTeamsPawnPositions().iterator().next();
+                int xIntermediate = 1 + 2 * (oppPosition.charAt(0) - 'a');
+                int yIntermediate = 1 + 2 * ('9' - oppPosition.charAt(1));
+                ArrowDirection direction = ArrowDirection.fromPoints(xActive, yActive, xDestination, yDestination, xIntermediate, yIntermediate);
+                Path path = new Path();
+                path.moveTo(xPadding + (size - 1 - 2 * settings.padding()) * xActive / 18.0f,
+                        yPadding + (size - 1 - 2 * settings.padding()) * yActive / 18.0f);
+                for (float[] arrowPosition : direction.arrowPositions) {
+                    if (arrowPosition == direction.arrowPositions[0] && !(xActive == xDestination || yActive == yDestination)) {
+                        path.quadTo(xPadding + (size - 1 - 2 * settings.padding()) * xIntermediate / 18.0f,
+                                yPadding + (size - 1 - 2 * settings.padding()) * yIntermediate / 18.0f,
+                                xPadding + (size - 1 - 2 * settings.padding()) * (xDestination + arrowPosition[0]) / 18.0f,
+                                yPadding + (size - 1 - 2 * settings.padding()) * (yDestination + arrowPosition[1]) / 18.0f);
+                    } else {
+                        path.lineTo(xPadding + (size - 1 - 2 * settings.padding()) * (xDestination + arrowPosition[0]) / 18.0f,
+                                yPadding + (size - 1 - 2 * settings.padding()) * (yDestination + arrowPosition[1]) / 18.0f);
+                    }
+                }
+                if (!(xActive == xDestination || yActive == yDestination)) {
+                    path.quadTo(xPadding + (size - 1 - 2 * settings.padding()) * xIntermediate / 18.0f,
+                            yPadding + (size - 1 - 2 * settings.padding()) * yIntermediate / 18.0f,
+                            xPadding + (size - 1 - 2 * settings.padding()) * xActive / 18.0f,
+                            yPadding + (size - 1 - 2 * settings.padding()) * yActive / 18.0f);
+                } else {
+                    path.lineTo(xPadding + (size - 1 - 2 * settings.padding()) * xActive / 18.0f,
+                            yPadding + (size - 1 - 2 * settings.padding()) * yActive / 18.0f);
+                }
+                canvas.drawPath(path, settings.paint());
+            }
+        }
+    }
+
+    private enum ArrowDirection {
+
+        LEFT(new float[][]{{0.45f, 0.15f}, {0.45f, 0.5f}, {-0.4f, 0.0f}, {0.45f, -0.5f}, {0.45f, -0.15f}}),
+        RIGHT(new float[][]{{-0.45f, -0.15f}, {-0.45f, -0.5f}, {0.4f, 0.0f}, {-0.45f, 0.5f}, {-0.45f, 0.15f}}),
+        UP(new float[][]{{0.15f, 0.45f}, {0.5f, 0.45f}, {0.0f, -0.4f}, {-0.5f, 0.45f}, {-0.15f, 0.45f}}),
+        DOWN(new float[][]{{-0.15f, -0.45f}, {-0.5f, -0.45f}, {0.0f, 0.4f}, {0.5f, -0.45f}, {0.15f, -0.45f}});
+
+        private final float[][] arrowPositions;
+
+        ArrowDirection(float[][] arrowPositions) {
+            this.arrowPositions = arrowPositions;
+        }
+
+        public static ArrowDirection fromPoints(int x1, int y1, int x2, int y2, int x3, int y3) {
+            ArrowDirection direction = fromClosePoints(x1, y1, x2, y2);
+            if (direction != null) {
+                return direction;
+            }
+            direction = fromClosePoints(x3, y3, x2, y2);
+            if (direction != null) {
+                return direction;
+            }
+            throw new IllegalStateException();
+        }
+
+        private static ArrowDirection fromClosePoints(int x1, int y1, int x2, int y2) {
+            if (y1 == y2) {
+                if (x1 < x2) {
+                    return RIGHT;
+                } else {
+                    return LEFT;
+                }
+            } else if (x1 == x2) {
+                if (y1 < y2) {
+                    return DOWN;
+                } else {
+                    return UP;
+                }
+            } else {
+                return null;
             }
         }
     }
