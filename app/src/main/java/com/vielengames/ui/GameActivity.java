@@ -160,7 +160,7 @@ public class GameActivity extends BaseActivity {
             game = thisGame;
         }
         KuridorGameState state = game.getCurrentState();
-        gameView.setState(state);
+        gameView.setState(state, imActiveUser());
         List<Player> players = game.getPlayers();
         Player team1Player = "team_1".equals(players.get(0).getTeam()) ? players.get(0) : players.get(1);
         Player team2Player = "team_2".equals(players.get(0).getTeam()) ? players.get(0) : players.get(1);

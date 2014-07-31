@@ -70,8 +70,7 @@ public final class GameView extends BaseView {
                 .wallPadding(r.getDimension(R.dimen.game_view_wall_padding))
                 .pawnPadding(r.getDimension(R.dimen.game_view_pawn_padding))
                 .team1Color(r.getColor(R.color.green_normal))
-                .team2Color(r.getColor(R.color.blue_normal))
-                .drawLegalPawnMoves(true);
+                .team2Color(r.getColor(R.color.blue_normal));
 
         gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
 
@@ -167,8 +166,9 @@ public final class GameView extends BaseView {
         return point;
     }
 
-    public void setState(KuridorGameState state) {
+    public void setState(KuridorGameState state, boolean myTurn) {
         this.state = state;
+        this.drawerSettings.drawLegalPawnMoves(myTurn);
         invalidate();
     }
 
