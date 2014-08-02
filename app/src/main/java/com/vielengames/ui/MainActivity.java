@@ -3,6 +3,7 @@ package com.vielengames.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,6 +46,13 @@ public final class MainActivity extends BaseActivity {
         setContentView(R.layout.main_activity);
         setButtonListeners();
         initViewPager();
+        if (savedInstanceState == null) {
+            KuridorGame game = getIntent().getParcelableExtra("game");
+            if (game != null) {
+                showKuridorGame(game);
+                viewPager.setCurrentItem(1);
+            }
+        }
         ViewUtils.setSelected(this, viewPager.getCurrentItem() == 0
                 ? R.id.main_proposals_button
                 : R.id.main_my_games_button);
@@ -152,8 +160,12 @@ public final class MainActivity extends BaseActivity {
 
     @SuppressWarnings("unused")
     public void onEvent(GameClickEvent event) {
+        showKuridorGame((KuridorGame) event.getGame());
+    }
+
+    private void showKuridorGame(KuridorGame kuridorGame) {
         GameActivity.intent(this)
-                .game((KuridorGame) event.getGame())
+                .game(kuridorGame)
                 .start();
     }
 

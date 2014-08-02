@@ -1,5 +1,7 @@
 package com.vielengames;
 
+import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -12,6 +14,7 @@ import com.vielengames.api.VielenGamesClient;
 import com.vielengames.data.Game;
 import com.vielengames.event.bus.EventBus;
 import com.vielengames.event.bus.GreenRobotEventBus;
+import com.vielengames.notification.move.MyMoveCheckService;
 import com.vielengames.parser.GameJsonDeserializer;
 import com.vielengames.ui.AboutActivity;
 import com.vielengames.ui.GameActivity;
@@ -42,7 +45,8 @@ import retrofit.converter.GsonConverter;
                 GameActivity.class,
                 AboutActivity.class,
                 ResultOverlayActivity.class,
-                GameHelpOverlayActivity.class
+                GameHelpOverlayActivity.class,
+                MyMoveCheckService.class
         }
 )
 @SuppressWarnings("unused")
@@ -52,6 +56,12 @@ public final class VielenGamesModule {
 
     public VielenGamesModule(Context context) {
         this.context = context;
+    }
+
+    @Provides
+    @Singleton
+    public Context provideContext() {
+        return context;
     }
 
     @Provides
@@ -116,5 +126,17 @@ public final class VielenGamesModule {
     @Singleton
     public ForegroundNotifier provideForegroundNotifier(EventBus eventBus) {
         return new ForegroundNotifier(eventBus);
+    }
+
+    @Provides
+    @Singleton
+    public AlarmManager provideAlarmManager() {
+        return (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+    }
+
+    @Provides
+    @Singleton
+    public NotificationManager provideNotificationManager() {
+        return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 }

@@ -40,28 +40,32 @@ public final class SessionUpdatesHandler {
     public void onEvent(SessionUpdatesResponseEvent event) {
         requestingUpdates = false;
         updateTimestamp(event.getUpdates());
-        requestUpdates(false);
+        requestUpdates(false, false);
     }
 
     @SuppressWarnings("unused")
     public void onEvent(SessionUpdatesFailedEvent event) {
         requestingUpdates = false;
-        requestUpdates(false);
+        requestUpdates(false, false);
     }
 
     @SuppressWarnings("unused")
     public void onEvent(AppForegroundEvent event) {
-        requestUpdates(true);
+        requestUpdates(true, false);
     }
 
     private void updateTimestamp(Updates updates) {
         lastUpdateTimestamp = updates.getUntil();
     }
 
-    private void requestUpdates(boolean immediate) {
-        if (!requestingUpdates && notifier.isInForeground()) {
+    private void requestUpdates(boolean immediate, boolean force) {
+        if (!requestingUpdates && (force || notifier.isInForeground())) {
             requestingUpdates = true;
             handler.postDelayed(requestUpdatesRunnable, immediate ? 0 : 1000);
         }
+    }
+
+    public void requestUpdates() {
+        requestUpdates(true, true);
     }
 }
