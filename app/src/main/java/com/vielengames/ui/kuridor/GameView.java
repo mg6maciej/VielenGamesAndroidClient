@@ -97,7 +97,6 @@ public final class GameView extends BaseView {
                         (int) (x / ((smaller - 1 - 2 * gameViewPadding) / 9.0f)),
                         (int) (y / ((smaller - 1 - 2 * gameViewPadding) / 9.0f))
                 );
-                Log.e("move", "" + (char) ('a' + point.x) + (char) ('9' - point.y));
                 moveListener.onMove(KuridorMove.pawn("" + (char) ('a' + point.x) + (char) ('9' - point.y)));
                 return true;
             }
