@@ -98,6 +98,7 @@ public final class MainActivity extends BaseActivity {
     }
 
     private void signOut() {
+        prefs.clearSignedIn();
         Session.openActiveSessionFromCache(getApplicationContext())
                 .closeAndClearTokenInformation();
         finish();

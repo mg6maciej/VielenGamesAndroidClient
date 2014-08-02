@@ -44,8 +44,7 @@ public final class VielenGamesClient {
         api.createSession(sessionRequest, new Callback<SessionResponse>() {
             @Override
             public void success(SessionResponse sessionResponse, Response response) {
-                prefs.setToken(sessionResponse.getAuthToken());
-                prefs.setMe(sessionResponse.getUser());
+                prefs.setSignedIn(sessionResponse);
                 eventBus.post(new SessionStartedResponseEvent(sessionResponse));
             }
 
