@@ -159,15 +159,16 @@ public class GameActivity extends BaseActivity {
         if (thisGame != null) {
             game = thisGame;
         }
-        KuridorGameState state = game.getCurrentState();
-        gameView.setState(state, imActiveUser());
         List<Player> players = game.getPlayers();
         Player team1Player = "team_1".equals(players.get(0).getTeam()) ? players.get(0) : players.get(1);
         Player team2Player = "team_2".equals(players.get(0).getTeam()) ? players.get(0) : players.get(1);
+        boolean flip = prefs.getMe().equals(team2Player);
+        KuridorGameState state = game.getCurrentState();
+        gameView.setState(state, imActiveUser(), flip);
         GameHeaderLayout top = ViewUtils.findView(this, R.id.game_header_top);
-        top.update(team2Player, state.getTeam2().getWallsLeft(), "team_2".equals(state.getActiveTeam()));
         GameHeaderLayout bottom = ViewUtils.findView(this, R.id.game_header_bottom);
-        bottom.update(team1Player, state.getTeam1().getWallsLeft(), "team_1".equals(state.getActiveTeam()));
+        (flip ? bottom : top).update(team2Player, state.getTeam2().getWallsLeft(), "team_2".equals(state.getActiveTeam()));
+        (flip ? top : bottom).update(team1Player, state.getTeam1().getWallsLeft(), "team_1".equals(state.getActiveTeam()));
 
         if (game.getWinner() != null) {
             ResultOverlayActivity.intent(this)

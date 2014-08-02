@@ -19,13 +19,14 @@ public final class KuridorGameStateDrawer {
     }
 
     public static void draw(KuridorGameState state, Canvas canvas, Settings settings) {
+        boolean flip = settings.flip();
         int size = Math.min(settings.width(), settings.height());
         float xPadding = settings.padding() + (settings.width() - size) / 2.0f;
         float yPadding = settings.padding() + (settings.height() - size) / 2.0f;
         for (int y = 0; y < 10; y++) {
-            if (y == 0) {
+            if (y == 0 && !flip || y == 9 && flip) {
                 settings.paint().setColor(settings.team1Color());
-            } else if (y == 9) {
+            } else if (y == 9 && !flip || y == 0 && flip) {
                 settings.paint().setColor(settings.team2Color());
             } else {
                 settings.paint().setColor(0xFF000000);
@@ -45,6 +46,10 @@ public final class KuridorGameStateDrawer {
         for (String wall : state.getWalls()) {
             int centerX = wall.charAt(0) - 'a' + 1;
             int centerY = '8' - wall.charAt(1) + 1;
+            if (flip) {
+                centerX = 9 - centerX;
+                centerY = 9 - centerY;
+            }
             int startX, startY, stopX, stopY;
             float wallPaddingX = 0.0f, wallPaddingY = 0.0f;
             if (wall.charAt(2) == 'h') {
@@ -71,6 +76,10 @@ public final class KuridorGameStateDrawer {
         String team1PawnPosition = state.getTeam1().getPawnPosition();
         int xTeam1 = 1 + 2 * (team1PawnPosition.charAt(0) - 'a');
         int yTeam1 = 1 + 2 * ('9' - team1PawnPosition.charAt(1));
+        if (flip) {
+            xTeam1 = 18 - xTeam1;
+            yTeam1 = 18 - yTeam1;
+        }
         canvas.drawCircle(
                 xPadding + (size - 1 - 2 * settings.padding()) * xTeam1 / 18.0f,
                 yPadding + (size - 1 - 2 * settings.padding()) * yTeam1 / 18.0f,
@@ -80,6 +89,10 @@ public final class KuridorGameStateDrawer {
         String team2PawnPosition = state.getTeam2().getPawnPosition();
         int xTeam2 = 1 + 2 * (team2PawnPosition.charAt(0) - 'a');
         int yTeam2 = 1 + 2 * ('9' - team2PawnPosition.charAt(1));
+        if (flip) {
+            xTeam2 = 18 - xTeam2;
+            yTeam2 = 18 - yTeam2;
+        }
         canvas.drawCircle(
                 xPadding + (size - 1 - 2 * settings.padding()) * xTeam2 / 18.0f,
                 yPadding + (size - 1 - 2 * settings.padding()) * yTeam2 / 18.0f,
@@ -99,6 +112,14 @@ public final class KuridorGameStateDrawer {
                 String oppPosition = state.getInactiveTeamsPawnPositions().iterator().next();
                 int xIntermediate = 1 + 2 * (oppPosition.charAt(0) - 'a');
                 int yIntermediate = 1 + 2 * ('9' - oppPosition.charAt(1));
+                if (flip) {
+                    xActive = 18 - xActive;
+                    yActive = 18 - yActive;
+                    xDestination = 18 - xDestination;
+                    yDestination = 18 - yDestination;
+                    xIntermediate = 18 - xIntermediate;
+                    yIntermediate = 18 - yIntermediate;
+                }
                 ArrowDirection direction = ArrowDirection.fromPoints(xActive, yActive, xDestination, yDestination, xIntermediate, yIntermediate);
                 Path path = new Path();
                 path.moveTo(xPadding + (size - 1 - 2 * settings.padding()) * xActive / 18.0f,
@@ -189,5 +210,6 @@ public final class KuridorGameStateDrawer {
         private int team1Color;
         private int team2Color;
         private boolean drawLegalPawnMoves;
+        private boolean flip;
     }
 }

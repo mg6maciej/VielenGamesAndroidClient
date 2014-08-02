@@ -4,10 +4,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Point;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
@@ -31,6 +29,7 @@ public final class GameView extends BaseView {
     private MoveListener moveListener;
 
     private KuridorGameState state;
+    private boolean flip;
 
     private KuridorGameStateDrawer.Settings drawerSettings;
 
@@ -84,8 +83,8 @@ public final class GameView extends BaseView {
                 int smaller = Math.min(getWidth(), getHeight());
                 float xPadding = gameViewPadding + (getWidth() - smaller) / 2.0f;
                 float yPadding = gameViewPadding + (getHeight() - smaller) / 2.0f;
-                float x = e.getX();
-                float y = e.getY();
+                float x = getX(e);
+                float y = getY(e);
                 if (x < xPadding || y < yPadding
                         || x >= xPadding + smaller - 1 - 2 * gameViewPadding
                         || y >= yPadding + smaller - 1 - 2 * gameViewPadding) {
@@ -157,17 +156,35 @@ public final class GameView extends BaseView {
         int smaller = Math.min(getWidth(), getHeight());
         float xPadding = gameViewPadding + (getWidth() - smaller) / 2.0f;
         float yPadding = gameViewPadding + (getHeight() - smaller) / 2.0f;
-        float x = event.getX() - xPadding - (smaller - 1 - 2 * gameViewPadding) / 18.0f;
-        float y = event.getY() - yPadding + (smaller - 1 - 2 * gameViewPadding) / 18.0f;
+        float x = getX(event) - xPadding - (smaller - 1 - 2 * gameViewPadding) / 18.0f;
+        float y = getY(event) - yPadding + (smaller - 1 - 2 * gameViewPadding) / 18.0f;
         Point point = new Point(
                 (int) Math.floor(x / ((smaller - 1 - 2 * gameViewPadding) / 9.0f)),
                 (int) Math.floor(y / ((smaller - 1 - 2 * gameViewPadding) / 9.0f)));
         return point;
     }
 
-    public void setState(KuridorGameState state, boolean myTurn) {
+    private float getX(MotionEvent event) {
+        if (flip) {
+            return getWidth() - event.getX();
+        } else {
+            return event.getX();
+        }
+    }
+
+    private float getY(MotionEvent event) {
+        if (flip) {
+            return getHeight() - event.getY();
+        } else {
+            return event.getY();
+        }
+    }
+
+    public void setState(KuridorGameState state, boolean myTurn, boolean flip) {
         this.state = state;
+        this.flip = flip;
         this.drawerSettings.drawLegalPawnMoves(myTurn);
+        this.drawerSettings.flip(flip);
         invalidate();
     }
 
@@ -187,6 +204,10 @@ public final class GameView extends BaseView {
         }
         int centerX = lastMove.getPosition().charAt(0) - 'a' + 1;
         int centerY = '8' - lastMove.getPosition().charAt(1) + 1;
+        if (flip) {
+            centerX = 9 - centerX;
+            centerY = 9 - centerY;
+        }
         int startX, startY, stopX, stopY;
         float wallPaddingX = 0.0f, wallPaddingY = 0.0f;
         if (lastMove.getPosition().charAt(2) == 'h') {
