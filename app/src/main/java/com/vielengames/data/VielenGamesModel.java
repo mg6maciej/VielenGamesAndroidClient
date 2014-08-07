@@ -48,14 +48,8 @@ public final class VielenGamesModel {
         if (games.isEmpty()) {
             return;
         }
-        for (Game game : games) {
-            int index = this.games.indexOf(game);
-            if (index != -1) {
-                this.games.set(index, game);
-            } else {
-                this.games.add(game);
-            }
-        }
+        this.games.removeAll(games);
+        this.games.addAll(0, games);
         eventBus.post(new GamesUpdatedEvent(games));
     }
 }
