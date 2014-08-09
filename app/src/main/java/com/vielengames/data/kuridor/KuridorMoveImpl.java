@@ -1,9 +1,9 @@
 package com.vielengames.data.kuridor;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public final class KuridorMoveImpl {
 
@@ -23,13 +23,13 @@ public final class KuridorMoveImpl {
                 .pawnPosition(activeTeamPawnPosition)
                 .wallsLeft(activeTeamWallsLeft)
                 .build();
-        KuridorGameState newState = state.withTeams(new HashMap<String, KuridorGameTeamState>(state.getTeams()) {{
-            put(state.getActiveTeam(), newTeamState);
-        }});
+        HashMap<String, KuridorGameTeamState> newTeams = new HashMap<String, KuridorGameTeamState>(state.getTeams());
+        newTeams.put(state.getActiveTeam(), newTeamState);
+        KuridorGameState newState = state.withTeams(Collections.unmodifiableMap(newTeams));
         if (move.getMoveType() == KuridorMove.MoveType.wall) {
-            List<String> newWalls = new ArrayList<String>(state.getWalls());
+            Set<String> newWalls = new HashSet<String>(state.getWalls());
             newWalls.add(move.getPosition());
-            newState = newState.withWalls(Collections.unmodifiableList(newWalls));
+            newState = newState.withWalls(Collections.unmodifiableSet(newWalls));
         }
         String newActiveTeam = "team_1".equals(state.getActiveTeam()) ? "team_2" : "team_1";
         return newState.withActiveTeam(newActiveTeam);
