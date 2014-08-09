@@ -6,6 +6,7 @@ public final class KuridorMoveImpl {
     }
 
     public static KuridorGameState move(KuridorGameState state, KuridorMove move) {
-        return null;
+        String newActiveTeam = "team_1".equals(state.getActiveTeam()) ? "team_2" : "team_1";
+        return state.withActiveTeam(newActiveTeam);
     }
 }
