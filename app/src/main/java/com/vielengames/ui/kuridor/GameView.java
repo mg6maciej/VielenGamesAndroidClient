@@ -145,11 +145,11 @@ public final class GameView extends BaseView {
     }
 
     private boolean isHorizontalWall(int diffX, int diffY) {
-        return diffX >= 1 && diffX <= 3 && diffY <= Math.min(1, diffX - 1);
+        return diffX >= 2 && diffX <= 3 && diffY <= 1;
     }
 
     private boolean isVerticalWall(int diffX, int diffY) {
-        return diffY >= 1 && diffY <= 3 && diffX <= Math.min(1, diffY - 1);
+        return diffY >= 2 && diffY <= 3 && diffX <= 1;
     }
 
     private Point toPoint(MotionEvent event, float gameViewPadding) {
