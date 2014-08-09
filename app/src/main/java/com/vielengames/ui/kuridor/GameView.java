@@ -35,7 +35,7 @@ public final class GameView extends BaseView {
 
     private GestureDetector gestureDetector;
 
-    private KuridorMove lastMove;
+    private KuridorMove currentWallMove;
 
     @SuppressWarnings("unused")
     public GameView(Context context) {
@@ -102,7 +102,7 @@ public final class GameView extends BaseView {
 
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                lastMove = getWallMove(e1, e2);
+                currentWallMove = getWallMove(e1, e2);
                 invalidate();
                 return true;
             }
@@ -195,22 +195,22 @@ public final class GameView extends BaseView {
                 .width(getWidth())
                 .height(getHeight());
         KuridorGameStateDrawer.draw(state, canvas, drawerSettings);
-        drawLastMove(canvas);
+        drawCurrentWallMove(canvas);
     }
 
-    private void drawLastMove(Canvas canvas) {
-        if (lastMove == null) {
+    private void drawCurrentWallMove(Canvas canvas) {
+        if (currentWallMove == null) {
             return;
         }
-        int centerX = lastMove.getPosition().charAt(0) - 'a' + 1;
-        int centerY = '8' - lastMove.getPosition().charAt(1) + 1;
+        int centerX = currentWallMove.getPosition().charAt(0) - 'a' + 1;
+        int centerY = '8' - currentWallMove.getPosition().charAt(1) + 1;
         if (flip) {
             centerX = 9 - centerX;
             centerY = 9 - centerY;
         }
         int startX, startY, stopX, stopY;
         float wallPaddingX = 0.0f, wallPaddingY = 0.0f;
-        if (lastMove.getPosition().charAt(2) == 'h') {
+        if (currentWallMove.getPosition().charAt(2) == 'h') {
             startX = centerX - 1;
             startY = centerY;
             stopX = centerX + 1;
@@ -246,9 +246,9 @@ public final class GameView extends BaseView {
     public boolean onTouchEvent(MotionEvent event) {
         gestureDetector.onTouchEvent(event);
         if (event.getActionMasked() == MotionEvent.ACTION_UP) {
-            if (lastMove != null) {
-                moveListener.onMove(lastMove);
-                lastMove = null;
+            if (currentWallMove != null) {
+                moveListener.onMove(currentWallMove);
+                currentWallMove = null;
                 invalidate();
             }
         }
