@@ -15,22 +15,30 @@ public final class MoveValidationGameEndedTests extends TestCase {
 
     public void testNoMoveLegalWhenGameEnded() {
         testedState = gameEnded;
-        assertNotValid("e6");
-        assertNotValid("f5");
-        assertNotValid("e4");
-        assertNotValid("d5");
-        assertNotValid("a2");
-        assertNotValid("b1");
-        assertNotValid("c3v");
-        assertNotValid("c3h");
+        assertPawnMoveNotValid("e6");
+        assertPawnMoveNotValid("f5");
+        assertPawnMoveNotValid("e4");
+        assertPawnMoveNotValid("d5");
+        assertPawnMoveNotValid("a2");
+        assertPawnMoveNotValid("b1");
+        assertWallMoveNotValid("c3v");
+        assertWallMoveNotValid("c3h");
     }
 
-    private boolean valid(String position) {
+    private boolean pawnMoveValid(String position) {
         return testedState.isMoveValid(KuridorMove.pawn(position));
     }
 
-    private void assertNotValid(String position) {
-        assertFalse(valid(position));
+    private boolean wallMoveValid(String position) {
+        return testedState.isMoveValid(KuridorMove.wall(position));
+    }
+
+    private void assertPawnMoveNotValid(String position) {
+        assertFalse(pawnMoveValid(position));
+    }
+
+    private void assertWallMoveNotValid(String position) {
+        assertFalse(wallMoveValid(position));
     }
 
     private KuridorGameState gameEnded = KuridorGameState.builder()
@@ -39,5 +47,6 @@ public final class MoveValidationGameEndedTests extends TestCase {
                 put("team_2", KuridorGameTeamState.builder().pawnPosition("a1").wallsLeft(10).build());
             }})
             .walls(Collections.<String>emptyList())
+            .activeTeam(null)
             .build();
 }
