@@ -29,6 +29,7 @@ public final class GameView extends BaseView {
     private MoveListener moveListener;
 
     private KuridorGameState state;
+    private String lastMoveStartPosition;
     private boolean flip;
 
     private KuridorGameStateDrawer.Settings drawerSettings;
@@ -180,8 +181,9 @@ public final class GameView extends BaseView {
         }
     }
 
-    public void setState(KuridorGameState state, boolean myTurn, boolean flip) {
+    public void setState(KuridorGameState state, String lastMoveStartPosition, boolean myTurn, boolean flip) {
         this.state = state;
+        this.lastMoveStartPosition = lastMoveStartPosition;
         this.flip = flip;
         this.drawerSettings.drawLegalPawnMoves(myTurn);
         this.drawerSettings.flip(flip);
@@ -194,8 +196,36 @@ public final class GameView extends BaseView {
         drawerSettings
                 .width(getWidth())
                 .height(getHeight());
+        drawLastMove(canvas);
         KuridorGameStateDrawer.draw(state, canvas, drawerSettings);
         drawCurrentWallMove(canvas);
+    }
+
+    private void drawLastMove(Canvas canvas) {
+        if (lastMoveStartPosition == null) {
+            return;
+        }
+        if (lastMoveStartPosition.length() == 2) {
+            int lastMoveColor = "team_1".equals(state.getActiveTeam())
+                    ? drawerSettings.team2Color()
+                    : drawerSettings.team1Color();
+            lastMoveColor = 0x20FFFFFF & lastMoveColor;
+            drawerSettings.paint().setColor(lastMoveColor);
+            int xTeam1 = 1 + 2 * (lastMoveStartPosition.charAt(0) - 'a');
+            int yTeam1 = 1 + 2 * ('9' - lastMoveStartPosition.charAt(1));
+            if (flip) {
+                xTeam1 = 18 - xTeam1;
+                yTeam1 = 18 - yTeam1;
+            }
+            int size = Math.min(drawerSettings.width(), drawerSettings.height());
+            float xPadding = drawerSettings.padding() + (drawerSettings.width() - size) / 2.0f;
+            float yPadding = drawerSettings.padding() + (drawerSettings.height() - size) / 2.0f;
+            canvas.drawCircle(
+                    xPadding + (size - 1 - 2 * drawerSettings.padding()) * xTeam1 / 18.0f,
+                    yPadding + (size - 1 - 2 * drawerSettings.padding()) * yTeam1 / 18.0f,
+                    (size - 1 - 2 * drawerSettings.padding()) / 18.0f - drawerSettings.pawnPadding(),
+                    drawerSettings.paint());
+        }
     }
 
     private void drawCurrentWallMove(Canvas canvas) {

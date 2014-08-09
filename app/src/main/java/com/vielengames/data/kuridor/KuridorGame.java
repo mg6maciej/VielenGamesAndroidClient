@@ -58,4 +58,21 @@ public final class KuridorGame implements Game, android.os.Parcelable {
         }
         return states;
     }
+
+    public String getLastMoveStartPosition() {
+        if (moves.size() == 0) {
+            return null;
+        }
+        KuridorMove lastMove = moves.get(moves.size() - 1);
+        if (lastMove.getMoveType() == KuridorMove.MoveType.wall) {
+            return lastMove.getPosition();
+        }
+        for (int i = moves.size() - 3; i >= 0; i -= 2) {
+            lastMove = moves.get(i);
+            if (lastMove.getMoveType() == KuridorMove.MoveType.pawn) {
+                return lastMove.getPosition();
+            }
+        }
+        return moves.size() % 2 == 0 ? "e9" : "e1";
+    }
 }

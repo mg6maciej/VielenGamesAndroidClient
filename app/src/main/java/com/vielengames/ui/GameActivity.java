@@ -164,7 +164,7 @@ public class GameActivity extends BaseActivity {
         Player team2Player = "team_2".equals(players.get(0).getTeam()) ? players.get(0) : players.get(1);
         boolean flip = prefs.getMe().equals(team2Player);
         KuridorGameState state = game.getCurrentState();
-        gameView.setState(state, imActiveUser(), flip);
+        gameView.setState(state, game.getLastMoveStartPosition(), imActiveUser(), flip);
         GameHeaderLayout top = ViewUtils.findView(this, R.id.game_header_top);
         GameHeaderLayout bottom = ViewUtils.findView(this, R.id.game_header_bottom);
         (flip ? bottom : top).update(team2Player, state.getTeam2().getWallsLeft(), "team_2".equals(state.getActiveTeam()));
