@@ -10,9 +10,21 @@ public final class KuridorMoveImpl {
     private KuridorMoveImpl() {
     }
 
-    public static KuridorGameState move(final KuridorGameState state, final KuridorMove move) {
+    public static KuridorGameState move(final KuridorGameState state, KuridorMove move) {
+        String activeTeamPawnPosition = state.getActiveTeamPawnPosition();
+        if (move.getMoveType() == KuridorMove.MoveType.pawn) {
+            activeTeamPawnPosition = move.getPosition();
+        }
+        int activeTeamWallsLeft = state.getActiveTeamWallsLeft();
+        if (move.getMoveType() == KuridorMove.MoveType.wall) {
+            activeTeamWallsLeft--;
+        }
+        final KuridorGameTeamState newTeamState = KuridorGameTeamState.builder()
+                .pawnPosition(activeTeamPawnPosition)
+                .wallsLeft(activeTeamWallsLeft)
+                .build();
         KuridorGameState newState = state.withTeams(new HashMap<String, KuridorGameTeamState>(state.getTeams()) {{
-            put(state.getActiveTeam(), KuridorGameTeamState.builder().pawnPosition(move.getPosition()).wallsLeft(state.getActiveTeamWallsLeft()).build());
+            put(state.getActiveTeam(), newTeamState);
         }});
         if (move.getMoveType() == KuridorMove.MoveType.wall) {
             List<String> newWalls = new ArrayList<String>(state.getWalls());

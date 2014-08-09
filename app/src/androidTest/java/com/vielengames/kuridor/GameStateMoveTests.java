@@ -28,4 +28,10 @@ public final class GameStateMoveTests extends TestCase {
         assertEquals(1, walls.size());
         assertEquals("e8h", walls.iterator().next());
     }
+
+    public void testWallMoveDecrementsCount() {
+        KuridorGameState testedState = KuridorGameState.initial();
+        KuridorGameState next = testedState.move(KuridorMove.wall("e8h"));
+        assertEquals(9, next.getTeam1().getWallsLeft());
+    }
 }
