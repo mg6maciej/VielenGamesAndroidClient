@@ -3,6 +3,7 @@ package com.vielengames.data.kuridor;
 import com.vielengames.data.Game;
 import com.vielengames.data.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import hrisey.Parcelable;
@@ -45,5 +46,11 @@ public final class KuridorGame implements Game, android.os.Parcelable {
             }
         }
         throw new IllegalStateException();
+    }
+
+    public List<KuridorGameState> getStates() {
+        List<KuridorGameState> states = new ArrayList<KuridorGameState>();
+        states.add(KuridorGameState.initial());
+        return states;
     }
 }
