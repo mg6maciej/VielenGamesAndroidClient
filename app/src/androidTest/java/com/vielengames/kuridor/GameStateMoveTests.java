@@ -5,6 +5,8 @@ import com.vielengames.data.kuridor.KuridorMove;
 
 import junit.framework.TestCase;
 
+import java.util.Collection;
+
 public final class GameStateMoveTests extends TestCase {
 
     public void testMoveChangesActiveTeam() {
@@ -17,5 +19,13 @@ public final class GameStateMoveTests extends TestCase {
         KuridorGameState testedState = KuridorGameState.initial();
         KuridorGameState next = testedState.move(KuridorMove.pawn("e2"));
         assertEquals("e2", next.getTeam1().getPawnPosition());
+    }
+
+    public void testWallMoveAddsToList() {
+        KuridorGameState testedState = KuridorGameState.initial();
+        KuridorGameState next = testedState.move(KuridorMove.wall("e8h"));
+        Collection<String> walls = next.getWalls();
+        assertEquals(1, walls.size());
+        assertEquals("e8h", walls.iterator().next());
     }
 }
