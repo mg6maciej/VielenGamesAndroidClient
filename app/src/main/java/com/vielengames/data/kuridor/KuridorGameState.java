@@ -41,6 +41,13 @@ public final class KuridorGameState {
         return pawnPositions;
     }
 
+    public KuridorGameState move(KuridorMove move) {
+        if (!isMoveValid(move)) {
+            throw new IllegalStateException();
+        }
+        return KuridorMoveImpl.move(this, move);
+    }
+
     public boolean isMoveValid(KuridorMove move) {
         return KuridorMoveValidatorImpl.isMoveValid(this, move);
     }
