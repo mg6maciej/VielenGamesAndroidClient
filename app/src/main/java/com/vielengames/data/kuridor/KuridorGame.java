@@ -51,6 +51,11 @@ public final class KuridorGame implements Game, android.os.Parcelable {
     public List<KuridorGameState> getStates() {
         List<KuridorGameState> states = new ArrayList<KuridorGameState>();
         states.add(KuridorGameState.initial());
+        for (KuridorMove move : moves) {
+            KuridorGameState previous = states.get(states.size() - 1);
+            KuridorGameState next = previous.move(move);
+            states.add(next);
+        }
         return states;
     }
 }
