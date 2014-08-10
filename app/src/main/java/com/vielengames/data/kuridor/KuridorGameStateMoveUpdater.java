@@ -5,12 +5,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-public final class KuridorMoveImpl {
+public final class KuridorGameStateMoveUpdater {
 
-    private KuridorMoveImpl() {
+    private KuridorGameStateMoveUpdater() {
     }
 
-    public static KuridorGameState move(final KuridorGameState state, KuridorMove move) {
+    public static KuridorGameState move(KuridorGameState state, KuridorMove move) {
         String activeTeamPawnPosition = state.getActiveTeamPawnPosition();
         if (move.isPawn()) {
             activeTeamPawnPosition = move.getPosition();
