@@ -43,7 +43,7 @@ public final class KuridorGameState {
         if (!isMoveValid(move)) {
             throw new IllegalStateException();
         }
-        return KuridorGameStateMoveUpdater.move(this, move);
+        return new KuridorGameStateMoveUpdater(this, move).getNewState();
     }
 
     public boolean isMoveValid(KuridorMove move) {
