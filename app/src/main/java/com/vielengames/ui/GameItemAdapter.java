@@ -55,6 +55,8 @@ public final class GameItemAdapter implements ItemAdapter {
         canvas.drawColor(0xFFFFFFFF);
         Paint paint = new Paint();
         paint.setAntiAlias(true);
+        List<Player> players = item.getPlayers();
+        Player team2Player = "team_2".equals(players.get(0).getTeam()) ? players.get(0) : players.get(1);
         KuridorGameStateDrawer.Settings settings = new KuridorGameStateDrawer.Settings()
                 .width(bitmapSize)
                 .height(bitmapSize)
@@ -64,7 +66,8 @@ public final class GameItemAdapter implements ItemAdapter {
                 .wallPadding(2.0f)
                 .pawnPadding(2.0f)
                 .team1Color(context.getResources().getColor(R.color.green_normal))
-                .team2Color(context.getResources().getColor(R.color.blue_normal));
+                .team2Color(context.getResources().getColor(R.color.blue_normal))
+                .flip(me.equals(team2Player));
         KuridorGameStateDrawer.draw(item.getCurrentState(), canvas, settings);
         final int circleColor = 0xFFEEEEEE;
         final float circleWidth = context.getResources().getDimension(R.dimen.common_circle_width);
