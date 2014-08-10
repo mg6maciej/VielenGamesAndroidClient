@@ -18,11 +18,11 @@ final class KuridorMoveValidatorImpl {
 
     public static boolean isMoveValid(KuridorGameState state, KuridorMove move) {
         if (state.getActiveTeam() != null) {
-            if (move.getMoveType() == KuridorMove.MoveType.pawn) {
+            if (move.isPawn()) {
                 if (PAWN_MOVE_PATTERN.matcher(move.getPosition()).matches()) {
                     return isPawnMoveValid(state, move);
                 }
-            } else if (move.getMoveType() == KuridorMove.MoveType.wall) {
+            } else if (move.isWall()) {
                 if (WALL_MOVE_PATTERN.matcher(move.getPosition()).matches()) {
                     return isWallMoveValid(state, move);
                 }

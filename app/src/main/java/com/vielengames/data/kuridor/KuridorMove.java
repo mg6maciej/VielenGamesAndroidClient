@@ -1,6 +1,8 @@
 package com.vielengames.data.kuridor;
 
 import hrisey.Parcelable;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.Value;
 
 @Parcelable
@@ -12,8 +14,17 @@ public final class KuridorMove {
         pawn
     }
 
+    @Getter(AccessLevel.NONE)
     MoveType moveType;
     String position;
+
+    public boolean isPawn() {
+        return moveType == MoveType.pawn;
+    }
+
+    public boolean isWall() {
+        return moveType == MoveType.wall;
+    }
 
     public static KuridorMove wall(String position) {
         return new KuridorMove(MoveType.wall, position);
