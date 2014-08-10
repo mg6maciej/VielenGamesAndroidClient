@@ -2,6 +2,8 @@ package com.vielengames.ui.kuridor;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
@@ -225,6 +227,47 @@ public final class GameView extends BaseView {
                     yPadding + (size - 1 - 2 * drawerSettings.padding()) * yTeam1 / 18.0f,
                     (size - 1 - 2 * drawerSettings.padding()) / 18.0f - drawerSettings.pawnPadding(),
                     drawerSettings.paint());
+        } else {
+            int centerX = lastMoveStartPosition.charAt(0) - 'a' + 1;
+            int centerY = '8' - lastMoveStartPosition.charAt(1) + 1;
+            if (flip) {
+                centerX = 9 - centerX;
+                centerY = 9 - centerY;
+            }
+            int startX, startY, stopX, stopY;
+            float wallPaddingX = 0.0f, wallPaddingY = 0.0f;
+            if (lastMoveStartPosition.charAt(2) == 'h') {
+                startX = centerX - 1;
+                startY = centerY;
+                stopX = centerX + 1;
+                stopY = centerY;
+                wallPaddingX = drawerSettings.wallPadding();
+            } else {
+                startX = centerX;
+                startY = centerY - 1;
+                stopX = centerX;
+                stopY = centerY + 1;
+                wallPaddingY = drawerSettings.wallPadding();
+            }
+            int wallColor = "team_1".equals(state.getActiveTeam())
+                    ? drawerSettings.team2Color()
+                    : drawerSettings.team1Color();
+            drawerSettings.paint().setColor(wallColor);
+            float width = drawerSettings.wallWidth();
+            drawerSettings.paint().setStrokeWidth(width);
+            drawerSettings.paint().setMaskFilter(new BlurMaskFilter(width, BlurMaskFilter.Blur.NORMAL));
+            int size = Math.min(drawerSettings.width(), drawerSettings.height());
+            float xPadding = drawerSettings.padding() + (drawerSettings.width() - size) / 2.0f;
+            float yPadding = drawerSettings.padding() + (drawerSettings.height() - size) / 2.0f;
+            float lineStartX = xPadding + (size - 1 - 2 * drawerSettings.padding()) * startX / 9.0f + wallPaddingX;
+            float lineStartY = yPadding + (size - 1 - 2 * drawerSettings.padding()) * startY / 9.0f + wallPaddingY;
+            float lineStopX = xPadding + (size - 1 - 2 * drawerSettings.padding()) * stopX / 9.0f - wallPaddingX;
+            float lineStopY = yPadding + (size - 1 - 2 * drawerSettings.padding()) * stopY / 9.0f - wallPaddingY;
+            Bitmap bitmap = Bitmap.createBitmap((int) (4 * width + lineStopX - lineStartX), (int) (4 * width + lineStopY - lineStartY), Bitmap.Config.ARGB_8888);
+            Canvas tmp = new Canvas(bitmap);
+            tmp.drawLine(2 * width, 2 * width, 2 * width + lineStopX - lineStartX, 2 * width + lineStopY - lineStartY, drawerSettings.paint());
+            drawerSettings.paint().setMaskFilter(null);
+            canvas.drawBitmap(bitmap, lineStartX - 2 * width, lineStartY - 2 * width, drawerSettings.paint());
         }
     }
 
