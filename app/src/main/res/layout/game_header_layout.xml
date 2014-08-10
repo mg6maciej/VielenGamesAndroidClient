@@ -55,10 +55,4 @@
 
     </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/game_header_player_active"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/active_player_indicator"/>
-
 </merge>
