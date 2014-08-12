@@ -12,6 +12,7 @@ import android.view.View;
 import com.vielengames.R;
 import com.vielengames.data.Game;
 import com.vielengames.data.Player;
+import com.vielengames.data.Team;
 import com.vielengames.data.kuridor.KuridorGame;
 import com.vielengames.ui.common.ItemAdapter;
 import com.vielengames.utils.Circlifier;
@@ -56,7 +57,7 @@ public final class GameItemAdapter implements ItemAdapter {
         Paint paint = new Paint();
         paint.setAntiAlias(true);
         List<Player> players = item.getPlayers();
-        Player team2Player = "team_2".equals(players.get(0).getTeam()) ? players.get(0) : players.get(1);
+        Player team2Player = Team.SECOND.equals(players.get(0).getTeam()) ? players.get(0) : players.get(1);
         KuridorGameStateDrawer.Settings settings = new KuridorGameStateDrawer.Settings()
                 .width(bitmapSize)
                 .height(bitmapSize)
@@ -77,8 +78,8 @@ public final class GameItemAdapter implements ItemAdapter {
 
     private CharSequence formatPlayerNames(KuridorGame item, Context context) {
         List<Player> players = item.getPlayers();
-        Player team1Player = "team_1".equals(players.get(0).getTeam()) ? players.get(0) : players.get(1);
-        Player team2Player = "team_2".equals(players.get(0).getTeam()) ? players.get(0) : players.get(1);
+        Player team1Player = Team.FIRST.equals(players.get(0).getTeam()) ? players.get(0) : players.get(1);
+        Player team2Player = Team.SECOND.equals(players.get(0).getTeam()) ? players.get(0) : players.get(1);
         String name1 = me.equals(team1Player) ? "You" : team1Player.getName();
         String name2 = me.equals(team2Player) ? "You" : team2Player.getName();
         SpannableString spannableString = new SpannableString(name1 + " vs " + name2);

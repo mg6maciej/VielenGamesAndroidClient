@@ -1,5 +1,6 @@
 package com.vielengames.kuridor;
 
+import com.vielengames.data.Team;
 import com.vielengames.data.kuridor.KuridorGameState;
 import com.vielengames.data.kuridor.KuridorGameTeamState;
 
@@ -40,12 +41,12 @@ public final class PawnMoveValidationSimpleJumpingTests extends PawnMoveValidati
 
     private KuridorGameState createGameState(final KuridorGameTeamState secondTeamState) {
         return KuridorGameState.builder()
-                .teams(new HashMap<String, KuridorGameTeamState>() {{
-                    put("team_1", centered);
-                    put("team_2", secondTeamState);
+                .teams(new HashMap<Team, KuridorGameTeamState>() {{
+                    put(Team.FIRST, centered);
+                    put(Team.SECOND, secondTeamState);
                 }})
                 .walls(Collections.<String>emptySet())
-                .activeTeam("team_1")
+                .activeTeam(Team.FIRST)
                 .build();
     }
 }

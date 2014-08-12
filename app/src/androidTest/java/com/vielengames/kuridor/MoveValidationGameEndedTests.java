@@ -1,5 +1,6 @@
 package com.vielengames.kuridor;
 
+import com.vielengames.data.Team;
 import com.vielengames.data.kuridor.KuridorGameState;
 import com.vielengames.data.kuridor.KuridorGameTeamState;
 import com.vielengames.data.kuridor.KuridorMove;
@@ -42,9 +43,9 @@ public final class MoveValidationGameEndedTests extends TestCase {
     }
 
     private KuridorGameState gameEnded = KuridorGameState.builder()
-            .teams(new HashMap<String, KuridorGameTeamState>() {{
-                put("team_1", KuridorGameTeamState.builder().pawnPosition("e5").wallsLeft(10).build());
-                put("team_2", KuridorGameTeamState.builder().pawnPosition("a1").wallsLeft(10).build());
+            .teams(new HashMap<Team, KuridorGameTeamState>() {{
+                put(Team.FIRST, KuridorGameTeamState.builder().pawnPosition("e5").wallsLeft(10).build());
+                put(Team.SECOND, KuridorGameTeamState.builder().pawnPosition("a1").wallsLeft(10).build());
             }})
             .walls(Sets.<String>set())
             .activeTeam(null)

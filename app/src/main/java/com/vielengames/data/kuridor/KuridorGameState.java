@@ -1,5 +1,6 @@
 package com.vielengames.data.kuridor;
 
+import com.vielengames.data.Team;
 import com.vielengames.utils.Sets;
 
 import java.util.ArrayList;
@@ -13,17 +14,15 @@ import lombok.Value;
 import lombok.experimental.Builder;
 import lombok.experimental.Wither;
 
-import static com.vielengames.utils.Sets.set;
-
 @Parcelable
 @Builder
 @Value
 @Wither
 public final class KuridorGameState {
 
-    Map<String, KuridorGameTeamState> teams;
+    Map<Team, KuridorGameTeamState> teams;
     Set<String> walls;
-    String activeTeam;
+    Team activeTeam;
 
     public String getActiveTeamPawnPosition() {
         return teams.get(activeTeam).getPawnPosition();
@@ -34,10 +33,10 @@ public final class KuridorGameState {
     }
 
     public Collection<String> getInactiveTeamsPawnPositions() {
-        ArrayList<String> inactiveTeams = new ArrayList<String>(teams.keySet());
+        ArrayList<Team> inactiveTeams = new ArrayList<Team>(teams.keySet());
         inactiveTeams.remove(activeTeam);
         ArrayList<String> pawnPositions = new ArrayList<String>();
-        for (String team : inactiveTeams) {
+        for (Team team : inactiveTeams) {
             pawnPositions.add(teams.get(team).getPawnPosition());
         }
         return pawnPositions;
@@ -59,21 +58,21 @@ public final class KuridorGameState {
     }
 
     public KuridorGameTeamState getTeam1() {
-        return teams.get("team_1");
+        return teams.get(Team.FIRST);
     }
 
     public KuridorGameTeamState getTeam2() {
-        return teams.get("team_2");
+        return teams.get(Team.SECOND);
     }
 
     public static KuridorGameState initial() {
         return KuridorGameState.builder()
-                .teams(new HashMap<String, KuridorGameTeamState>() {{
-                    put("team_1", KuridorGameTeamState.builder().pawnPosition("e1").wallsLeft(10).build());
-                    put("team_2", KuridorGameTeamState.builder().pawnPosition("e9").wallsLeft(10).build());
+                .teams(new HashMap<Team, KuridorGameTeamState>() {{
+                    put(Team.FIRST, KuridorGameTeamState.builder().pawnPosition("e1").wallsLeft(10).build());
+                    put(Team.SECOND, KuridorGameTeamState.builder().pawnPosition("e9").wallsLeft(10).build());
                 }})
                 .walls(Sets.<String>set())
-                .activeTeam("team_1")
+                .activeTeam(Team.FIRST)
                 .build();
     }
 }

@@ -1,5 +1,6 @@
 package com.vielengames.kuridor;
 
+import com.vielengames.data.Team;
 import com.vielengames.data.kuridor.KuridorGameState;
 import com.vielengames.data.kuridor.KuridorGameTeamState;
 import com.vielengames.utils.Sets;
@@ -32,16 +33,16 @@ public final class PawnMoveValidationEndOfBoardJumpTests extends PawnMoveValidat
         assertValid("i3");
     }
 
-    private KuridorGameState withPawnsCloseToNorthEndOfBoard = createGameState("e8", "e9", "team_1");
-    private KuridorGameState withPawnsCloseToSouthEndOfBoard = createGameState("e1", "e2", "team_2");
-    private KuridorGameState withPawnsCloseToEastEndOfBoard = createGameState("b5", "a5", "team_1");
-    private KuridorGameState withPawnsCloseToWestEndOfBoard = createGameState("h2", "i2", "team_1");
+    private KuridorGameState withPawnsCloseToNorthEndOfBoard = createGameState("e8", "e9", Team.FIRST);
+    private KuridorGameState withPawnsCloseToSouthEndOfBoard = createGameState("e1", "e2", Team.SECOND);
+    private KuridorGameState withPawnsCloseToEastEndOfBoard = createGameState("b5", "a5", Team.FIRST);
+    private KuridorGameState withPawnsCloseToWestEndOfBoard = createGameState("h2", "i2", Team.FIRST);
 
-    private KuridorGameState createGameState(final String firstTeamPawnPosition, final String secondTeamPawnPosition, String activeTeam) {
+    private KuridorGameState createGameState(final String firstTeamPawnPosition, final String secondTeamPawnPosition, Team activeTeam) {
         return KuridorGameState.builder()
-                .teams(new HashMap<String, KuridorGameTeamState>() {{
-                    put("team_1", KuridorGameTeamState.builder().pawnPosition(firstTeamPawnPosition).wallsLeft(10).build());
-                    put("team_2", KuridorGameTeamState.builder().pawnPosition(secondTeamPawnPosition).wallsLeft(10).build());
+                .teams(new HashMap<Team, KuridorGameTeamState>() {{
+                    put(Team.FIRST, KuridorGameTeamState.builder().pawnPosition(firstTeamPawnPosition).wallsLeft(10).build());
+                    put(Team.SECOND, KuridorGameTeamState.builder().pawnPosition(secondTeamPawnPosition).wallsLeft(10).build());
                 }})
                 .walls(Sets.<String>set())
                 .activeTeam(activeTeam)

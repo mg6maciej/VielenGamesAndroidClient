@@ -12,6 +12,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 
 import com.vielengames.R;
+import com.vielengames.data.Team;
 import com.vielengames.data.kuridor.KuridorGameState;
 import com.vielengames.data.kuridor.KuridorMove;
 import com.vielengames.ui.BaseView;
@@ -208,7 +209,7 @@ public final class GameView extends BaseView {
             return;
         }
         if (lastMoveStartPosition.length() == 2) {
-            int lastMoveColor = "team_1".equals(state.getActiveTeam())
+            int lastMoveColor = Team.FIRST.equals(state.getActiveTeam())
                     ? drawerSettings.team2Color()
                     : drawerSettings.team1Color();
             lastMoveColor = 0x20FFFFFF & lastMoveColor;
@@ -249,7 +250,7 @@ public final class GameView extends BaseView {
                 stopY = centerY + 1;
                 wallPaddingY = drawerSettings.wallPadding();
             }
-            int wallColor = "team_1".equals(state.getActiveTeam())
+            int wallColor = Team.FIRST.equals(state.getActiveTeam())
                     ? drawerSettings.team2Color()
                     : drawerSettings.team1Color();
             drawerSettings.paint().setColor(wallColor);
@@ -297,7 +298,7 @@ public final class GameView extends BaseView {
             wallPaddingY = drawerSettings.wallPadding();
         }
         int wallColor;
-        if ("team_1".equals(state.getActiveTeam())) {
+        if (Team.FIRST.equals(state.getActiveTeam())) {
             wallColor = R.color.green_normal;
         } else {
             wallColor = R.color.blue_normal;

@@ -2,6 +2,7 @@ package com.vielengames.data.kuridor;
 
 import com.vielengames.data.Game;
 import com.vielengames.data.Player;
+import com.vielengames.data.Team;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ public final class KuridorGame implements Game, android.os.Parcelable {
     KuridorGameState currentState;
 
     public Player getActivePlayer() {
-        String activeTeam = currentState.getActiveTeam();
+        Team activeTeam = currentState.getActiveTeam();
         if (activeTeam == null) {
             return null;
         }

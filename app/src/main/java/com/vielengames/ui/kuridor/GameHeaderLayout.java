@@ -6,6 +6,7 @@ import android.widget.ImageView;
 
 import com.vielengames.R;
 import com.vielengames.data.Player;
+import com.vielengames.data.Team;
 import com.vielengames.ui.BaseLinearLayout;
 import com.vielengames.utils.VanGogh;
 import com.vielengames.utils.ViewUtils;
@@ -30,7 +31,7 @@ public final class GameHeaderLayout extends BaseLinearLayout {
     public void update(Player player, int wallsLeft) {
         ImageView imageView = ViewUtils.findView(this, R.id.game_header_player_profile_icon);
         VanGogh.loadCirclifiedInto(getContext(), player.getAvatarUrl(), imageView, R.dimen.common_image_size);
-        int drawableId = "team_1".equals(player.getTeam())
+        int drawableId = Team.FIRST.equals(player.getTeam())
                 ? R.drawable.green_circle
                 : R.drawable.blue_circle;
         ViewUtils.setBackground(drawableId, this, R.id.game_header_player_color);

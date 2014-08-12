@@ -1,5 +1,6 @@
 package com.vielengames.kuridor;
 
+import com.vielengames.data.Team;
 import com.vielengames.data.kuridor.KuridorGameState;
 import com.vielengames.data.kuridor.KuridorGameTeamState;
 import com.vielengames.data.kuridor.KuridorMove;
@@ -16,7 +17,7 @@ public final class GameStateMoveTests extends TestCase {
     public void testMoveChangesActiveTeam() {
         KuridorGameState testedState = KuridorGameState.initial();
         KuridorGameState next = testedState.move(KuridorMove.pawn("e2"));
-        assertEquals("team_2", next.getActiveTeam());
+        assertEquals(Team.SECOND, next.getActiveTeam());
     }
 
     public void testMoveUpdatesPawnPosition() {
@@ -48,12 +49,12 @@ public final class GameStateMoveTests extends TestCase {
                 .move(KuridorMove.wall("e7v"))
                 .move(KuridorMove.wall("c2h"));
         KuridorGameState expected = KuridorGameState.builder()
-                .teams(new HashMap<String, KuridorGameTeamState>() {{
-                    put("team_1", KuridorGameTeamState.builder().pawnPosition("d2").wallsLeft(9).build());
-                    put("team_2", KuridorGameTeamState.builder().pawnPosition("e8").wallsLeft(8).build());
+                .teams(new HashMap<Team, KuridorGameTeamState>() {{
+                    put(Team.FIRST, KuridorGameTeamState.builder().pawnPosition("d2").wallsLeft(9).build());
+                    put(Team.SECOND, KuridorGameTeamState.builder().pawnPosition("e8").wallsLeft(8).build());
                 }})
                 .walls(new HashSet<String>(Arrays.asList("c2h", "e2h", "e7v")))
-                .activeTeam("team_1")
+                .activeTeam(Team.FIRST)
                 .build();
         assertEquals(expected, actual);
     }

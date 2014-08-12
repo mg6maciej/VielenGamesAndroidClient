@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 
+import com.vielengames.data.Team;
 import com.vielengames.data.kuridor.KuridorGameState;
 import com.vielengames.data.kuridor.KuridorMove;
 
@@ -99,7 +100,7 @@ public final class KuridorGameStateDrawer {
                 (size - 1 - 2 * settings.padding()) / 18.0f - settings.pawnPadding(),
                 settings.paint());
         if (settings.drawLegalPawnMoves()) {
-            int activeTeamColor = "team_1".equals(state.getActiveTeam()) ? settings.team1Color() : settings.team2Color();
+            int activeTeamColor = Team.FIRST.equals(state.getActiveTeam()) ? settings.team1Color() : settings.team2Color();
             activeTeamColor &= 0x80FFFFFF;
             settings.paint().setColor(activeTeamColor);
             String pawnPosition = state.getActiveTeamPawnPosition();

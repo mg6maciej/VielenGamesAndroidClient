@@ -13,6 +13,7 @@ import com.vielengames.VielenGamesPrefs;
 import com.vielengames.api.VielenGamesClient;
 import com.vielengames.data.Game;
 import com.vielengames.data.Player;
+import com.vielengames.data.Team;
 import com.vielengames.data.VielenGamesModel;
 import com.vielengames.data.kuridor.KuridorGame;
 import com.vielengames.data.kuridor.KuridorGameState;
@@ -160,8 +161,8 @@ public class GameActivity extends BaseActivity {
             game = thisGame;
         }
         List<Player> players = game.getPlayers();
-        Player team1Player = "team_1".equals(players.get(0).getTeam()) ? players.get(0) : players.get(1);
-        Player team2Player = "team_2".equals(players.get(0).getTeam()) ? players.get(0) : players.get(1);
+        Player team1Player = Team.FIRST.equals(players.get(0).getTeam()) ? players.get(0) : players.get(1);
+        Player team2Player = Team.SECOND.equals(players.get(0).getTeam()) ? players.get(0) : players.get(1);
         boolean flip = prefs.getMe().equals(team2Player);
         KuridorGameState state = game.getCurrentState();
         gameView.setState(state, game.getLastMoveStartPosition(), imActiveUser(), flip);

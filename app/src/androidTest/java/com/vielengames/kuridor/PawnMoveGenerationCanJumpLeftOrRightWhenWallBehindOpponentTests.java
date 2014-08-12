@@ -1,5 +1,6 @@
 package com.vielengames.kuridor;
 
+import com.vielengames.data.Team;
 import com.vielengames.data.kuridor.KuridorGameState;
 import com.vielengames.data.kuridor.KuridorGameTeamState;
 
@@ -15,11 +16,11 @@ public final class PawnMoveGenerationCanJumpLeftOrRightWhenWallBehindOpponentTes
     }
 
     KuridorGameState closeToEachOtherAndWallBehind = KuridorGameState.builder()
-            .teams(new HashMap<String, KuridorGameTeamState>() {{
-                put("team_1", centered);
-                put("team_2", northFromCenter);
+            .teams(new HashMap<Team, KuridorGameTeamState>() {{
+                put(Team.FIRST, centered);
+                put(Team.SECOND, northFromCenter);
             }})
             .walls(set("d6h"))
-            .activeTeam("team_1")
+            .activeTeam(Team.FIRST)
             .build();
 }

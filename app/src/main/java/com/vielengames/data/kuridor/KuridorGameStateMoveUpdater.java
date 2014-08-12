@@ -1,5 +1,7 @@
 package com.vielengames.data.kuridor;
 
+import com.vielengames.data.Team;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,9 +17,9 @@ public final class KuridorGameStateMoveUpdater {
     private final KuridorMove move;
 
     public KuridorGameState getNewState() {
-        Map<String, KuridorGameTeamState> teams = getNewTeams();
+        Map<Team, KuridorGameTeamState> teams = getNewTeams();
         Set<String> walls = getNewWalls();
-        String activeTeam = getNewActiveTeam();
+        Team activeTeam = getNewActiveTeam();
         return KuridorGameState.builder()
                 .teams(teams)
                 .walls(walls)
@@ -25,9 +27,9 @@ public final class KuridorGameStateMoveUpdater {
                 .build();
     }
 
-    private Map<String, KuridorGameTeamState> getNewTeams() {
+    private Map<Team, KuridorGameTeamState> getNewTeams() {
         KuridorGameTeamState teamState = getNewTeamState();
-        Map<String, KuridorGameTeamState> newTeams = new HashMap<String, KuridorGameTeamState>(state.getTeams());
+        Map<Team, KuridorGameTeamState> newTeams = new HashMap<Team, KuridorGameTeamState>(state.getTeams());
         newTeams.put(state.getActiveTeam(), teamState);
         return Collections.unmodifiableMap(newTeams);
     }
@@ -63,7 +65,7 @@ public final class KuridorGameStateMoveUpdater {
         return Collections.unmodifiableSet(walls);
     }
 
-    private String getNewActiveTeam() {
-        return "team_1".equals(state.getActiveTeam()) ? "team_2" : "team_1";
+    private Team getNewActiveTeam() {
+        return Team.FIRST.equals(state.getActiveTeam()) ? Team.SECOND : Team.FIRST;
     }
 }

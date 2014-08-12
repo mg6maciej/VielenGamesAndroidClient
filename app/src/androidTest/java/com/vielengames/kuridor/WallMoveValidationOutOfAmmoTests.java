@@ -1,5 +1,6 @@
 package com.vielengames.kuridor;
 
+import com.vielengames.data.Team;
 import com.vielengames.data.kuridor.KuridorGameState;
 import com.vielengames.data.kuridor.KuridorGameTeamState;
 
@@ -14,10 +15,10 @@ public final class WallMoveValidationOutOfAmmoTests extends WallMoveValidationBa
     }
 
     private KuridorGameState withNoMoreWallsLeft = KuridorGameState.builder()
-            .teams(new HashMap<String, KuridorGameTeamState>() {{
-                put("team_1", KuridorGameTeamState.builder().pawnPosition("e1").wallsLeft(0).build());
-                put("team_2", KuridorGameTeamState.builder().pawnPosition("e9").wallsLeft(10).build());
+            .teams(new HashMap<Team, KuridorGameTeamState>() {{
+                put(Team.FIRST, KuridorGameTeamState.builder().pawnPosition("e1").wallsLeft(0).build());
+                put(Team.SECOND, KuridorGameTeamState.builder().pawnPosition("e9").wallsLeft(10).build());
             }})
-            .activeTeam("team_1")
+            .activeTeam(Team.FIRST)
             .build();
 }

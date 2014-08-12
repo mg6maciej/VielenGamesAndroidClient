@@ -1,5 +1,6 @@
 package com.vielengames.kuridor;
 
+import com.vielengames.data.Team;
 import com.vielengames.data.kuridor.KuridorGame;
 import com.vielengames.data.kuridor.KuridorGameState;
 import com.vielengames.data.kuridor.KuridorGameTeamState;
@@ -29,12 +30,12 @@ public final class GameGetStatesTests extends TestCase {
         List<KuridorGameState> states = game.getStates();
         assertEquals(2, states.size());
         KuridorGameState expected = KuridorGameState.builder()
-                .teams(new HashMap<String, KuridorGameTeamState>() {{
-                    put("team_1", KuridorGameTeamState.builder().pawnPosition("e2").wallsLeft(10).build());
-                    put("team_2", KuridorGameTeamState.builder().pawnPosition("e9").wallsLeft(10).build());
+                .teams(new HashMap<Team, KuridorGameTeamState>() {{
+                    put(Team.FIRST, KuridorGameTeamState.builder().pawnPosition("e2").wallsLeft(10).build());
+                    put(Team.SECOND, KuridorGameTeamState.builder().pawnPosition("e9").wallsLeft(10).build());
                 }})
                 .walls(Collections.<String>emptySet())
-                .activeTeam("team_2")
+                .activeTeam(Team.SECOND)
                 .build();
         assertEquals(expected, states.get(1));
     }

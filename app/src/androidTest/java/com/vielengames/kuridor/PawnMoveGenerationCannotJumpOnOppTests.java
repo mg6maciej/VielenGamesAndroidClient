@@ -1,5 +1,6 @@
 package com.vielengames.kuridor;
 
+import com.vielengames.data.Team;
 import com.vielengames.data.kuridor.KuridorGameState;
 import com.vielengames.data.kuridor.KuridorGameTeamState;
 import com.vielengames.utils.Sets;
@@ -19,20 +20,20 @@ public final class PawnMoveGenerationCannotJumpOnOppTests extends PawnMoveGenera
     }
 
     KuridorGameState closeToEachOther = KuridorGameState.builder()
-            .teams(new HashMap<String, KuridorGameTeamState>() {{
-                put("team_1", centered);
-                put("team_2", northFromCenter);
+            .teams(new HashMap<Team, KuridorGameTeamState>() {{
+                put(Team.FIRST, centered);
+                put(Team.SECOND, northFromCenter);
             }})
             .walls(Sets.<String>set())
-            .activeTeam("team_1")
+            .activeTeam(Team.FIRST)
             .build();
 
     KuridorGameState closeToEachOtherAndEndOfBoard = KuridorGameState.builder()
-            .teams(new HashMap<String, KuridorGameTeamState>() {{
-                put("team_1", belowSecondStarting);
-                put("team_2", secondStarting);
+            .teams(new HashMap<Team, KuridorGameTeamState>() {{
+                put(Team.FIRST, belowSecondStarting);
+                put(Team.SECOND, secondStarting);
             }})
             .walls(Sets.<String>set())
-            .activeTeam("team_1")
+            .activeTeam(Team.FIRST)
             .build();
 }
