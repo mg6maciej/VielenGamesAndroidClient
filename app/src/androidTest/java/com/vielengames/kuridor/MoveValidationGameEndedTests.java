@@ -3,10 +3,10 @@ package com.vielengames.kuridor;
 import com.vielengames.data.kuridor.KuridorGameState;
 import com.vielengames.data.kuridor.KuridorGameTeamState;
 import com.vielengames.data.kuridor.KuridorMove;
+import com.vielengames.utils.Sets;
 
 import junit.framework.TestCase;
 
-import java.util.Collections;
 import java.util.HashMap;
 
 public final class MoveValidationGameEndedTests extends TestCase {
@@ -46,7 +46,7 @@ public final class MoveValidationGameEndedTests extends TestCase {
                 put("team_1", KuridorGameTeamState.builder().pawnPosition("e5").wallsLeft(10).build());
                 put("team_2", KuridorGameTeamState.builder().pawnPosition("a1").wallsLeft(10).build());
             }})
-            .walls(Collections.<String>emptyList())
+            .walls(Sets.<String>set())
             .activeTeam(null)
             .build();
 }

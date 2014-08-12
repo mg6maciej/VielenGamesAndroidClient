@@ -3,8 +3,9 @@ package com.vielengames.kuridor;
 import com.vielengames.data.kuridor.KuridorGameState;
 import com.vielengames.data.kuridor.KuridorGameTeamState;
 
-import java.util.Collections;
 import java.util.HashMap;
+
+import static com.vielengames.utils.Sets.set;
 
 public final class PawnMoveGenerationCanJumpLeftOrRightWhenWallBehindOpponentTests extends PawnMoveGenerationBaseTestCase {
 
@@ -18,7 +19,7 @@ public final class PawnMoveGenerationCanJumpLeftOrRightWhenWallBehindOpponentTes
                 put("team_1", centered);
                 put("team_2", northFromCenter);
             }})
-            .walls(Collections.singletonList("d6h"))
+            .walls(set("d6h"))
             .activeTeam("team_1")
             .build();
 }

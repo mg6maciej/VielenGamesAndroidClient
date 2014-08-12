@@ -2,8 +2,8 @@ package com.vielengames.kuridor;
 
 import com.vielengames.data.kuridor.KuridorGameState;
 import com.vielengames.data.kuridor.KuridorGameTeamState;
+import com.vielengames.utils.Sets;
 
-import java.util.Collections;
 import java.util.HashMap;
 
 public final class PawnMoveValidationEndOfBoardJumpTests extends PawnMoveValidationBaseTestCase {
@@ -43,7 +43,7 @@ public final class PawnMoveValidationEndOfBoardJumpTests extends PawnMoveValidat
                     put("team_1", KuridorGameTeamState.builder().pawnPosition(firstTeamPawnPosition).wallsLeft(10).build());
                     put("team_2", KuridorGameTeamState.builder().pawnPosition(secondTeamPawnPosition).wallsLeft(10).build());
                 }})
-                .walls(Collections.<String>emptyList())
+                .walls(Sets.<String>set())
                 .activeTeam(activeTeam)
                 .build();
     }

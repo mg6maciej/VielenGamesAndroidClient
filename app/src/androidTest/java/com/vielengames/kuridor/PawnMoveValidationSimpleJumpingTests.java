@@ -44,7 +44,7 @@ public final class PawnMoveValidationSimpleJumpingTests extends PawnMoveValidati
                     put("team_1", centered);
                     put("team_2", secondTeamState);
                 }})
-                .walls(Collections.<String>emptyList())
+                .walls(Collections.<String>emptySet())
                 .activeTeam("team_1")
                 .build();
     }

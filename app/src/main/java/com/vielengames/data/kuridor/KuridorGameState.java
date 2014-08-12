@@ -1,15 +1,19 @@
 package com.vielengames.data.kuridor;
 
+import com.vielengames.utils.Sets;
+
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import hrisey.Parcelable;
 import lombok.Value;
 import lombok.experimental.Builder;
 import lombok.experimental.Wither;
+
+import static com.vielengames.utils.Sets.set;
 
 @Parcelable
 @Builder
@@ -18,7 +22,7 @@ import lombok.experimental.Wither;
 public final class KuridorGameState {
 
     Map<String, KuridorGameTeamState> teams;
-    Collection<String> walls;
+    Set<String> walls;
     String activeTeam;
 
     public String getActiveTeamPawnPosition() {
@@ -68,7 +72,7 @@ public final class KuridorGameState {
                     put("team_1", KuridorGameTeamState.builder().pawnPosition("e1").wallsLeft(10).build());
                     put("team_2", KuridorGameTeamState.builder().pawnPosition("e9").wallsLeft(10).build());
                 }})
-                .walls(Collections.<String>emptyList())
+                .walls(Sets.<String>set())
                 .activeTeam("team_1")
                 .build();
     }

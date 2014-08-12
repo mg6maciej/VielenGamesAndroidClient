@@ -3,8 +3,9 @@ package com.vielengames.kuridor;
 import com.vielengames.data.kuridor.KuridorGameState;
 import com.vielengames.data.kuridor.KuridorGameTeamState;
 
-import java.util.Arrays;
 import java.util.HashMap;
+
+import static com.vielengames.utils.Sets.set;
 
 public final class WallMoveValidationBlockingPawnTests extends WallMoveValidationBaseTestCase {
 
@@ -88,7 +89,7 @@ public final class WallMoveValidationBlockingPawnTests extends WallMoveValidatio
                 put("team_1", KuridorGameTeamState.builder().pawnPosition("e5").wallsLeft(10).build());
                 put("team_2", KuridorGameTeamState.builder().pawnPosition("e9").wallsLeft(10).build());
             }})
-            .walls(Arrays.asList("e5h", "d4v", "f4v"))
+            .walls(set("e5h", "d4v", "f4v"))
             .activeTeam("team_1")
             .build();
 
@@ -97,7 +98,7 @@ public final class WallMoveValidationBlockingPawnTests extends WallMoveValidatio
                 put("team_1", KuridorGameTeamState.builder().pawnPosition("e5").wallsLeft(1).build());
                 put("team_2", KuridorGameTeamState.builder().pawnPosition("e8").wallsLeft(0).build());
             }})
-            .walls(Arrays.asList(
+            .walls(set(
                     "e3h",
                     "f4v", "f6v",
                     "e7h", "c7h",
@@ -113,7 +114,7 @@ public final class WallMoveValidationBlockingPawnTests extends WallMoveValidatio
                 put("team_1", KuridorGameTeamState.builder().pawnPosition("e6").wallsLeft(5).build());
                 put("team_2", KuridorGameTeamState.builder().pawnPosition("e5").wallsLeft(5).build());
             }})
-            .walls(Arrays.asList("a5h", "c5h", "e5h", "g5h", "h5v"))
+            .walls(set("a5h", "c5h", "e5h", "g5h", "h5v"))
             .activeTeam("team_1")
             .build();
 
@@ -122,7 +123,7 @@ public final class WallMoveValidationBlockingPawnTests extends WallMoveValidatio
                 put("team_1", KuridorGameTeamState.builder().pawnPosition("e5").wallsLeft(5).build());
                 put("team_2", KuridorGameTeamState.builder().pawnPosition("e6").wallsLeft(5).build());
             }})
-            .walls(Arrays.asList("a5h", "c5h", "e5h", "g5h", "h5v"))
+            .walls(set("a5h", "c5h", "e5h", "g5h", "h5v"))
             .activeTeam("team_1")
             .build();
 
@@ -131,7 +132,7 @@ public final class WallMoveValidationBlockingPawnTests extends WallMoveValidatio
                 put("team_1", KuridorGameTeamState.builder().pawnPosition("f6").wallsLeft(5).build());
                 put("team_2", KuridorGameTeamState.builder().pawnPosition("e6").wallsLeft(5).build());
             }})
-            .walls(Arrays.asList("a5h", "c5h", "e5h", "g5h", "h5v"))
+            .walls(set("a5h", "c5h", "e5h", "g5h", "h5v"))
             .activeTeam("team_1")
             .build();
 
@@ -140,7 +141,7 @@ public final class WallMoveValidationBlockingPawnTests extends WallMoveValidatio
                 put("team_1", KuridorGameTeamState.builder().pawnPosition("e5").wallsLeft(5).build());
                 put("team_2", KuridorGameTeamState.builder().pawnPosition("f5").wallsLeft(5).build());
             }})
-            .walls(Arrays.asList("a5h", "c5h", "e5h", "g5h", "h5v"))
+            .walls(set("a5h", "c5h", "e5h", "g5h", "h5v"))
             .activeTeam("team_1")
             .build();
 
@@ -149,7 +150,7 @@ public final class WallMoveValidationBlockingPawnTests extends WallMoveValidatio
                 put("team_1", KuridorGameTeamState.builder().pawnPosition("e1").wallsLeft(8).build());
                 put("team_2", KuridorGameTeamState.builder().pawnPosition("e9").wallsLeft(8).build());
             }})
-            .walls(Arrays.asList("d1v", "e1v", "d8v", "e8v"))
+            .walls(set("d1v", "e1v", "d8v", "e8v"))
             .activeTeam("team_1")
             .build();
 
@@ -158,7 +159,7 @@ public final class WallMoveValidationBlockingPawnTests extends WallMoveValidatio
                 put("team_1", KuridorGameTeamState.builder().pawnPosition("a5").wallsLeft(8).build());
                 put("team_2", KuridorGameTeamState.builder().pawnPosition("i5").wallsLeft(8).build());
             }})
-            .walls(Arrays.asList("a4h", "a5h", "h4h", "h5h"))
+            .walls(set("a4h", "a5h", "h4h", "h5h"))
             .activeTeam("team_1")
             .build();
 }

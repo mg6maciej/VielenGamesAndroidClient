@@ -2,8 +2,8 @@ package com.vielengames.kuridor;
 
 import com.vielengames.data.kuridor.KuridorGameState;
 import com.vielengames.data.kuridor.KuridorGameTeamState;
+import com.vielengames.utils.Sets;
 
-import java.util.Collections;
 import java.util.HashMap;
 
 public final class PawnMoveGenerationCannotJumpOnOppTests extends PawnMoveGenerationBaseTestCase {
@@ -23,7 +23,7 @@ public final class PawnMoveGenerationCannotJumpOnOppTests extends PawnMoveGenera
                 put("team_1", centered);
                 put("team_2", northFromCenter);
             }})
-            .walls(Collections.<String>emptyList())
+            .walls(Sets.<String>set())
             .activeTeam("team_1")
             .build();
 
@@ -32,7 +32,7 @@ public final class PawnMoveGenerationCannotJumpOnOppTests extends PawnMoveGenera
                 put("team_1", belowSecondStarting);
                 put("team_2", secondStarting);
             }})
-            .walls(Collections.<String>emptyList())
+            .walls(Sets.<String>set())
             .activeTeam("team_1")
             .build();
 }

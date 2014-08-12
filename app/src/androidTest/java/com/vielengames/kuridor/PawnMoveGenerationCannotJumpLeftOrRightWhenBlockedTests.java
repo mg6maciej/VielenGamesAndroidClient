@@ -3,9 +3,9 @@ package com.vielengames.kuridor;
 import com.vielengames.data.kuridor.KuridorGameState;
 import com.vielengames.data.kuridor.KuridorGameTeamState;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
+
+import static com.vielengames.utils.Sets.set;
 
 public final class PawnMoveGenerationCannotJumpLeftOrRightWhenBlockedTests extends PawnMoveGenerationBaseTestCase {
 
@@ -24,7 +24,7 @@ public final class PawnMoveGenerationCannotJumpLeftOrRightWhenBlockedTests exten
                 put("team_1", centered);
                 put("team_2", northFromCenter);
             }})
-            .walls(Arrays.asList("e6h", "e5v", "d5v"))
+            .walls(set("e6h", "e5v", "d5v"))
             .activeTeam("team_1")
             .build();
 
@@ -33,7 +33,7 @@ public final class PawnMoveGenerationCannotJumpLeftOrRightWhenBlockedTests exten
                 put("team_1", a5);
                 put("team_2", a6);
             }})
-            .walls(Collections.singletonList("a6h"))
+            .walls(set("a6h"))
             .activeTeam("team_1")
             .build();
 }

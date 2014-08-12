@@ -3,8 +3,9 @@ package com.vielengames.kuridor;
 import com.vielengames.data.kuridor.KuridorGameState;
 import com.vielengames.data.kuridor.KuridorGameTeamState;
 
-import java.util.Arrays;
 import java.util.HashMap;
+
+import static com.vielengames.utils.Sets.set;
 
 public final class WallMoveValidationOverlappingTests extends WallMoveValidationBaseTestCase {
 
@@ -40,7 +41,7 @@ public final class WallMoveValidationOverlappingTests extends WallMoveValidation
                 put("team_1", KuridorGameTeamState.builder().pawnPosition("e1").wallsLeft(10).build());
                 put("team_2", KuridorGameTeamState.builder().pawnPosition("e9").wallsLeft(10).build());
             }})
-            .walls(Arrays.asList("a1v", "c3h", "c4h", "g6v"))
+            .walls(set("a1v", "c3h", "c4h", "g6v"))
             .activeTeam("team_1")
             .build();
 }

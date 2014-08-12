@@ -1,10 +1,8 @@
 package com.vielengames.data.kuridor;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -97,7 +95,7 @@ final class KuridorMoveValidatorImpl {
                 return false;
             }
         }
-        List<String> newWalls = new ArrayList<String>(state.getWalls());
+        Set<String> newWalls = new HashSet<String>(state.getWalls());
         newWalls.add(move.getPosition());
         KuridorGameState newState = state.withWalls(newWalls);
         if (!hasAccessToLine(newState, newState.getTeam1().getPawnPosition(), '9')) {

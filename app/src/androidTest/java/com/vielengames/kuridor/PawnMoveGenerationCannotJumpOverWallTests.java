@@ -3,9 +3,9 @@ package com.vielengames.kuridor;
 import com.vielengames.data.kuridor.KuridorGameState;
 import com.vielengames.data.kuridor.KuridorGameTeamState;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
+
+import static com.vielengames.utils.Sets.set;
 
 public final class PawnMoveGenerationCannotJumpOverWallTests extends PawnMoveGenerationBaseTestCase {
 
@@ -19,7 +19,7 @@ public final class PawnMoveGenerationCannotJumpOverWallTests extends PawnMoveGen
                 put("team_1", centered);
                 put("team_2", secondStarting);
             }})
-            .walls(Collections.singletonList("e5h"))
+            .walls(set("e5h"))
             .activeTeam("team_1")
             .build();
 }
