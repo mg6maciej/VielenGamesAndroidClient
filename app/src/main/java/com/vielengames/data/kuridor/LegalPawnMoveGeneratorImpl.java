@@ -6,20 +6,20 @@ import java.util.HashSet;
 final class LegalPawnMoveGeneratorImpl {
 
     private static final int[] LEFT = {-1, 0};
+    private static final int[] RIGHT = {1, 0};
+    private static final int[] UP = {0, 1};
     private static final int[] DOWN = {0, -1};
-    private static final int[] RIGHT = {0, 1};
-    private static final int[] UP = {1, 0};
 
     private static final int[][] MOVE_DIRECTIONS = {
             LEFT,
-            DOWN,
             RIGHT,
-            UP
+            UP,
+            DOWN
     };
     private static final int[][][] SIDE_JUMP_DIRECTIONS = {
             {DOWN, UP},
-            {LEFT, RIGHT},
             {DOWN, UP},
+            {LEFT, RIGHT},
             {LEFT, RIGHT}
     };
 
