@@ -1,7 +1,9 @@
 package com.vielengames.data.kuridor;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import lombok.RequiredArgsConstructor;
@@ -30,34 +32,56 @@ final class LegalPawnMoveGeneratorImpl {
     };
 
     private final KuridorGameState state;
+    private Set<KuridorMove> moves = new HashSet<KuridorMove>();
 
     public Collection<KuridorMove> getLegalPawnMoves() {
-        Collection<KuridorMove> moves = new HashSet<KuridorMove>();
+        moves.clear();
+        for (int index = 0; index < MOVE_DIRECTIONS.length; index++) {
+            addMoves(index);
+        }
+        return Collections.unmodifiableSet(moves);
+    }
+
+    private void addMoves(int index) {
+        int[] direction = MOVE_DIRECTIONS[index];
         String pawnPosition = state.getActiveTeamPawnPosition();
-        for (int i = 0; i < MOVE_DIRECTIONS.length; i++) {
-            int[] direction = MOVE_DIRECTIONS[i];
-            String potentialMove = getMoveInDirection(pawnPosition, direction);
-            if (isUnreachable(pawnPosition, potentialMove)) {
+        String potentialMove = getMoveInDirection(pawnPosition, direction);
+        if (isUnreachable(pawnPosition, potentialMove)) {
+            return;
+        }
+        if (wouldJumpOnOpponent(potentialMove)) {
+            addJumpMoves(index, potentialMove);
+        } else {
+            addMove(potentialMove);
+        }
+    }
+
+    private boolean wouldJumpOnOpponent(String potentialMove) {
+        return state.getInactiveTeamsPawnPositions().contains(potentialMove);
+    }
+
+    private void addJumpMoves(int index, String potentialMove) {
+        int[] direction = MOVE_DIRECTIONS[index];
+        String potentialStraightJump = getMoveInDirection(potentialMove, direction);
+        if (isUnreachable(potentialMove, potentialStraightJump)) {
+            addSideJumpMoves(index, potentialMove);
+        } else {
+            addMove(potentialStraightJump);
+        }
+    }
+
+    private void addSideJumpMoves(int index, String potentialMove) {
+        for (int[] jumpDirection : SIDE_JUMP_DIRECTIONS[index]) {
+            String potentialSideJump = getMoveInDirection(potentialMove, jumpDirection);
+            if (isUnreachable(potentialMove, potentialSideJump)) {
                 continue;
             }
-            if (state.getInactiveTeamsPawnPositions().contains(potentialMove)) {
-                String potentialStraightJump = getMoveInDirection(potentialMove, direction);
-                if (isUnreachable(potentialMove, potentialStraightJump)) {
-                    for (int[] jumpDirection : SIDE_JUMP_DIRECTIONS[i]) {
-                        String potentialSideJump = getMoveInDirection(potentialMove, jumpDirection);
-                        if (isUnreachable(potentialMove, potentialSideJump)) {
-                            continue;
-                        }
-                        moves.add(KuridorMove.pawn(potentialSideJump));
-                    }
-                } else {
-                    moves.add(KuridorMove.pawn(potentialStraightJump));
-                }
-            } else {
-                moves.add(KuridorMove.pawn(potentialMove));
-            }
+            addMove(potentialSideJump);
         }
-        return moves;
+    }
+
+    private void addMove(String move) {
+        moves.add(KuridorMove.pawn(move));
     }
 
     private boolean isUnreachable(String pawnPosition, String newPawnPosition) {
