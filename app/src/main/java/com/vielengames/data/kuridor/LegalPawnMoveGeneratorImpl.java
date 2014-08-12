@@ -2,11 +2,14 @@ package com.vielengames.data.kuridor;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.regex.Pattern;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 final class LegalPawnMoveGeneratorImpl {
+
+    private static final Pattern PAWN_MOVE_PATTERN = Pattern.compile("[a-i][1-9]");
 
     private static final int[] LEFT = {-1, 0};
     private static final int[] RIGHT = {1, 0};
@@ -34,17 +37,15 @@ final class LegalPawnMoveGeneratorImpl {
         for (int i = 0; i < MOVE_DIRECTIONS.length; i++) {
             int[] direction = MOVE_DIRECTIONS[i];
             String potentialMove = getMoveInDirection(pawnPosition, direction);
-            if (isOutsideOfBoard(potentialMove) || isBlockedByWall(pawnPosition, potentialMove)) {
+            if (isUnreachable(pawnPosition, potentialMove)) {
                 continue;
             }
             if (state.getInactiveTeamsPawnPositions().contains(potentialMove)) {
                 String potentialStraightJump = getMoveInDirection(potentialMove, direction);
-                if (isOutsideOfBoard(potentialStraightJump)
-                        || isBlockedByWall(potentialMove, potentialStraightJump)) {
+                if (isUnreachable(potentialMove, potentialStraightJump)) {
                     for (int[] jumpDirection : SIDE_JUMP_DIRECTIONS[i]) {
                         String potentialSideJump = getMoveInDirection(potentialMove, jumpDirection);
-                        if (isOutsideOfBoard(potentialSideJump)
-                                || isBlockedByWall(potentialMove, potentialSideJump)) {
+                        if (isUnreachable(potentialMove, potentialSideJump)) {
                             continue;
                         }
                         moves.add(KuridorMove.pawn(potentialSideJump));
@@ -59,6 +60,10 @@ final class LegalPawnMoveGeneratorImpl {
         return moves;
     }
 
+    private boolean isUnreachable(String pawnPosition, String newPawnPosition) {
+        return isOutsideOfBoard(newPawnPosition) || isBlockedByWall(pawnPosition, newPawnPosition);
+    }
+
     private String getMoveInDirection(String pawnPosition, int[] direction) {
         char sideJumpFileLetter = (char) (pawnPosition.charAt(0) + direction[0]);
         char sideJumpRankLetter = (char) (pawnPosition.charAt(1) + direction[1]);
@@ -66,9 +71,7 @@ final class LegalPawnMoveGeneratorImpl {
     }
 
     private boolean isOutsideOfBoard(String pawnPosition) {
-        char fileLetter = pawnPosition.charAt(0);
-        char rankLetter = pawnPosition.charAt(1);
-        return fileLetter < 'a' || fileLetter > 'i' || rankLetter < '1' || rankLetter > '9';
+        return !PAWN_MOVE_PATTERN.matcher(pawnPosition).matches();
     }
 
     private boolean isBlockedByWall(String startPosition, String endPosition) {
