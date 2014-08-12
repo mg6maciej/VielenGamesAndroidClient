@@ -54,7 +54,7 @@ public final class KuridorGameState {
     }
 
     public Collection<KuridorMove> getLegalPawnMoves() {
-        return LegalPawnMoveGeneratorImpl.getLegalPawnMoves(this);
+        return new LegalPawnMoveGeneratorImpl(this).getLegalPawnMoves();
     }
 
     public KuridorGameTeamState getTeam1() {

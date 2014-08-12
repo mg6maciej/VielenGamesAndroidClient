@@ -3,6 +3,9 @@ package com.vielengames.data.kuridor;
 import java.util.Collection;
 import java.util.HashSet;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 final class LegalPawnMoveGeneratorImpl {
 
     private static final int[] LEFT = {-1, 0};
@@ -23,23 +26,25 @@ final class LegalPawnMoveGeneratorImpl {
             {LEFT, RIGHT}
     };
 
-    public static Collection<KuridorMove> getLegalPawnMoves(KuridorGameState state) {
+    private final KuridorGameState state;
+
+    public Collection<KuridorMove> getLegalPawnMoves() {
         Collection<KuridorMove> moves = new HashSet<KuridorMove>();
         String pawnPosition = state.getActiveTeamPawnPosition();
         for (int i = 0; i < MOVE_DIRECTIONS.length; i++) {
             int[] direction = MOVE_DIRECTIONS[i];
             String potentialMove = getMoveInDirection(pawnPosition, direction);
-            if (isOutsideOfBoard(potentialMove) || isBlockedByWall(state, pawnPosition, potentialMove)) {
+            if (isOutsideOfBoard(potentialMove) || isBlockedByWall(pawnPosition, potentialMove)) {
                 continue;
             }
             if (state.getInactiveTeamsPawnPositions().contains(potentialMove)) {
                 String potentialStraightJump = getMoveInDirection(potentialMove, direction);
                 if (isOutsideOfBoard(potentialStraightJump)
-                        || isBlockedByWall(state, potentialMove, potentialStraightJump)) {
+                        || isBlockedByWall(potentialMove, potentialStraightJump)) {
                     for (int[] jumpDirection : SIDE_JUMP_DIRECTIONS[i]) {
                         String potentialSideJump = getMoveInDirection(potentialMove, jumpDirection);
                         if (isOutsideOfBoard(potentialSideJump)
-                                || isBlockedByWall(state, potentialMove, potentialSideJump)) {
+                                || isBlockedByWall(potentialMove, potentialSideJump)) {
                             continue;
                         }
                         moves.add(KuridorMove.pawn(potentialSideJump));
@@ -54,19 +59,19 @@ final class LegalPawnMoveGeneratorImpl {
         return moves;
     }
 
-    private static String getMoveInDirection(String pawnPosition, int[] direction) {
+    private String getMoveInDirection(String pawnPosition, int[] direction) {
         char sideJumpFileLetter = (char) (pawnPosition.charAt(0) + direction[0]);
         char sideJumpRankLetter = (char) (pawnPosition.charAt(1) + direction[1]);
         return "" + sideJumpFileLetter + sideJumpRankLetter;
     }
 
-    private static boolean isOutsideOfBoard(String pawnPosition) {
+    private boolean isOutsideOfBoard(String pawnPosition) {
         char fileLetter = pawnPosition.charAt(0);
         char rankLetter = pawnPosition.charAt(1);
         return fileLetter < 'a' || fileLetter > 'i' || rankLetter < '1' || rankLetter > '9';
     }
 
-    private static boolean isBlockedByWall(KuridorGameState state, String startPosition, String endPosition) {
+    private boolean isBlockedByWall(String startPosition, String endPosition) {
         if (distanceBetweenPositions(startPosition, endPosition) != 1) {
             throw new IllegalArgumentException();
         }
@@ -91,7 +96,7 @@ final class LegalPawnMoveGeneratorImpl {
         return false;
     }
 
-    private static int distanceBetweenPositions(String position1, String position2) {
+    private int distanceBetweenPositions(String position1, String position2) {
         return Math.abs(position1.charAt(0) - position2.charAt(0))
                 + Math.abs(position1.charAt(1) - position2.charAt(1));
     }
