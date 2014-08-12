@@ -65,7 +65,7 @@ final class LegalPawnMoveGeneratorImpl {
     }
 
     private boolean isUnreachable(String pawnPosition, String newPawnPosition) {
-        return isOutsideOfBoard(newPawnPosition) || MoveBlockedChecker.isBlockedByWall(state, pawnPosition, newPawnPosition);
+        return isOutsideOfBoard(newPawnPosition) || MoveBlockedChecker.isBlockedByWall(state.getWalls(), pawnPosition, newPawnPosition);
     }
 
     private String getMoveInDirection(String pawnPosition, KuridorMove.Direction direction) {

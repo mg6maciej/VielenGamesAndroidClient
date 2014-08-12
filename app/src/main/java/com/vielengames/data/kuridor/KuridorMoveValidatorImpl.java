@@ -72,17 +72,11 @@ final class KuridorMoveValidatorImpl {
         }
         Set<String> newWalls = new HashSet<String>(state.getWalls());
         newWalls.add(move.getPosition());
-        KuridorGameState newState = state.withWalls(newWalls);
-        if (!hasAccessToLine(newState, newState.getFirstTeamState().getPawnPosition(), '9')) {
-            return false;
-        }
-        if (!hasAccessToLine(newState, newState.getSecondTeamState().getPawnPosition(), '1')) {
-            return false;
-        }
-        return true;
+        return hasAccessToLine(newWalls, state.getFirstTeamState().getPawnPosition(), '9')
+                && hasAccessToLine(newWalls, state.getSecondTeamState().getPawnPosition(), '1');
     }
 
-    private boolean hasAccessToLine(KuridorGameState state, String pawnPosition, char lineId) {
+    private boolean hasAccessToLine(Collection<String> walls, String pawnPosition, char lineId) {
         Set<String> allAccessiblePositions = new HashSet<String>();
         Set<String> newAccessiblePositions = Collections.singleton(pawnPosition);
         while (newAccessiblePositions.size() > 0) {
@@ -91,7 +85,7 @@ final class KuridorMoveValidatorImpl {
                     return true;
                 }
             }
-            Set<String> newerAccessiblePositions = getAllNeighbours(state, newAccessiblePositions);
+            Set<String> newerAccessiblePositions = getAllNeighbours(walls, newAccessiblePositions);
             newerAccessiblePositions.removeAll(allAccessiblePositions);
             allAccessiblePositions.addAll(newAccessiblePositions);
             newAccessiblePositions = newerAccessiblePositions;
@@ -99,13 +93,13 @@ final class KuridorMoveValidatorImpl {
         return false;
     }
 
-    private Set<String> getAllNeighbours(KuridorGameState state, Set<String> positions) {
+    private Set<String> getAllNeighbours(Collection<String> walls, Set<String> positions) {
         Set<String> neighbours = new HashSet<String>();
         for (String position : positions) {
             for (KuridorMove.Direction direction : KuridorMove.Direction.values()) {
                 String potentialNeighbour = direction.applyToPosition(position);
                 if (matchesPawnMovePattern(potentialNeighbour) &&
-                        !MoveBlockedChecker.isBlockedByWall(state, position, potentialNeighbour)) {
+                        !MoveBlockedChecker.isBlockedByWall(walls, position, potentialNeighbour)) {
                     neighbours.add(potentialNeighbour);
                 }
             }

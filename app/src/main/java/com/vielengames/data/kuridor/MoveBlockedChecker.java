@@ -7,7 +7,7 @@ public final class MoveBlockedChecker {
     private MoveBlockedChecker() {
     }
 
-    public static boolean isBlockedByWall(KuridorGameState state, String startPosition, String endPosition) {
+    public static boolean isBlockedByWall(Collection<String> walls, String startPosition, String endPosition) {
         if (distanceBetweenPositions(startPosition, endPosition) != 1) {
             throw new IllegalArgumentException();
         }
@@ -17,7 +17,6 @@ public final class MoveBlockedChecker {
             endPosition = tmp;
         }
         boolean directionX = startPosition.charAt(0) - endPosition.charAt(0) != 0;
-        Collection<String> walls = state.getWalls();
         if (directionX) {
             if (walls.contains(startPosition + "v")
                     || walls.contains("" + startPosition.charAt(0) + (char) (startPosition.charAt(1) - 1) + "v")) {
