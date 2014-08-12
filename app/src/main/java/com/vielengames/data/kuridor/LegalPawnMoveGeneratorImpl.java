@@ -5,18 +5,29 @@ import java.util.HashSet;
 
 final class LegalPawnMoveGeneratorImpl {
 
-    private static final int[][] SIMPLE_DIRECTIONS = {
-            {-1, 0}, {0, -1}, {0, 1}, {1, 0}
+    private static final int[] LEFT = {-1, 0};
+    private static final int[] DOWN = {0, -1};
+    private static final int[] RIGHT = {0, 1};
+    private static final int[] UP = {1, 0};
+
+    private static final int[][] MOVE_DIRECTIONS = {
+            LEFT,
+            DOWN,
+            RIGHT,
+            UP
     };
-    private static final int[][][] LEFT_RIGHT_JUMP_DIRECTIONS = {
-            {{0, -1}, {0, 1}}, {{-1, 0}, {1, 0}}, {{-1, 0}, {1, 0}}, {{0, -1}, {0, 1}}
+    private static final int[][][] SIDE_JUMP_DIRECTIONS = {
+            {DOWN, UP},
+            {LEFT, RIGHT},
+            {DOWN, UP},
+            {LEFT, RIGHT}
     };
 
     public static Collection<KuridorMove> getLegalPawnMoves(KuridorGameState state) {
         Collection<KuridorMove> moves = new HashSet<KuridorMove>();
         String pawnPosition = state.getActiveTeamPawnPosition();
-        for (int i = 0; i < SIMPLE_DIRECTIONS.length; i++) {
-            int[] direction = SIMPLE_DIRECTIONS[i];
+        for (int i = 0; i < MOVE_DIRECTIONS.length; i++) {
+            int[] direction = MOVE_DIRECTIONS[i];
             String potentialMove = getMoveInDirection(pawnPosition, direction);
             if (isOutsideOfBoard(potentialMove) || isBlockedByWall(state, pawnPosition, potentialMove)) {
                 continue;
@@ -25,7 +36,7 @@ final class LegalPawnMoveGeneratorImpl {
                 String potentialStraightJump = getMoveInDirection(potentialMove, direction);
                 if (isOutsideOfBoard(potentialStraightJump)
                         || isBlockedByWall(state, potentialMove, potentialStraightJump)) {
-                    for (int[] jumpDirection : LEFT_RIGHT_JUMP_DIRECTIONS[i]) {
+                    for (int[] jumpDirection : SIDE_JUMP_DIRECTIONS[i]) {
                         String potentialSideJump = getMoveInDirection(potentialMove, jumpDirection);
                         if (isOutsideOfBoard(potentialSideJump)
                                 || isBlockedByWall(state, potentialMove, potentialSideJump)) {
