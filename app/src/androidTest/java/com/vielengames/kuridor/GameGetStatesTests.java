@@ -33,7 +33,7 @@ public final class GameGetStatesTests extends TestCase {
                     put("team_1", KuridorGameTeamState.builder().pawnPosition("e2").wallsLeft(10).build());
                     put("team_2", KuridorGameTeamState.builder().pawnPosition("e9").wallsLeft(10).build());
                 }})
-                .walls(Collections.<String>emptyList())
+                .walls(Collections.<String>emptySet())
                 .activeTeam("team_2")
                 .build();
         assertEquals(expected, states.get(1));

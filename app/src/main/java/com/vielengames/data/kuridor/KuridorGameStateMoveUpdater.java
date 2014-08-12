@@ -3,42 +3,67 @@ package com.vielengames.data.kuridor;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 
-@FieldDefaults(level = AccessLevel.NONE, makeFinal = true)
 @RequiredArgsConstructor
 public final class KuridorGameStateMoveUpdater {
 
-    KuridorGameState state;
-    KuridorMove move;
+    private final KuridorGameState state;
+    private final KuridorMove move;
 
     public KuridorGameState getNewState() {
-        String activeTeamPawnPosition = state.getActiveTeamPawnPosition();
-        if (move.isPawn()) {
-            activeTeamPawnPosition = move.getPosition();
-        }
-        int activeTeamWallsLeft = state.getActiveTeamWallsLeft();
-        if (move.isWall()) {
-            activeTeamWallsLeft--;
-        }
-        final KuridorGameTeamState newTeamState = KuridorGameTeamState.builder()
-                .pawnPosition(activeTeamPawnPosition)
-                .wallsLeft(activeTeamWallsLeft)
+        Map<String, KuridorGameTeamState> teams = getNewTeams();
+        Set<String> walls = getNewWalls();
+        String activeTeam = getNewActiveTeam();
+        return KuridorGameState.builder()
+                .teams(teams)
+                .walls(walls)
+                .activeTeam(activeTeam)
                 .build();
-        HashMap<String, KuridorGameTeamState> newTeams = new HashMap<String, KuridorGameTeamState>(state.getTeams());
-        newTeams.put(state.getActiveTeam(), newTeamState);
-        KuridorGameState newState = state.withTeams(Collections.unmodifiableMap(newTeams));
+    }
+
+    private Map<String, KuridorGameTeamState> getNewTeams() {
+        KuridorGameTeamState teamState = getNewTeamState();
+        Map<String, KuridorGameTeamState> newTeams = new HashMap<String, KuridorGameTeamState>(state.getTeams());
+        newTeams.put(state.getActiveTeam(), teamState);
+        return Collections.unmodifiableMap(newTeams);
+    }
+
+    private KuridorGameTeamState getNewTeamState() {
+        String pawnPosition = getNewPawnPosition();
+        int wallsLeft = getNewWallsLeft();
+        return KuridorGameTeamState.builder()
+                .pawnPosition(pawnPosition)
+                .wallsLeft(wallsLeft)
+                .build();
+    }
+
+    private String getNewPawnPosition() {
+        return move.isPawn()
+                ? move.getPosition()
+                : state.getActiveTeamPawnPosition();
+    }
+
+    private int getNewWallsLeft() {
+        int wallsLeft = state.getActiveTeamWallsLeft();
         if (move.isWall()) {
-            Set<String> newWalls = new HashSet<String>(state.getWalls());
-            newWalls.add(move.getPosition());
-            newState = newState.withWalls(Collections.unmodifiableSet(newWalls));
+            wallsLeft--;
         }
-        String newActiveTeam = "team_1".equals(state.getActiveTeam()) ? "team_2" : "team_1";
-        return newState.withActiveTeam(newActiveTeam);
+        return wallsLeft;
+    }
+
+    private Set<String> getNewWalls() {
+        Set<String> walls = new HashSet<String>(state.getWalls());
+        if (move.isWall()) {
+            walls.add(move.getPosition());
+        }
+        return Collections.unmodifiableSet(walls);
+    }
+
+    private String getNewActiveTeam() {
+        return "team_1".equals(state.getActiveTeam()) ? "team_2" : "team_1";
     }
 }
