@@ -14,18 +14,6 @@ final class KuridorMoveValidatorImpl {
     private static final Pattern PAWN_MOVE_PATTERN = Pattern.compile("[a-i][1-9]");
     private static final Pattern WALL_MOVE_PATTERN = Pattern.compile("[a-h][1-8][hv]");
 
-    private static final int[] LEFT = {-1, 0};
-    private static final int[] RIGHT = {1, 0};
-    private static final int[] UP = {0, 1};
-    private static final int[] DOWN = {0, -1};
-
-    private static final int[][] MOVE_DIRECTIONS = {
-            LEFT,
-            RIGHT,
-            UP,
-            DOWN
-    };
-
     private final KuridorGameState state;
     private final KuridorMove move;
 
@@ -119,8 +107,8 @@ final class KuridorMoveValidatorImpl {
     private Set<String> getAllNeighbours(KuridorGameState state, Set<String> positions) {
         Set<String> neighbours = new HashSet<String>();
         for (String position : positions) {
-            for (int[] direction : MOVE_DIRECTIONS) {
-                String potentialNeighbour = "" + (char) (position.charAt(0) + direction[0]) + (char) (position.charAt(1) + direction[1]);
+            for (KuridorMove.Direction direction : KuridorMove.Direction.values()) {
+                String potentialNeighbour = direction.applyToPosition(position);
                 if (matchesPawnMovePattern(potentialNeighbour) && !isBlockedByWall(state, position, potentialNeighbour)) {
                     neighbours.add(potentialNeighbour);
                 }
