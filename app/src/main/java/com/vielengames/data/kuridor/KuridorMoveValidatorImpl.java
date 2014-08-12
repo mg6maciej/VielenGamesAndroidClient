@@ -36,37 +36,6 @@ final class KuridorMoveValidatorImpl {
         return state.getLegalPawnMoves().contains(move);
     }
 
-    private String[] getBlockingWalls(String position, String pawnPosition) {
-        if (distanceBetweenPositions(position, pawnPosition) != 1) {
-            throw new IllegalArgumentException();
-        }
-        String[] blockingWalls;
-        int directionX = position.charAt(0) - pawnPosition.charAt(0);
-        int directionY = position.charAt(1) - pawnPosition.charAt(1);
-        if (directionY == 1) {
-            blockingWalls = new String[]{
-                    pawnPosition + "h",
-                    "" + (char) (pawnPosition.charAt(0) - 1) + pawnPosition.charAt(1) + "h"
-            };
-        } else if (directionY == -1) {
-            blockingWalls = new String[]{
-                    position + "h",
-                    "" + (char) (position.charAt(0) - 1) + position.charAt(1) + "h"
-            };
-        } else if (directionX == 1) {
-            blockingWalls = new String[]{
-                    pawnPosition + "v",
-                    "" + pawnPosition.charAt(0) + (char) (pawnPosition.charAt(1) - 1) + "v"
-            };
-        } else {
-            blockingWalls = new String[]{
-                    position + "v",
-                    "" + position.charAt(0) + (char) (position.charAt(1) - 1) + "v"
-            };
-        }
-        return blockingWalls;
-    }
-
     private int distanceBetweenPositions(String position1, String position2) {
         return Math.abs(position1.charAt(0) - position2.charAt(0))
                 + Math.abs(position1.charAt(1) - position2.charAt(1));
@@ -135,16 +104,8 @@ final class KuridorMoveValidatorImpl {
         for (String position : positions) {
             for (int i = 0; i < limits.length; i++) {
                 if (position.charAt(limitsIndices[i]) != limits[i]) {
-                    boolean blocked = false;
                     String potentialNeighbour = "" + (char) (position.charAt(0) + directions[i][0]) + (char) (position.charAt(1) + directions[i][1]);
-                    String[] blockingWalls = getBlockingWalls(position, potentialNeighbour);
-                    for (String blockingWall : blockingWalls) {
-                        if (state.getWalls().contains(blockingWall)) {
-                            blocked = true;
-                            break;
-                        }
-                    }
-                    if (!blocked) {
+                    if (!isBlockedByWall(state, position, potentialNeighbour)) {
                         neighbours.add(potentialNeighbour);
                     }
                 }
@@ -152,5 +113,30 @@ final class KuridorMoveValidatorImpl {
         }
         neighbours.removeAll(positions);
         return neighbours;
+    }
+
+    private boolean isBlockedByWall(KuridorGameState state, String startPosition, String endPosition) {
+        if (distanceBetweenPositions(startPosition, endPosition) != 1) {
+            throw new IllegalArgumentException();
+        }
+        if (startPosition.compareTo(endPosition) > 0) {
+            String tmp = startPosition;
+            startPosition = endPosition;
+            endPosition = tmp;
+        }
+        boolean directionX = startPosition.charAt(0) - endPosition.charAt(0) != 0;
+        Collection<String> walls = state.getWalls();
+        if (directionX) {
+            if (walls.contains(startPosition + "v")
+                    || walls.contains("" + startPosition.charAt(0) + (char) (startPosition.charAt(1) - 1) + "v")) {
+                return true;
+            }
+        } else {
+            if (walls.contains(startPosition + "h")
+                    || walls.contains("" + (char) (startPosition.charAt(0) - 1) + startPosition.charAt(1) + "h")) {
+                return true;
+            }
+        }
+        return false;
     }
 }
