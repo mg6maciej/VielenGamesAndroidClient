@@ -23,7 +23,7 @@ public final class GameStateMoveTests extends TestCase {
     public void testMoveUpdatesPawnPosition() {
         KuridorGameState testedState = KuridorGameState.initial();
         KuridorGameState next = testedState.move(KuridorMove.pawn("e2"));
-        assertEquals("e2", next.getTeam1().getPawnPosition());
+        assertEquals("e2", next.getFirstTeamState().getPawnPosition());
     }
 
     public void testWallMoveAddsToList() {
@@ -37,7 +37,7 @@ public final class GameStateMoveTests extends TestCase {
     public void testWallMoveDecrementsCount() {
         KuridorGameState testedState = KuridorGameState.initial();
         KuridorGameState next = testedState.move(KuridorMove.wall("e8h"));
-        assertEquals(9, next.getTeam1().getWallsLeft());
+        assertEquals(9, next.getFirstTeamState().getWallsLeft());
     }
 
     public void testFewMoves() {

@@ -18,7 +18,7 @@ final class KuridorMoveValidatorImpl {
     private final KuridorMove move;
 
     public boolean isMoveValid() {
-        if (state.getActiveTeam() != null) {
+        if (state.isActive()) {
             if (move.isPawn()) {
                 if (matchesPawnMovePattern(move.getPosition())) {
                     return isPawnMoveValid();
@@ -78,10 +78,10 @@ final class KuridorMoveValidatorImpl {
         Set<String> newWalls = new HashSet<String>(state.getWalls());
         newWalls.add(move.getPosition());
         KuridorGameState newState = state.withWalls(newWalls);
-        if (!hasAccessToLine(newState, newState.getTeam1().getPawnPosition(), '9')) {
+        if (!hasAccessToLine(newState, newState.getFirstTeamState().getPawnPosition(), '9')) {
             return false;
         }
-        if (!hasAccessToLine(newState, newState.getTeam2().getPawnPosition(), '1')) {
+        if (!hasAccessToLine(newState, newState.getSecondTeamState().getPawnPosition(), '1')) {
             return false;
         }
         return true;

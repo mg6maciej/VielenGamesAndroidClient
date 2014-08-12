@@ -74,7 +74,7 @@ public final class KuridorGameStateDrawer {
                     settings.paint());
         }
         settings.paint().setColor(settings.team1Color());
-        String team1PawnPosition = state.getTeam1().getPawnPosition();
+        String team1PawnPosition = state.getFirstTeamState().getPawnPosition();
         int xTeam1 = 1 + 2 * (team1PawnPosition.charAt(0) - 'a');
         int yTeam1 = 1 + 2 * ('9' - team1PawnPosition.charAt(1));
         if (flip) {
@@ -87,7 +87,7 @@ public final class KuridorGameStateDrawer {
                 (size - 1 - 2 * settings.padding()) / 18.0f - settings.pawnPadding(),
                 settings.paint());
         settings.paint().setColor(settings.team2Color());
-        String team2PawnPosition = state.getTeam2().getPawnPosition();
+        String team2PawnPosition = state.getSecondTeamState().getPawnPosition();
         int xTeam2 = 1 + 2 * (team2PawnPosition.charAt(0) - 'a');
         int yTeam2 = 1 + 2 * ('9' - team2PawnPosition.charAt(1));
         if (flip) {

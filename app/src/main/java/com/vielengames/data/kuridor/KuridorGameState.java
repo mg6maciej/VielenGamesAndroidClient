@@ -57,12 +57,16 @@ public final class KuridorGameState {
         return new LegalPawnMoveGeneratorImpl(this).getLegalPawnMoves();
     }
 
-    public KuridorGameTeamState getTeam1() {
+    public KuridorGameTeamState getFirstTeamState() {
         return teams.get(Team.FIRST);
     }
 
-    public KuridorGameTeamState getTeam2() {
+    public KuridorGameTeamState getSecondTeamState() {
         return teams.get(Team.SECOND);
+    }
+
+    public boolean isActive() {
+        return activeTeam != null;
     }
 
     public static KuridorGameState initial() {

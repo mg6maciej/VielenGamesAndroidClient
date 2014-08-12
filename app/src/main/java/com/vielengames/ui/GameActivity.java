@@ -168,8 +168,8 @@ public class GameActivity extends BaseActivity {
         gameView.setState(state, game.getLastMoveStartPosition(), imActiveUser(), flip);
         GameHeaderLayout top = ViewUtils.findView(this, R.id.game_header_top);
         GameHeaderLayout bottom = ViewUtils.findView(this, R.id.game_header_bottom);
-        (flip ? bottom : top).update(team2Player, state.getTeam2().getWallsLeft());
-        (flip ? top : bottom).update(team1Player, state.getTeam1().getWallsLeft());
+        (flip ? bottom : top).update(team2Player, state.getSecondTeamState().getWallsLeft());
+        (flip ? top : bottom).update(team1Player, state.getFirstTeamState().getWallsLeft());
 
         if (game.getWinner() != null) {
             ResultOverlayActivity.intent(this)
