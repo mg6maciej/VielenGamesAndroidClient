@@ -14,22 +14,42 @@ final class KuridorMoveValidatorImpl {
     private static final Pattern PAWN_MOVE_PATTERN = Pattern.compile("[a-i][1-9]");
     private static final Pattern WALL_MOVE_PATTERN = Pattern.compile("[a-h][1-8][hv]");
 
+    private static final int[] LEFT = {-1, 0};
+    private static final int[] RIGHT = {1, 0};
+    private static final int[] UP = {0, 1};
+    private static final int[] DOWN = {0, -1};
+
+    private static final int[][] MOVE_DIRECTIONS = {
+            LEFT,
+            RIGHT,
+            UP,
+            DOWN
+    };
+
     private final KuridorGameState state;
     private final KuridorMove move;
 
     public boolean isMoveValid() {
         if (state.getActiveTeam() != null) {
             if (move.isPawn()) {
-                if (PAWN_MOVE_PATTERN.matcher(move.getPosition()).matches()) {
+                if (matchesPawnMovePattern(move.getPosition())) {
                     return isPawnMoveValid();
                 }
             } else if (move.isWall()) {
-                if (WALL_MOVE_PATTERN.matcher(move.getPosition()).matches()) {
+                if (matchesWallMovePattern(move.getPosition())) {
                     return isWallMoveValid();
                 }
             }
         }
         return false;
+    }
+
+    private boolean matchesPawnMovePattern(String position) {
+        return PAWN_MOVE_PATTERN.matcher(position).matches();
+    }
+
+    private boolean matchesWallMovePattern(String position) {
+        return WALL_MOVE_PATTERN.matcher(position).matches();
     }
 
     private boolean isPawnMoveValid() {
@@ -98,16 +118,11 @@ final class KuridorMoveValidatorImpl {
 
     private Set<String> getAllNeighbours(KuridorGameState state, Set<String> positions) {
         Set<String> neighbours = new HashSet<String>();
-        char[] limits = {'9', '1', 'i', 'a'};
-        int[] limitsIndices = {1, 1, 0, 0};
-        int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
         for (String position : positions) {
-            for (int i = 0; i < limits.length; i++) {
-                if (position.charAt(limitsIndices[i]) != limits[i]) {
-                    String potentialNeighbour = "" + (char) (position.charAt(0) + directions[i][0]) + (char) (position.charAt(1) + directions[i][1]);
-                    if (!isBlockedByWall(state, position, potentialNeighbour)) {
-                        neighbours.add(potentialNeighbour);
-                    }
+            for (int[] direction : MOVE_DIRECTIONS) {
+                String potentialNeighbour = "" + (char) (position.charAt(0) + direction[0]) + (char) (position.charAt(1) + direction[1]);
+                if (matchesPawnMovePattern(potentialNeighbour) && !isBlockedByWall(state, position, potentialNeighbour)) {
+                    neighbours.add(potentialNeighbour);
                 }
             }
         }
