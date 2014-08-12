@@ -50,7 +50,7 @@ public final class KuridorGameState {
     }
 
     public boolean isMoveValid(KuridorMove move) {
-        return KuridorMoveValidatorImpl.isMoveValid(this, move);
+        return new KuridorMoveValidatorImpl(this, move).isMoveValid();
     }
 
     public Collection<KuridorMove> getLegalPawnMoves() {

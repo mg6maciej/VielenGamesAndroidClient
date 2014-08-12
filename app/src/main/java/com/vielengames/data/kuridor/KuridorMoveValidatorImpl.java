@@ -6,34 +6,37 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 final class KuridorMoveValidatorImpl {
 
     private static final Pattern PAWN_MOVE_PATTERN = Pattern.compile("[a-i][1-9]");
     private static final Pattern WALL_MOVE_PATTERN = Pattern.compile("[a-h][1-8][hv]");
 
-    private KuridorMoveValidatorImpl() {
-    }
+    private final KuridorGameState state;
+    private final KuridorMove move;
 
-    public static boolean isMoveValid(KuridorGameState state, KuridorMove move) {
+    public boolean isMoveValid() {
         if (state.getActiveTeam() != null) {
             if (move.isPawn()) {
                 if (PAWN_MOVE_PATTERN.matcher(move.getPosition()).matches()) {
-                    return isPawnMoveValid(state, move);
+                    return isPawnMoveValid();
                 }
             } else if (move.isWall()) {
                 if (WALL_MOVE_PATTERN.matcher(move.getPosition()).matches()) {
-                    return isWallMoveValid(state, move);
+                    return isWallMoveValid();
                 }
             }
         }
         return false;
     }
 
-    private static boolean isPawnMoveValid(KuridorGameState state, KuridorMove move) {
+    private boolean isPawnMoveValid() {
         return state.getLegalPawnMoves().contains(move);
     }
 
-    private static String[] getBlockingWalls(String position, String pawnPosition) {
+    private String[] getBlockingWalls(String position, String pawnPosition) {
         if (distanceBetweenPositions(position, pawnPosition) != 1) {
             throw new IllegalArgumentException();
         }
@@ -64,12 +67,12 @@ final class KuridorMoveValidatorImpl {
         return blockingWalls;
     }
 
-    private static int distanceBetweenPositions(String position1, String position2) {
+    private int distanceBetweenPositions(String position1, String position2) {
         return Math.abs(position1.charAt(0) - position2.charAt(0))
                 + Math.abs(position1.charAt(1) - position2.charAt(1));
     }
 
-    private static boolean isWallMoveValid(KuridorGameState state, KuridorMove move) {
+    private boolean isWallMoveValid() {
         if (state.getActiveTeamWallsLeft() == 0) {
             return false;
         }
@@ -107,7 +110,7 @@ final class KuridorMoveValidatorImpl {
         return true;
     }
 
-    private static boolean hasAccessToLine(KuridorGameState state, String pawnPosition, char lineId) {
+    private boolean hasAccessToLine(KuridorGameState state, String pawnPosition, char lineId) {
         Set<String> allAccessiblePositions = new HashSet<String>();
         Set<String> newAccessiblePositions = Collections.singleton(pawnPosition);
         while (newAccessiblePositions.size() > 0) {
@@ -124,7 +127,7 @@ final class KuridorMoveValidatorImpl {
         return false;
     }
 
-    private static Set<String> getAllNeighbours(KuridorGameState state, Set<String> positions) {
+    private Set<String> getAllNeighbours(KuridorGameState state, Set<String> positions) {
         Set<String> neighbours = new HashSet<String>();
         char[] limits = {'9', '1', 'i', 'a'};
         int[] limitsIndices = {1, 1, 0, 0};
