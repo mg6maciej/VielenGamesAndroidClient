@@ -65,7 +65,7 @@ final class LegalPawnMoveGeneratorImpl {
     }
 
     private boolean isUnreachable(String pawnPosition, String newPawnPosition) {
-        return isOutsideOfBoard(newPawnPosition) || isBlockedByWall(pawnPosition, newPawnPosition);
+        return isOutsideOfBoard(newPawnPosition) || MoveBlockedChecker.isBlockedByWall(state, pawnPosition, newPawnPosition);
     }
 
     private String getMoveInDirection(String pawnPosition, KuridorMove.Direction direction) {
@@ -74,35 +74,5 @@ final class LegalPawnMoveGeneratorImpl {
 
     private boolean isOutsideOfBoard(String pawnPosition) {
         return !PAWN_MOVE_PATTERN.matcher(pawnPosition).matches();
-    }
-
-    private boolean isBlockedByWall(String startPosition, String endPosition) {
-        if (distanceBetweenPositions(startPosition, endPosition) != 1) {
-            throw new IllegalArgumentException();
-        }
-        if (startPosition.compareTo(endPosition) > 0) {
-            String tmp = startPosition;
-            startPosition = endPosition;
-            endPosition = tmp;
-        }
-        boolean directionX = startPosition.charAt(0) - endPosition.charAt(0) != 0;
-        Collection<String> walls = state.getWalls();
-        if (directionX) {
-            if (walls.contains(startPosition + "v")
-                    || walls.contains("" + startPosition.charAt(0) + (char) (startPosition.charAt(1) - 1) + "v")) {
-                return true;
-            }
-        } else {
-            if (walls.contains(startPosition + "h")
-                    || walls.contains("" + (char) (startPosition.charAt(0) - 1) + startPosition.charAt(1) + "h")) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private int distanceBetweenPositions(String position1, String position2) {
-        return Math.abs(position1.charAt(0) - position2.charAt(0))
-                + Math.abs(position1.charAt(1) - position2.charAt(1));
     }
 }
