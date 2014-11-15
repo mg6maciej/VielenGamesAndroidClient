@@ -55,7 +55,7 @@ public final class AboutListAdapter extends AbstractBaseAdapter {
 
         @Override
         public boolean isEnabled() {
-            return false;
+            return "ANDROID DEVELOPER".equals(title);
         }
 
         @Override

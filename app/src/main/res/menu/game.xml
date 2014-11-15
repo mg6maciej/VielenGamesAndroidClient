@@ -6,4 +6,9 @@
         android:icon="@drawable/ic_action_help"
         android:title="Help" />
 
+    <item
+        android:id="@+id/mail_game"
+        android:icon="@drawable/abc_ic_menu_share_holo_dark"
+        android:title="Mail game" />
+
 </menu>
