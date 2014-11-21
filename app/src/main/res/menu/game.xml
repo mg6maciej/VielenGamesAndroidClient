@@ -8,7 +8,7 @@
 
     <item
         android:id="@+id/mail_game"
-        android:icon="@drawable/abc_ic_menu_share_holo_dark"
+        android:icon="@drawable/abc_ic_menu_share_mtrl_alpha"
         android:title="Mail game" />
 
 </menu>
