@@ -11,6 +11,7 @@ public final class VielenGamesPrefs {
     private Player me;
     private String token;
     private boolean helpOverlayAlreadyShown;
+    private boolean developerMode;
 
     public boolean isSignedIn() {
         return containsToken();

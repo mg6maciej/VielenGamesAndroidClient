@@ -3,3 +3,7 @@ build/
 .idea/
 *.iml
 local.properties
+
+crashlytics.properties
+crashlytics-build.properties
+com_crashlytics_export_strings.xml
