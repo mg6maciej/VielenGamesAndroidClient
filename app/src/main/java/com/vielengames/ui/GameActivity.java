@@ -68,6 +68,7 @@ public class GameActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_activity);
+        setupToolbar();
         eventBus.register(this);
 
         gameView = (GameView) findViewById(R.id.game_view);

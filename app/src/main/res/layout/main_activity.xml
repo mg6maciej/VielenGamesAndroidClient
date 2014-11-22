@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
+    <include layout="@layout/app_toolbar" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +19,7 @@
             android:background="@drawable/tab_background"
             android:text="PROPOSALS"
             android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@color/tab_text"/>
+            android:textColor="@color/tab_text" />
 
         <ImageButton
             android:id="@+id/main_add_proposal_button"
@@ -27,7 +28,7 @@
             android:background="@drawable/green"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:src="@drawable/add_proposal_icon"/>
+            android:src="@drawable/add_proposal_icon" />
 
         <LinearLayout
             android:id="@+id/main_my_games_button"
@@ -43,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:text="MY GAMES"
                 android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="@color/tab_text"/>
+                android:textColor="@color/tab_text" />
 
             <TextView
                 android:id="@+id/main_my_games_count"
@@ -52,9 +53,9 @@
                 android:layout_marginLeft="6dp"
                 android:background="@drawable/red_circle"
                 android:gravity="center"
-                android:visibility="gone"
                 android:textAppearance="?android:textAppearanceSmall"
-                android:textColor="#fff"/>
+                android:textColor="#fff"
+                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -64,6 +65,6 @@
         android:id="@+id/main_view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
 </LinearLayout>

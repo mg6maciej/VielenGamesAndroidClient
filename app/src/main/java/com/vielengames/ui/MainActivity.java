@@ -44,6 +44,7 @@ public final class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+        setupToolbar();
         setButtonListeners();
         initViewPager();
         if (savedInstanceState == null) {

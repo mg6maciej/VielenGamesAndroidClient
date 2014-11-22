@@ -25,6 +25,7 @@ public final class AboutActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about_activity);
+        setupToolbar();
         final AboutListAdapter adapter = new AboutListAdapter(this);
         ListView listView = ViewUtils.findView(this, R.id.about_list);
         listView.setAdapter(adapter);
