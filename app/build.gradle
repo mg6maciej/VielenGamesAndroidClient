@@ -78,15 +78,15 @@ android {
 dependencies {
     compile project(':facebook')
     compile 'com.crashlytics.android:crashlytics:1.1.13'
-    provided 'com.squareup.dagger:dagger-compiler:1.2.1'
+    provided 'com.squareup.dagger:dagger-compiler:1.2.2'
     provided 'pl.mg6.hrisey:hrisey:0.3.1'
     compile 'com.android.support:support-v4:21.0.2'
     compile 'com.android.support:appcompat-v7:21.0.2'
-    compile 'com.squareup.dagger:dagger:1.2.1'
-    compile 'com.squareup.retrofit:retrofit:1.6.0'
-    compile 'com.squareup.picasso:picasso:2.3.2'
-    compile 'com.squareup.okhttp:okhttp:2.0.0-RC2'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0-RC2'
-    compile 'de.greenrobot:eventbus:2.2.1'
-    androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.1'
+    compile 'com.squareup.dagger:dagger:1.2.2'
+    compile 'com.squareup.retrofit:retrofit:1.8.0'
+    compile 'com.squareup.picasso:picasso:2.4.0'
+    compile 'com.squareup.okhttp:okhttp:2.1.0'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.1.0'
+    compile 'de.greenrobot:eventbus:2.4.0'
+    androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.2.1'
 }
