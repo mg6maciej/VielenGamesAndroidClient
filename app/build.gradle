@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
+        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.14.3'
     }
 }
 
@@ -17,7 +17,7 @@ apply plugin: 'crashlytics'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "20.0.0"
+    buildToolsVersion "21.1.1"
 
     defaultConfig {
         applicationId "com.vielengames"
@@ -28,7 +28,7 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -77,7 +77,7 @@ android {
 
 dependencies {
     compile project(':facebook')
-    compile 'com.crashlytics.android:crashlytics:1.+'
+    compile 'com.crashlytics.android:crashlytics:1.1.13'
     provided 'com.squareup.dagger:dagger-compiler:1.2.1'
     provided 'pl.mg6.hrisey:hrisey:0.3.1'
     compile 'com.android.support:support-v4:21.0.2'
