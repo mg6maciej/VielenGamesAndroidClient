@@ -1,0 +1,4 @@
+#!/bin/bash
+
+python basic_upload_apks.py com.vielengames ../app/build/outputs/apk/app-production-release.apk
+
