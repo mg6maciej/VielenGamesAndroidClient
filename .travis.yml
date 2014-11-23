@@ -9,7 +9,7 @@ env:
     secure: l9oaircRM9VBHMbtM3R6D/xmwnTz2692hJlqEn8Rpf2wcPm7oAuvCGkSfh+9mkmwKcUOsm7QO8o/BOPWsIpZbxnjiXuiw6+n+XGQHG5wOEV5kBcofD1zsZao+FFG/GUE3nYtiMlwNzBGG78WmCzJ+svwZJn8AlAXrhDOsVJT79o=
 
 before_install:
-  - pip install google-api-python-client
+  - sudo pip install google-api-python-client
   - cd ci
   - openssl aes-256-cbc -d -k "$file_password" -in client_secrets.json.enc -out client_secrets.json
   - openssl aes-256-cbc -d -k "$file_password" -in androidpublisher.dat.enc -out androidpublisher.dat
