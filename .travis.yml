@@ -21,7 +21,10 @@ before_install:
   - emulator -avd test -no-skin -no-audio -no-window &
 
 before_script:
-  - ./ci/wait_for_emulator
+  - ci/wait_for_emulator
+
+after_success:
+  - test $TRAVIS_BRANCH == "master" && ci/deploy_google_play
 
 notifications:
   email:
