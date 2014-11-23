@@ -7,6 +7,7 @@ android:
 env:
   global:
     secure: l9oaircRM9VBHMbtM3R6D/xmwnTz2692hJlqEn8Rpf2wcPm7oAuvCGkSfh+9mkmwKcUOsm7QO8o/BOPWsIpZbxnjiXuiw6+n+XGQHG5wOEV5kBcofD1zsZao+FFG/GUE3nYtiMlwNzBGG78WmCzJ+svwZJn8AlAXrhDOsVJT79o=
+    secure: i51BjNxXw0dDaI1l9nOXWKq3PPL9XpvVzofbK6UsB2aMJCP8eunt+eCvHqpFNTUKqps/81iA5b0mjBsR56b4VKYhDFSnLVE/GeBoQb9ZrFvD2ccbuxUjr/v5vS5Oai4yQPpoUGf3f1VZrYwzd3aGQekYTMBPViU2NnPlaq5JQug=
 
 before_install:
   - sudo pip install google-api-python-client
@@ -26,6 +27,7 @@ before_script:
 after_success:
   - cd ci
   - test $TRAVIS_BRANCH == "master" && ./deploy_google_play
+  - ./deploy_testfairy
 
 notifications:
   email:
