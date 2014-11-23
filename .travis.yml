@@ -10,7 +10,9 @@ env:
 
 before_install:
   - sudo pip install google-api-python-client
+  - openssl aes-256-cbc -d -k "$file_password" -in app/gradle.properties.enc -out app/gradle.properties
   - cd ci
+  - openssl aes-256-cbc -d -k "$file_password" -in vielengames.keystore.enc -out vielengames.keystore
   - openssl aes-256-cbc -d -k "$file_password" -in client_secrets.json.enc -out client_secrets.json
   - openssl aes-256-cbc -d -k "$file_password" -in androidpublisher.dat.enc -out androidpublisher.dat
   - python basic_list_apks.py com.vielengames
