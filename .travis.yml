@@ -24,7 +24,8 @@ before_script:
   - ci/wait_for_emulator
 
 after_success:
-  - test $TRAVIS_BRANCH == "master" && ci/deploy_google_play
+  - cd ci
+  - test $TRAVIS_BRANCH == "master" && deploy_google_play
 
 notifications:
   email:
