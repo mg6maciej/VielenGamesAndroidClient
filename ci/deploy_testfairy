@@ -1,18 +1,17 @@
 #!/bin/bash
 
 curl https://app.testfairy.com/api/upload \
-    -F api_key='$testfairy_api_key' \
+    -F api_key="$testfairy_key" \
     -F file=@../app/build/outputs/apk/app-production-debug.apk
 
 curl https://app.testfairy.com/api/upload \
-    -F api_key='$testfairy_api_key' \
+    -F api_key="$testfairy_key" \
     -F file=@../app/build/outputs/apk/app-staging-debug.apk
 
 curl https://app.testfairy.com/api/upload \
-    -F api_key='$testfairy_api_key' \
+    -F api_key="$testfairy_key" \
     -F file=@../app/build/outputs/apk/app-mock-debug.apk
 
 curl https://app.testfairy.com/api/upload \
-    -F api_key='$testfairy_api_key' \
+    -F api_key="$testfairy_key" \
     -F file=@../app/build/outputs/apk/app-apiary-debug.apk
-
