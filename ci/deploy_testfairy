@@ -2,16 +2,24 @@
 
 curl https://app.testfairy.com/api/upload \
     -F api_key="$testfairy_key" \
-    -F file=@../app/build/outputs/apk/app-production-debug.apk
+    -F file=@../app/build/outputs/apk/app-production-debug.apk \
+    -F metrics='cpu,memory,network,logcat' \
+    -F testers_groups='production'
 
 curl https://app.testfairy.com/api/upload \
     -F api_key="$testfairy_key" \
-    -F file=@../app/build/outputs/apk/app-staging-debug.apk
+    -F file=@../app/build/outputs/apk/app-staging-debug.apk \
+    -F metrics='cpu,memory,network,logcat' \
+    -F testers_groups='staging'
 
 curl https://app.testfairy.com/api/upload \
     -F api_key="$testfairy_key" \
-    -F file=@../app/build/outputs/apk/app-mock-debug.apk
+    -F file=@../app/build/outputs/apk/app-mock-debug.apk \
+    -F metrics='cpu,memory,network,logcat' \
+    -F testers_groups='mock'
 
 curl https://app.testfairy.com/api/upload \
     -F api_key="$testfairy_key" \
-    -F file=@../app/build/outputs/apk/app-apiary-debug.apk
+    -F file=@../app/build/outputs/apk/app-apiary-debug.apk \
+    -F metrics='cpu,memory,network,logcat' \
+    -F testers_groups='apiary'
