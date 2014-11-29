@@ -22,6 +22,7 @@ before_script:
 after_success:
   - test $TRAVIS_BRANCH == "master" && ci/deploy_google_play
   - ci/deploy_testfairy
+  - ci/deploy_crashlytics_beta
 
 notifications:
   email:
