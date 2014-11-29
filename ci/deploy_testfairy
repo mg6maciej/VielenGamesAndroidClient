@@ -1,0 +1,40 @@
+#!/bin/bash
+
+DIR=$(dirname $0)
+echo $DIR
+
+COMMENT=$(git log --format="%cn @ "$TRAVIS_BRANCH"
+------
+%B" -n 1 $TRAVIS_COMMIT)
+
+echo "------"
+echo $COMMENT
+echo "------"
+
+curl https://app.testfairy.com/api/upload \
+    -F api_key="$testfairy_key" \
+    -F file=@$DIR/../app/build/outputs/apk/app-production-debug.apk \
+    -F metrics='cpu,memory,network,logcat' \
+    -F testers_groups='vielen-games-production' \
+    -F comment="$COMMENT"
+
+curl https://app.testfairy.com/api/upload \
+    -F api_key="$testfairy_key" \
+    -F file=@$DIR/../app/build/outputs/apk/app-staging-debug.apk \
+    -F metrics='cpu,memory,network,logcat' \
+    -F testers_groups='vielen-games-staging' \
+    -F comment="$COMMENT"
+
+curl https://app.testfairy.com/api/upload \
+    -F api_key="$testfairy_key" \
+    -F file=@$DIR/../app/build/outputs/apk/app-mock-debug.apk \
+    -F metrics='cpu,memory,network,logcat' \
+    -F testers_groups='vielen-games-mock' \
+    -F comment="$COMMENT"
+
+curl https://app.testfairy.com/api/upload \
+    -F api_key="$testfairy_key" \
+    -F file=@$DIR/../app/build/outputs/apk/app-apiary-debug.apk \
+    -F metrics='cpu,memory,network,logcat' \
+    -F testers_groups='vielen-games-apiary' \
+    -F comment="$COMMENT"
