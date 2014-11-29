@@ -11,10 +11,7 @@ env:
 
 before_install:
   - sudo pip install google-api-python-client
-  - openssl aes-256-cbc -d -k "$file_password" -in app/gradle.properties.enc -out app/gradle.properties
-  - openssl aes-256-cbc -d -k "$file_password" -in ci/vielengames.keystore.enc -out ci/vielengames.keystore
-  - openssl aes-256-cbc -d -k "$file_password" -in ci/client_secrets.json.enc -out ci/client_secrets.json
-  - openssl aes-256-cbc -d -k "$file_password" -in ci/androidpublisher.dat.enc -out ci/androidpublisher.dat
+  - ci/decrypt_files
   - python ci/basic_list_apks.py com.vielengames
   - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
   - emulator -avd test -no-skin -no-audio -no-window &

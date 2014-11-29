@@ -1,0 +1,6 @@
+#!/bin/bash
+
+openssl aes-256-cbc -d -k "$file_password" -in app/gradle.properties.enc -out app/gradle.properties
+openssl aes-256-cbc -d -k "$file_password" -in ci/vielengames.keystore.enc -out ci/vielengames.keystore
+openssl aes-256-cbc -d -k "$file_password" -in ci/client_secrets.json.enc -out ci/client_secrets.json
+openssl aes-256-cbc -d -k "$file_password" -in ci/androidpublisher.dat.enc -out ci/androidpublisher.dat
