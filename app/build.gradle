@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.14.3'
+        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.14.4'
     }
 }
 
@@ -23,8 +23,8 @@ android {
         applicationId "com.vielengames"
         minSdkVersion 10
         targetSdkVersion 21
-        versionCode 1002005
-        versionName "1.2.5"
+        versionCode 1002006
+        versionName "1.2.6"
     }
     signingConfigs {
         release {
@@ -70,7 +70,7 @@ android {
 }
 
 dependencies {
-    compile project(':facebook')
+    compile 'com.facebook.android:facebook-android-sdk:3.20.0'
     compile 'com.crashlytics.android:crashlytics:1.1.13'
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
     provided 'pl.mg6.hrisey:hrisey:0.3.1'
