@@ -47,21 +47,25 @@ android {
             flavorDimension 'backend'
             applicationId "com.vielengames"
             buildConfigField 'String', 'ENDPOINT', '"https://vielen-games-api.herokuapp.com"'
+            ext.betaDistributionGroupAliases="production"
         }
         staging {
             flavorDimension 'backend'
             applicationId "com.vielengames.staging"
             buildConfigField 'String', 'ENDPOINT', '"https://vielen-games-api-staging.herokuapp.com"'
+            ext.betaDistributionGroupAliases="staging"
         }
         mock {
             flavorDimension 'backend'
             applicationId "com.vielengames.mock"
             buildConfigField 'String', 'ENDPOINT', '"mock://mock"'
+            ext.betaDistributionGroupAliases="mock"
         }
         apiary {
             flavorDimension 'backend'
             applicationId "com.vielengames.apiary"
             buildConfigField 'String', 'ENDPOINT', '"https://vielengamesapi.apiary-mock.com/"'
+            ext.betaDistributionGroupAliases="apiary"
         }
     }
     lintOptions {

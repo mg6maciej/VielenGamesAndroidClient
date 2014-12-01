@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./gradlew crashlyticsUploadDistributionProductionRelease -PbetaDistributionGroupAliases="production"
-./gradlew crashlyticsUploadDistributionStagingRelease -PbetaDistributionGroupAliases="staging"
-./gradlew crashlyticsUploadDistributionMockRelease -PbetaDistributionGroupAliases="mock"
-./gradlew crashlyticsUploadDistributionApiaryRelease -PbetaDistributionGroupAliases="apiary"
+./gradlew crashlyticsUploadDistributionProductionRelease
+./gradlew crashlyticsUploadDistributionStagingRelease
+./gradlew crashlyticsUploadDistributionMockRelease
+./gradlew crashlyticsUploadDistributionApiaryRelease
