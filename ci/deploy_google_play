@@ -3,5 +3,7 @@
 DIR=$(dirname $0)
 echo $DIR
 
+sudo pip install google-api-python-client
+
 python $DIR/basic_upload_apks.py com.vielengames $DIR/../app/build/outputs/apk/app-production-release.apk
 python $DIR/basic_upload_apks.py com.vielengames.staging $DIR/../app/build/outputs/apk/app-staging-release.apk
