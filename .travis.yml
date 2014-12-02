@@ -10,6 +10,7 @@ env:
     - secure: dg14m8/CNWGdvpqPZddtZxhs5fGN0wJGdYS/sFKnkXE+BEypJ/pwUO5s5YxFqwPpWDrFpSlVRh4VIL8iV0yqlU8n/6f1oEeGGCV3A+aMpmRlwvNuLWObaElUqaEjZSNQBH+plLV2viTZZ/tiIavLP50frcZ5E3MGNS0v6dScS9Q=
 
 before_install:
+  - ci/decrypt_files
   - ci/start_emulator
 
 install:
@@ -22,7 +23,6 @@ script:
   - ./gradlew connectedAndroidTestMockDebug
 
 after_success:
-  - ci/decrypt_files
   - ci/deploy_all
 
 notifications:
