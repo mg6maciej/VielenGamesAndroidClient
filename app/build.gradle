@@ -39,7 +39,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-            ext.betaDistributionReleaseNotesFilePath=”crashlytics_release_notes.txt”
+            ext.betaDistributionReleaseNotesFilePath="crashlytics_release_notes.txt"
         }
     }
     flavorDimensions 'backend'
