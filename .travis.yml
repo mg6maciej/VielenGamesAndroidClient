@@ -23,7 +23,7 @@ before_script:
   - ci/wait_for_emulator
 
 script:
-  - ./gradlew connectedAndroidTestMockDebug
+  - ./gradlew connectedCheck
 
 after_success:
   - test $TRAVIS_BRANCH == "master" && ci/deploy_google_play
