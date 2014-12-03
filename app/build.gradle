@@ -23,8 +23,8 @@ android {
         applicationId "com.vielengames"
         minSdkVersion 10
         targetSdkVersion 21
-        versionCode 1002008
-        versionName "1.2.8"
+        versionCode 1002009
+        versionName "1.2.9"
     }
     signingConfigs {
         release {
