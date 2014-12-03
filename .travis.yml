@@ -10,11 +10,8 @@ env:
     - secure: dg14m8/CNWGdvpqPZddtZxhs5fGN0wJGdYS/sFKnkXE+BEypJ/pwUO5s5YxFqwPpWDrFpSlVRh4VIL8iV0yqlU8n/6f1oEeGGCV3A+aMpmRlwvNuLWObaElUqaEjZSNQBH+plLV2viTZZ/tiIavLP50frcZ5E3MGNS0v6dScS9Q=
 
 before_install:
-  - sudo pip install google-api-python-client
   - ci/decrypt_files
-  - python ci/basic_list_apks.py com.vielengames
-  - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
-  - emulator -avd test -no-skin -no-audio -no-window &
+  - ci/start_emulator
 
 install:
   - ./gradlew build
@@ -26,11 +23,8 @@ script:
   - ./gradlew connectedAndroidTestMockDebug
 
 after_success:
-  - test $TRAVIS_BRANCH == "master" && ci/deploy_google_play
-  - ci/deploy_testfairy
-  - ci/deploy_crashlytics_beta
+  - ci/deploy_all
 
 notifications:
   email:
     - maciek.gorski@gmail.com
-

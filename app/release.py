@@ -12,8 +12,7 @@ version_parts = map(lambda part: int(part), version_name.split("."))
 version_number = 1000000 * version_parts[0] + 1000 * version_parts[1] + version_parts[2]
 
 call(["git", "stash"])
-call(["git", "checkout", "develop"])
-call(["git", "checkout", "-b", "release/" + version_name])
+call(["git", "checkout", "develop", "-b", "release/" + version_name])
 
 build_gradle_name = os.path.dirname(running_file_name) + "/build.gradle"
 build_gradle = file(build_gradle_name)
