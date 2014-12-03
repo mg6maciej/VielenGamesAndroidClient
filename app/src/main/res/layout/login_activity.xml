@@ -19,14 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="vertical">
-
-            <com.facebook.widget.LoginButton
-                android:id="@+id/login_button_facebook"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
+            android:orientation="vertical" />
 
         <ProgressBar
             android:id="@+id/login_progress_indicator"

@@ -3,22 +3,23 @@ package com.vielengames.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.facebook.Session;
-import com.facebook.SessionState;
-import com.facebook.widget.LoginButton;
 import com.vielengames.R;
 import com.vielengames.api.VielenGamesClient;
 import com.vielengames.data.SessionRequest;
 import com.vielengames.event.SessionCreateFailedEvent;
 import com.vielengames.event.SessionStartedResponseEvent;
 import com.vielengames.event.bus.EventBus;
+import com.vielengames.ui.login.CreateSessionCallback;
+import com.vielengames.ui.login.LoginButtonProvider;
 import com.vielengames.utils.ViewUtils;
 
 import javax.inject.Inject;
 
-public final class LoginActivity extends BaseActivity {
+public final class LoginActivity extends BaseActivity implements CreateSessionCallback {
 
     @Inject
     VielenGamesClient client;
@@ -26,7 +27,10 @@ public final class LoginActivity extends BaseActivity {
     @Inject
     EventBus eventBus;
 
-    private View buttonsContainer;
+    @Inject
+    LoginButtonProvider loginButtonProvider;
+
+    private ViewGroup buttonsContainer;
     private ProgressBar progressIndicator;
 
     @Override
@@ -40,30 +44,18 @@ public final class LoginActivity extends BaseActivity {
     private void initViews() {
         buttonsContainer = ViewUtils.findView(this, R.id.login_buttons_container);
         progressIndicator = ViewUtils.findView(this, R.id.login_progress_indicator);
-        initFacebookLoginButton();
+        loginButtonProvider.init(this, buttonsContainer);
     }
 
-    private void initFacebookLoginButton() {
-        LoginButton facebookLoginButton = ViewUtils.findView(this, R.id.login_button_facebook);
-        facebookLoginButton.setSessionStatusCallback(new Session.StatusCallback() {
-            @Override
-            public void call(Session session, SessionState state, Exception exception) {
-                maybeCreateSessionWithFacebook(session);
-            }
-        });
-        maybeCreateSessionWithFacebook(Session.getActiveSession());
-    }
-
-    private void maybeCreateSessionWithFacebook(Session session) {
-        if (session != null && session.isOpened()) {
-            buttonsContainer.setVisibility(View.INVISIBLE);
-            progressIndicator.setVisibility(View.VISIBLE);
-            SessionRequest sessionRequest = SessionRequest.builder()
-                    .provider("facebook")
-                    .providerToken(session.getAccessToken())
-                    .build();
-            client.createSession(sessionRequest);
-        }
+    @Override
+    public void createSession(String provider, String token) {
+        SessionRequest sessionRequest = SessionRequest.builder()
+                .provider(provider)
+                .providerToken(token)
+                .build();
+        buttonsContainer.setVisibility(View.INVISIBLE);
+        progressIndicator.setVisibility(View.VISIBLE);
+        client.createSession(sessionRequest);
     }
 
     @Override
@@ -87,7 +79,7 @@ public final class LoginActivity extends BaseActivity {
                 progressIndicator.setVisibility(View.INVISIBLE);
             }
         }, 100L);
-        Session.getActiveSession().close();
+        loginButtonProvider.close();
     }
 
     public void startMainActivity() {
@@ -98,6 +90,6 @@ public final class LoginActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
+        loginButtonProvider.onActivityResult(this, requestCode, resultCode, data);
     }
 }
