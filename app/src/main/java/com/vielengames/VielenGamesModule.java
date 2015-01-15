@@ -25,6 +25,8 @@ import com.vielengames.ui.LoginActivity;
 import com.vielengames.ui.MainActivity;
 import com.vielengames.ui.MyGamesFragment;
 import com.vielengames.ui.ResultOverlayActivity;
+import com.vielengames.ui.login.FacebookLoginButtonProvider;
+import com.vielengames.ui.login.LoginButtonProvider;
 
 import javax.inject.Singleton;
 
@@ -138,5 +140,10 @@ public final class VielenGamesModule {
     @Singleton
     public NotificationManager provideNotificationManager() {
         return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+    }
+
+    @Provides
+    public LoginButtonProvider provideLoginButtonProvider() {
+        return new FacebookLoginButtonProvider();
     }
 }
