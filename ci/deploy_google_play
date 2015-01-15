@@ -1,8 +1,6 @@
 #!/bin/bash
 
-DIR=$(dirname $0)
-echo $DIR
-
+sudo apt-get install python-openssl
 sudo pip install google-api-python-client
 
 python $DIR/basic_upload_apks.py com.vielengames $DIR/../app/build/outputs/apk/app-production-release.apk
