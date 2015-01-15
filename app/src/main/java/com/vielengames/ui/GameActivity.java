@@ -167,7 +167,7 @@ public class GameActivity extends BaseActivity {
             Log.e("tag", "error on " + number, ex);
         }
         intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
-        startActivity(intent);
+        startActivityForResult(intent, 0);
     }
 
     private void toFile(KuridorGameState state, ArrayList<Uri> uris, int number) throws IOException {
