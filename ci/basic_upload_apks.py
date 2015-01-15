@@ -17,11 +17,14 @@
 """Uploads an apk to the beta track."""
 
 import argparse
-import sys
-from apiclient import sample_tools
+import httplib2
+from apiclient.discovery import build
 from oauth2client import client
 
 TRACK = 'beta'  # Can be 'alpha', beta', 'production' or 'rollout'
+
+SERVICE_ACCOUNT_EMAIL = (
+    '663711192124-de2tb3tpdrcifjehc2jbdivpb6mebso1@developer.gserviceaccount.com')
 
 # Declare command-line flags.
 argparser = argparse.ArgumentParser(add_help=False)
@@ -33,17 +36,24 @@ argparser.add_argument('apk_file',
                        help='The path to the APK file to upload.')
 
 
-def main(argv):
+def main():
+
+  f = file('key.p12', 'rb')
+  key = f.read()
+  f.close()
+
   # Authenticate and construct service.
-  service, flags = sample_tools.init(
-      argv,
-      'androidpublisher',
-      'v2',
-      __doc__,
-      __file__, parents=[argparser],
+  credentials = client.SignedJwtAssertionCredentials(
+      SERVICE_ACCOUNT_EMAIL,
+      key,
       scope='https://www.googleapis.com/auth/androidpublisher')
+  http = httplib2.Http()
+  http = credentials.authorize(http)
+
+  service = build('androidpublisher', 'v2', http=http)
 
   # Process flags and read their values.
+  flags = argparser.parse_args()
   package_name = flags.package_name
   apk_file = flags.apk_file
 
@@ -78,4 +88,4 @@ def main(argv):
            'application to re-authorize')
 
 if __name__ == '__main__':
-  main(sys.argv)
+  main()
