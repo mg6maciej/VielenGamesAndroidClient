@@ -24,7 +24,7 @@
         <activity
             android:name="com.vielengames.ui.LauncherActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Login">
+            android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

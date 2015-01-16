@@ -20,11 +20,11 @@ public final class AboutListAdapter extends AbstractBaseAdapter {
     public AboutListAdapter(Context context) {
         super(context);
         items.add(new AboutHeaderItemAdapter("DESIGNER"));
-        items.add(new AboutPersonItemAdapter("Natalia Berowska", R.drawable.about_image_natalia_b, "https://www.behance.net/natiwa"));
+        items.add(new AboutPersonItemAdapter("Natalia Berowska", R.drawable.about_image_natalia_b, "https://www.behance.net/nberowska"));
         items.add(new AboutHeaderItemAdapter("ANDROID DEVELOPER"));
         items.add(new AboutPersonItemAdapter("Maciej Górski", R.drawable.about_image_maciej_g, "https://github.com/mg6maciej"));
         items.add(new AboutHeaderItemAdapter("BACKEND DEVELOPER"));
-        items.add(new AboutPersonItemAdapter("Michał Janeczek", R.drawable.about_image_michal_j, "http://mjaneczek.pl"));
+        items.add(new AboutPersonItemAdapter("Michał Janeczek", R.drawable.about_image_michal_j, "https://mjaneczek.github.io"));
     }
 
     @RequiredArgsConstructor
