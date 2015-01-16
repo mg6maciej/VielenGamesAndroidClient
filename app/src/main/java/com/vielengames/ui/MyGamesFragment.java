@@ -48,8 +48,10 @@ public final class MyGamesFragment extends BaseFragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Game game = (Game) adapter.getItem(position);
-                eventBus.post(new GameClickEvent(game));
+                if (adapter.getItem(position) instanceof Game) {
+                    Game game = (Game) adapter.getItem(position);
+                    eventBus.post(new GameClickEvent(game));
+                }
             }
         });
     }
