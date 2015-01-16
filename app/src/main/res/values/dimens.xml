@@ -4,6 +4,8 @@
     <dimen name="common_image_size">65dp</dimen>
     <dimen name="common_circle_width">1dp</dimen>
 
+    <dimen name="main_view_pager_margin">5dp</dimen>
+
     <dimen name="game_view_padding">15dp</dimen>
     <dimen name="game_view_dots_radius">1dp</dimen>
     <dimen name="game_view_last_line_dots_radius">2dp</dimen>

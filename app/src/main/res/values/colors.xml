@@ -14,7 +14,8 @@
     <color name="tab_text_selected">@color/green_normal</color>
     <color name="tab_background_normal">#000000</color>
     <color name="tab_background_pressed">#333333</color>
-    <color name="header_background_color">#f7f7f7</color>
+    <color name="divider_color">#f7f7f7</color>
+    <color name="header_background_color">@color/divider_color</color>
     <color name="header_text_color">#bfbfbf</color>
     <color name="text_primary_color">@android:color/black</color>
     <color name="text_secondary_color">#4b4b4b</color>

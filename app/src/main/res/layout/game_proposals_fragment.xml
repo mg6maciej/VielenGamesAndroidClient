@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -12,7 +11,9 @@
         <ListView
             android:id="@+id/game_proposals_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:divider="@color/divider_color"
+            android:dividerHeight="1dp" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -30,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:gravity="center_horizontal"
-            android:text="No game proposals are currently available.\nPress the plus button to create a new proposal."/>
+            android:text="No game proposals are currently available.\nPress the plus button to create a new proposal." />
 
         <ImageButton
             android:id="@+id/game_proposals_add_proposal_button"
@@ -39,7 +40,7 @@
             android:background="@drawable/green"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:src="@drawable/add_proposal_icon"/>
+            android:src="@drawable/add_proposal_icon" />
 
     </LinearLayout>
 
