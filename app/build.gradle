@@ -72,6 +72,9 @@ android {
     lintOptions {
         abortOnError false
     }
+    packagingOptions {
+        exclude 'LICENSE.txt'
+    }
 }
 
 dependencies {
@@ -87,4 +90,5 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.2.0'
     compile 'de.greenrobot:eventbus:2.4.0'
     androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.2.1'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
 }
