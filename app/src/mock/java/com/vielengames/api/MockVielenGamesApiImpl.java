@@ -8,6 +8,7 @@ import com.vielengames.data.SessionResponse;
 import com.vielengames.data.Updates;
 import com.vielengames.data.kuridor.KuridorMove;
 
+import java.util.Collections;
 import java.util.List;
 
 import retrofit.Callback;
@@ -16,6 +17,16 @@ public final class MockVielenGamesApiImpl implements VielenGamesApi {
 
     @Override
     public void createSession(SessionRequest sessionRequest, Callback<SessionResponse> callback) {
+        Player me = Player.builder()
+                .id("id")
+                .name("Me")
+                .avatarUrl("https://raw.githubusercontent.com/assertgo/icon/master/assertgo_64.png")
+                .build();
+        SessionResponse response = SessionResponse.builder()
+                .authToken("auth_token")
+                .user(me)
+                .build();
+        callback.success(response, null);
     }
 
     @Override
@@ -24,6 +35,7 @@ public final class MockVielenGamesApiImpl implements VielenGamesApi {
 
     @Override
     public void getGameProposals(Callback<List<GameProposal>> callback) {
+        callback.success(Collections.<GameProposal>emptyList(), null);
     }
 
     @Override

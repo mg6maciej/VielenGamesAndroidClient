@@ -105,12 +105,12 @@ public final class GameProposalsFragment extends BaseFragment {
 
     @SuppressWarnings("unused")
     public void onEvent(RefreshGameProposalsEvent event) {
-        swipeRefreshLayout.setRefreshing(true);
+        requestGameProposals();
     }
 
     private void requestGameProposals() {
-        client.requestGameProposals();
         swipeRefreshLayout.setRefreshing(true);
+        client.requestGameProposals();
     }
 
     private void updateListView() {
