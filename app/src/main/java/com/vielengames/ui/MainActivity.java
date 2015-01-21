@@ -82,7 +82,6 @@ public final class MainActivity extends BaseActivity {
     }
 
     private void refreshGameProposals() {
-        client.requestGameProposals();
         eventBus.post(new RefreshGameProposalsEvent());
     }
 

@@ -8,6 +8,7 @@ import com.vielengames.data.SessionResponse;
 import com.vielengames.data.Updates;
 import com.vielengames.data.kuridor.KuridorMove;
 
+import java.util.Collections;
 import java.util.List;
 
 import retrofit.Callback;
@@ -34,6 +35,7 @@ public final class MockVielenGamesApiImpl implements VielenGamesApi {
 
     @Override
     public void getGameProposals(Callback<List<GameProposal>> callback) {
+        callback.success(Collections.<GameProposal>emptyList(), null);
     }
 
     @Override
