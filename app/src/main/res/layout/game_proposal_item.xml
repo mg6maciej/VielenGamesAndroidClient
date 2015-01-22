@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:gravity="center_vertical"
-              android:orientation="horizontal"
-              android:padding="10dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="10dp">
 
     <ImageView
         android:id="@+id/game_proposal_profile_icon"
         android:layout_width="@dimen/common_image_size"
         android:layout_height="@dimen/common_image_size"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop" />
 
     <RelativeLayout
         android:layout_width="0dp"
@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/text_primary_color"/>
+            android:textColor="@color/text_primary_color" />
 
         <TextView
             android:id="@+id/game_proposal_age"
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/game_proposal_name"
             android:layout_marginTop="5dp"
-            android:textColor="@color/text_secondary_color"/>
+            android:textColor="@color/text_secondary_color" />
 
     </RelativeLayout>
 
@@ -42,6 +42,6 @@
         android:layout_height="35dp"
         android:padding="0dp"
         android:textAppearance="?android:textAppearanceSmall"
-        android:textColor="#ffffff"/>
+        android:textColor="#ffffff" />
 
 </LinearLayout>

@@ -3,7 +3,6 @@ package com.vielengames.notification.move;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.vielengames.SessionUpdatesHandler;
 import com.vielengames.VielenGamesApp;

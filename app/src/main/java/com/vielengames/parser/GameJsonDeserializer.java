@@ -1,11 +1,11 @@
 package com.vielengames.parser;
 
-import com.vielengames.data.Game;
-import com.vielengames.data.kuridor.KuridorGame;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.vielengames.data.Game;
+import com.vielengames.data.kuridor.KuridorGame;
 
 import java.lang.reflect.Type;
 

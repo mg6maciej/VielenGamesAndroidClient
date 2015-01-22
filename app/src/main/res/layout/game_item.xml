@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
@@ -9,7 +8,7 @@
     <ImageView
         android:id="@+id/game_item_preview"
         android:layout_width="@dimen/common_image_size"
-        android:layout_height="@dimen/common_image_size"/>
+        android:layout_height="@dimen/common_image_size" />
 
     <RelativeLayout
         android:layout_width="0dp"
@@ -22,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/text_primary_color"/>
+            android:textColor="@color/text_primary_color" />
 
         <TextView
             android:id="@+id/game_item_turn_label"
@@ -31,7 +30,7 @@
             android:layout_below="@+id/game_item_player_names"
             android:layout_marginTop="5dp"
             android:text="Time left:"
-            android:textColor="@color/text_tertiary_color"/>
+            android:textColor="@color/text_tertiary_color" />
 
         <TextView
             android:id="@+id/game_item_turn"
@@ -41,7 +40,7 @@
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/game_item_turn_label"
             android:text="unlimited"
-            android:textColor="@color/text_secondary_color"/>
+            android:textColor="@color/text_secondary_color" />
 
     </RelativeLayout>
 
