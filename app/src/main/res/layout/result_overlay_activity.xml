@@ -11,13 +11,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:scaleType="fitXY"
-        android:src="@drawable/result_overlay_background"/>
+        android:src="@drawable/result_overlay_background" />
 
     <View
         android:id="@+id/result_overlay_centered_invisible_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true" />
 
     <ImageView
         android:id="@+id/result_overlay_face_lost"
@@ -27,7 +27,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="285dp"
         android:layout_marginRight="45dp"
-        android:layout_toLeftOf="@+id/result_overlay_centered_invisible_view"/>
+        android:layout_toLeftOf="@+id/result_overlay_centered_invisible_view" />
 
     <ImageView
         android:id="@+id/result_overlay_face_won"
@@ -37,7 +37,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="320dp"
         android:layout_marginLeft="48dp"
-        android:layout_toRightOf="@+id/result_overlay_centered_invisible_view"/>
+        android:layout_toRightOf="@+id/result_overlay_centered_invisible_view" />
 
     <TextView
         android:id="@+id/result_overlay_subtitle"
@@ -47,7 +47,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:textAppearance="?android:textAppearanceLarge"
-        android:textColor="@color/overlay_text"/>
+        android:textColor="@color/overlay_text" />
 
     <TextView
         android:id="@+id/result_overlay_title"
@@ -55,6 +55,6 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/result_overlay_subtitle"
         android:layout_centerHorizontal="true"
-        android:textSize="50dp"/>
+        android:textSize="50dp" />
 
 </RelativeLayout>

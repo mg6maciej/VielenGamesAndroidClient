@@ -7,7 +7,8 @@ public final class Modules {
     public static Object[] get(Context context) {
         return new Object[]{
                 new VielenGamesModule(context),
-                new MockModule()
+                new MockModule(),
+                new StubLoginModule(),
         };
     }
 }
