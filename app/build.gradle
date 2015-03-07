@@ -23,8 +23,8 @@ android {
         applicationId "com.vielengames"
         minSdkVersion 10
         targetSdkVersion 21
-        versionCode 1002024
-        versionName "1.2.24"
+        versionCode 1002025
+        versionName "1.2.25"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
