@@ -17,6 +17,7 @@ sed -i \
 git commit -a -m "Update version in build.gradle to $VERSION_NAME."
 git checkout master
 git merge --no-ff release/$VERSION_NAME
+git push
 git tag $VERSION_NAME
 git checkout develop
 git merge --no-ff release/$VERSION_NAME
